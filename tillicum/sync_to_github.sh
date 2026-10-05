@@ -18,7 +18,7 @@ cd "$DST"
 # secret gate: the live key values must not appear anywhere in the snapshot
 . "$SRC/secrets.env"
 for k in "$OPENAI_API_KEY" "$WANDB_API_KEY"; do
-  if grep -rqF -- "$k" . --exclude-dir=.git; then echo "ABORT: a live API key is inside the snapshot:"; grep -rlF -- "$k" . --exclude-dir=.git; exit 1; fi
+  if grep -rqF --exclude-dir=.git -- "$k" .; then echo "ABORT: a live API key is inside the snapshot:"; grep -rlF --exclude-dir=.git -- "$k" .; exit 1; fi
 done
 if grep -rqE "sk-proj-[A-Za-z0-9_-]{20}|sk-[A-Za-z0-9]{32,}|hf_[A-Za-z0-9]{30,}" . --exclude-dir=.git; then echo "ABORT: key-shaped string found:"; grep -rlE "sk-proj-[A-Za-z0-9_-]{20}|sk-[A-Za-z0-9]{32,}|hf_[A-Za-z0-9]{30,}" . --exclude-dir=.git; exit 1; fi
 big=$(find . -path ./.git -prune -o -type f -size +90M -print); [ -z "$big" ] || { echo "ABORT: files over GitHub's 100 MB limit:"; echo "$big"; exit 1; }

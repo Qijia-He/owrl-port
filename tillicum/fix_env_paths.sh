@@ -7,7 +7,8 @@
 # Idempotent. Prints a verification at the end.
 set -uo pipefail
 PORT_ROOT="${PORT_ROOT:-/gpfs/scrubbed/heqj3/owrl}"
-ENV="$PORT_ROOT/envs/webrl"
+PERSIST_ROOT="${PERSIST_ROOT:-/gpfs/projects/krishna/heqj3/owrl_persist}"
+ENV="$PERSIST_ROOT/envs/webrl"   # real path (PORT_ROOT/envs is a symlink to it)
 SP="$ENV/lib/python3.12/site-packages"
 [ -x "$ENV/bin/python3.12" ] || { echo "no env at $ENV"; exit 1; }
 n=0
