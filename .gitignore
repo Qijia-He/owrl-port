@@ -1,0 +1,16 @@
+# big / rebuilt / private -- never in git (see tillicum/README_TILLICUM.md)
+envs/
+models/
+hf_ckpts/
+ms-playwright/
+outputs/
+logs/
+wandb/
+secrets.env
+*.pt
+*.safetensors
+*.distcp
+__pycache__/
+*.pyc
+*.orig
+*.orig_*

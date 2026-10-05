@@ -1,0 +1,51 @@
+### Example only.
+### run_sft_with_llamafactory.sh (MODEL_FAMILY=qwen3_5) generates a concrete YAML with real paths.
+### Qwen3.5 reuses the same screenshot SFT data as Qwen3-VL: the qwen3_5 chat
+### template carries the same vision plugin as qwen3_vl, so the vision-tower
+### options below apply unchanged.
+
+### model
+model_name_or_path: Qwen/Qwen3.5-9B
+image_max_pixels: 262144
+video_max_pixels: 16384
+trust_remote_code: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: full
+freeze_vision_tower: true
+freeze_multi_modal_projector: true
+freeze_language_model: false
+deepspeed: examples/deepspeed/ds_z2_config.json
+
+### dataset
+dataset_dir: outputs/sft/llamafactory/data
+media_dir: outputs/sft/llamafactory/data
+dataset: openwebrl_sft_trajectories
+template: qwen3_5
+cutoff_len: 36864
+preprocessing_num_workers: 16
+dataloader_num_workers: 4
+mask_history: true
+
+### output
+output_dir: outputs/sft/llamafactory/checkpoints/qwen3.5-9b-openwebrl-sft
+logging_steps: 10
+save_strategy: epoch
+plot_loss: true
+overwrite_output_dir: true
+save_only_model: false
+report_to: none
+run_name: qwen3.5-9b-openwebrl-sft
+
+### train
+num_train_epochs: 3.0
+learning_rate: 1.0e-5
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 8
+lr_scheduler_type: cosine
+warmup_ratio: 0.1
+bf16: true
+ddp_timeout: 180000000
+resume_from_checkpoint: null
