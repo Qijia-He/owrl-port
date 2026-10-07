@@ -92,13 +92,20 @@ def interval(value, scale=100):
     return f"{scale * value['delta']:+.{precision}f} [{scale * lo:+.{precision}f}, {scale * hi:+.{precision}f}]"
 
 
-def success_table(data):
+def groups_of(data):
     groups = {}
     for row in data['results']:
         groups.setdefault((row['benchmark'], row['actor']), {})[row['strategy']] = row
-    lines = ['| 环境 | Actor | Greedy | 单次采样 | 五候选随机 | Sol 五选一 | Sol−随机：百分点 [95% CI] |',
+    return sorted(groups.items())
+
+
+LABEL = {'greedy': 'Greedy', 'sample': 'Single sample', 'random5': 'Random of 5', 'gpt5': 'Sol of 5'}
+
+
+def success_table(data):
+    lines = ['| Environment | Actor | Greedy | Single sample | Random of 5 | Sol of 5 | Sol minus random: pp [95% CI] |',
              '|---|---|---:|---:|---:|---:|---:|']
-    for (benchmark, actor), group in sorted(groups.items()):
+    for (benchmark, actor), group in groups_of(data):
         values = ' | '.join(pct(group[s]['success_rate']) for s in STRATEGIES)
         delta = interval(group['gpt5']['paired_comparisons']['random5']['success'])
         lines.append(f'| {ENV[benchmark]} | {ACTOR[actor]} | {values} | {delta} |')
@@ -111,73 +118,131 @@ def render_run(data):
     episodes = sum(r['episodes'] for r in rows)
     reused = sum(r['reused_smoke_episodes'] for r in rows)
     p = data['protocol']
-    lines = [f'# Sol 闭环实验：{run_id}', '', f"完成时间：{data['completed_utc']}。状态：已完成并通过审计。", '',
-        f"Seeds：{data['seeds']}；共 {episodes} 条完整 episode，其中 {reused} 条复用已审计 smoke，计入同一任务清单且只统计一次。",
-        '每组 50 个训练集预留任务、4 种策略；所有 Qwen actor 均为 4B，权重冻结。', '',
-        '[返回实验首页](../README.md) · [结构化数据](../data/' + run_id + '.json) · [决策与后续](../DECISIONS.md)', '',
-        '## 成功率', '', *success_table(data), '',
-        '表中的区间针对配对成功率差值，不是单个成功率的区间。`gpt5` 是代码中的“五候选 GPT 选择”策略名；本轮模型为 `' + p['teacher_model'] + '`。', '',
-        '## WebShop 原生平均 reward', '',
-        '| Actor | Greedy | 单次采样 | 五候选随机 | Sol 五选一 | Sol−随机 [95% CI] |', '|---|---:|---:|---:|---:|---:|']
-    for actor in sorted({r['actor'] for r in rows if r['benchmark'] == 'webshop'}):
-        group = {r['strategy']: r for r in rows if r['benchmark'] == 'webshop' and r['actor'] == actor}
-        values = ' | '.join(f"{group[s]['mean_reward']:.4f}" for s in STRATEGIES)
-        lines.append(f"| {ACTOR[actor]} | {values} | {interval(group['gpt5']['paired_comparisons']['random5']['reward'], 1)} |")
-    lines += ['', '## 步数、无效动作与截断', '',
-        '无效动作率和选中动作截断率按执行步数统计；候选截断率按全部候选数量统计；达上限比例按 episode 统计。', '',
-        '| 环境 | Actor | 策略 | 平均步数 | 无效动作 | 候选截断 | 选中动作截断 | 达步数上限 |',
+    lines = [f'# Closed-loop Sol pilot: {run_id}', '',
+        f"Completed: **{data['completed_utc']}**. Status: **complete and audited**.", '',
+        f"Executed seeds: **{data['seeds']}**. This snapshot contains **{episodes:,} complete episodes**, including "
+        f"**{reused} reused smoke episodes**, each counted once. All Qwen actors are frozen 4B checkpoints.", '',
+        '[Overview](../README.md) · [Method and citations](../README.md#2-how-does-the-method-work) · [Setup](../README.md#3-what-environments-and-models-did-we-use) · '
+        '[Interpretation and next steps](../DECISIONS.md) · [Source JSON](../data/' + run_id + '.json)', '',
+        '## What this experiment measures', '',
+        'At each decision, Qwen proposes actions and Sol chooses one of five proposals. Only the selected native action is executed; '
+        'the environment then produces the next observation. This is an inference-only, closed-loop action-selection experiment. '
+        'No actor updates, learned ARM training, or outcome-reward reshaping were performed in this pilot.', '',
+        'The four controls are greedy decoding, one stochastic sample, a uniform random choice from five stochastic samples, '
+        'and Sol selection from five stochastic samples. Within each environment, all actors and controls use the same task manifest. '
+        'Their trajectories can diverge, so they do not share a fixed candidate pool throughout an episode. '
+        'Random-of-five controls the proposal count; it does not match the additional compute or cost of Sol.', '',
+        '## Task success', '', *success_table(data), '',
+        'Each cell is the fraction of successful tasks; the seed-42 pilot has 50 tasks per cell. '
+        'ALFWorld success follows native `won`; WebShop success requires native reward equal to 1. '
+        'Differences are absolute percentage points (pp). Intervals apply to paired differences, not individual success rates. '
+        f"The internal strategy ID `gpt5` means five-candidate GPT selection; the actual selector is `{p['teacher_model']}`.", '',
+        '### Sol compared with every baseline', '',
+        '| Environment | Actor | Versus greedy: pp [95% CI] | Versus single sample: pp [95% CI] | Versus random of 5: pp [95% CI] |',
+        '|---|---|---:|---:|---:|']
+    for (benchmark, actor), group in groups_of(data):
+        values = ' | '.join(interval(group['gpt5']['paired_comparisons'][s]['success']) for s in STRATEGIES[:3])
+        lines.append(f'| {ENV[benchmark]} | {ACTOR[actor]} | {values} |')
+    lines += ['', '## WebShop native mean reward', '',
+        'Reward is the native continuous score on a 0–1 scale, averaged over all episodes, including failures. '
+        'It is reported separately from binary success.', '',
+        '| Actor | Greedy | Single sample | Random of 5 | Sol of 5 | Sol minus random [95% CI] |',
+        '|---|---:|---:|---:|---:|---:|']
+    for (benchmark, actor), group in groups_of(data):
+        if benchmark == 'webshop':
+            values = ' | '.join(f"{group[s]['mean_reward']:.4f}" for s in STRATEGIES)
+            lines.append(f"| {ACTOR[actor]} | {values} | {interval(group['gpt5']['paired_comparisons']['random5']['reward'], 1)} |")
+    lines += ['', '| Actor | Reward versus greedy [95% CI] | Reward versus single sample [95% CI] |', '|---|---:|---:|']
+    for (benchmark, actor), group in groups_of(data):
+        if benchmark == 'webshop':
+            values = ' | '.join(interval(group['gpt5']['paired_comparisons'][s]['reward'], 1) for s in STRATEGIES[:2])
+            lines.append(f'| {ACTOR[actor]} | {values} |')
+    lines += ['', '## Steps, invalid actions, and truncation', '',
+        'Invalid-action and selected-truncation rates use executed steps as their denominator. '
+        'Candidate truncation uses all generated candidates. Step-limit rate uses episodes. '
+        'ALFWorld invalidity is checked against the native admissible commands before execution; WebShop checks syntax and current available interface actions. '
+        'These diagnostics do not modify actions or filter candidates. Truncation means the actor response hit its output limit.', '',
+        '| Environment | Actor | Strategy | Mean steps | Invalid actions | Candidate truncation | Selected truncation | Step limit |',
         '|---|---|---|---:|---:|---:|---:|---:|']
-    for row in rows:
-        values = ' | '.join(pct(row[k]) for k in ('invalid_action_rate', 'candidate_truncation_rate', 'selected_action_truncation_rate', 'step_limit_rate'))
-        lines.append(f"| {ENV[row['benchmark']]} | {ACTOR[row['actor']]} | {row['strategy']} | {row['mean_steps']:.2f} | {values} |")
-    lines += ['', '## 候选池诊断', '', '下面仅统计 Sol 所访问的状态。不同策略会访问不同状态，因此这些指标是描述性证据，不是因果分解。', '',
-        '| 环境 | Actor | 每池平均不同动作数 | 五个动作相同的池比例 | 五个候选全截断的池比例 | 解析 fallback 次数 |',
+    for (benchmark, actor), group in groups_of(data):
+        for strategy in STRATEGIES:
+            row = group[strategy]
+            values = ' | '.join(pct(row[k]) for k in ('invalid_action_rate', 'candidate_truncation_rate', 'selected_action_truncation_rate', 'step_limit_rate'))
+            lines.append(f"| {ENV[benchmark]} | {ACTOR[actor]} | {LABEL[strategy]} | {row['mean_steps']:.2f} | {values} |")
+    lines += ['', '## Candidate-pool diagnostics', '',
+        'The following table covers states visited by Sol. Distinct actions are counted by exact action-string equality; '
+        'different reasoning with the same action does not count as a new choice. '
+        'Because policies visit different states, these are descriptive diagnostics, not a causal decomposition of the gain.', '',
+        '| Environment | Actor | Mean distinct actions / pool | All 5 actions identical | All 5 responses truncated | Selector parse fallbacks |',
         '|---|---|---:|---:|---:|---:|']
     for row in data['candidate_diagnostics']:
         if row['strategy'] == 'gpt5':
             lines.append(f"| {ENV[row['benchmark']]} | {ACTOR[row['actor']]} | {row['mean_distinct_actions_per_pool']:.3f} | "
                          f"{pct(row['rates']['single_distinct_action_pools'])} | {pct(row['rates']['all_candidates_truncated'])} | {row['counts'].get('teacher_fallbacks', 0)} |")
-    lines += ['', '## 95% CI 如何计算', '',
-        '按 task_id 配对：dᵢ = Sol 在任务 i 的成功值 − 基线在同一任务的成功值。成功值为 0/1；reward 分析使用原生连续 reward。', '',
-        '从 50 个配对任务中有放回抽取 50 个，计算平均差值，重复 10,000 次；取 2.5% 和 97.5% 分位数。统计重采样 RNG 固定为 42，独立于“运行了几个实验 seed”这一问题。', '',
-        '本轮只有运行 seed 42：区间反映任务重采样的不确定性，不估计跨运行 seed 的方差。任务有多个匹配 seed 时，当前实现先在任务内平均，再重采样任务。区间未做多重比较校正。', '',
-        'ALFWorld 中存在同组相关任务，额外按整个 group_id 重采样，保留所有组内任务与任务加权均值。下面是补充分析，不替换主分析。', '',
-        '| 环境 | Actor | 任务 / 组 | 主任务 bootstrap：百分点 | 补充组 bootstrap：百分点 |',
+    lines += ['', '## How the 95% confidence intervals are computed', '',
+        '1. Match treatment and baseline by task ID, requiring identical executed-seed coverage. For each task, compute '
+        '`d_i = mean_seed(Sol outcome) - mean_seed(baseline outcome)`. Success outcomes are 0 or 1; the reward analysis uses continuous native reward.',
+        '2. Sample the matched tasks with replacement, keeping the sample size equal to the original task count. '
+        'For this pilot, each draw contains 50 paired tasks. Compute the mean difference for each of 10,000 draws.',
+        '3. Report the 2.5th and 97.5th percentiles of those means. The statistical RNG is NumPy `default_rng(42)`; '
+        'this bootstrap seed is separate from the number of experiment seeds.', '',
+        'Only one experiment seed was executed. These intervals describe uncertainty under task resampling, not variation across independent '
+        'execution seeds. They are exploratory percentile-bootstrap intervals without multiple-comparison correction. '
+        'An endpoint at zero should not be presented as clear evidence of improvement.']
+    if run_id == 'v3-sol-nativecmd-seed42':
+        lines += ['', 'For TextWorld × Qwen3.5, Sol and random-of-five both succeed on 21 tasks; Sol alone succeeds on 14, '
+            'random alone on 2, and both fail on 13. Thus the paired difference is `(14 - 2) / 50 = 0.24`, '
+            'with a task-bootstrap interval of `[0.10, 0.38]`.']
+    lines += ['', '### Sensitivity to correlated task groups', '',
+        'ALFWorld includes related tasks within a task group. As a supplementary check, entire group IDs are resampled, retaining all '
+        'their tasks and computing a task-weighted mean difference. This also uses 10,000 draws. '
+        'It is a sensitivity analysis, not a replacement chosen after seeing the primary result.', '',
+        '| Environment | Actor | Tasks / groups | Task bootstrap: pp [95% CI] | Group bootstrap: pp [95% CI] |',
         '|---|---|---:|---:|---:|']
     for row in data['group_sensitivity']:
         if row['baseline'] == 'random5' and row['metric'] == 'success':
             group = row['supplementary_group_interval']
             lines.append(f"| {ENV[row['benchmark']]} | {ACTOR[row['actor']]} | {group['paired_tasks']} / {group['paired_groups']} | "
                          f"{interval(row['primary_task_interval'])} | {interval(group)} |")
-    lines += ['', '## 固定协议与原生 benchmark', '',
-        '| 项目 | 设置 |', '|---|---|',
-        f"| Selector | `{p['teacher_model']}`，输出上限 {p['teacher_max_output_tokens']} tokens |",
-        f"| 候选采样 | 每步 {p['candidate_count']} 次独立 seeded draw；T={p['temperature']}，top_p={p['top_p']}，top_k={p['top_k']} |",
-        f"| Actor 输出 / 上下文 | {p['actor_max_tokens']} / {p['actor_context_tokens']} tokens；enable_thinking={p['enable_thinking']} |",
-        '| 选择上下文 | 原公开 builder；最近 5 步历史；完整候选 thought/action |',
-        '| ALFWorld TextWorld | 原生文本，无占位图片；50 步上限 |',
-        '| ALFWorld THOR | 原生 RGB 与文本反馈，官方 mrcnn_astar 控制器；50 步上限 |',
-        '| WebShop | 原生可见文本与全部当前可见商品图片，搜索结果最多 10 张；原生动作/评分；100 步上限 |',
-        '| 数据隔离 | 原生训练集内按任务/商品组预留 10%；固定 pilot 清单；正式 held-out/test 未使用 |',
-        '| 候选处理 | 保留重复与截断候选；不改写、不筛选、不补采样 |',
-        f"| 版本 | `{data['method']['protocol']}` / `{data['run_tag']}` / `{p['actor_prompt_version']}` |", '',
-        'THOR 是固定官方控制器上的高层动作选择实验；原生动作、Qwen actor 和跨 benchmark 观察适配属于明确记录的方法扩展。', '',
-        '## 成本与核验', '']
+    lines += ['', '## Recorded protocol', '', '| Item | Value |', '|---|---|',
+        f"| Selector | `{p['teacher_model']}`; maximum {p['teacher_max_output_tokens']} completion tokens |",
+        f"| Stochastic proposals | {p['candidate_count']} independent seeded draws; temperature {p['temperature']}; top_p {p['top_p']}; top_k {p['top_k']} |",
+        f"| Actor output / context limits | {p['actor_max_tokens']} / {p['actor_context_tokens']} tokens; enable_thinking `{p['enable_thinking']}` where supported |",
+        '| Selector context | Public prompt builder; last 5 history entries; complete candidate reasoning and action |',
+        '| Candidate handling | Keep duplicates and truncated responses; no action repair, filtering, or replacement draws |',
+        f"| Version | `{data['method']['protocol']}` / `{data['run_tag']}` / `{p['actor_prompt_version']}` |", '',
+        'See [the setup description](../README.md#3-what-environments-and-models-did-we-use) for checkpoint revisions, task sampling, native observations/actions, '
+        'step limits, environments, and serving settings. The frozen method contract preserves the original three-seed plan; '
+        'the executed-seed field and audit identify the actual one-seed scope.', '',
+        '## Costs', '']
     cost = data['costs']; window = cost['native_execution_window']; gpu = cost['gpu_usage']
-    lines += [f"- 本轮 native 执行窗口：Sol 返回 usage 估算 **${window['returned_usage_cost_usd']:.2f}**，{window['calls']:,} 次调用；包括 smoke 和中断尝试。",
-        f"- 完整 episode 归属费用：${cost['completed_episode_attributed_cost_usd']:.2f}，已包含 smoke；与上一项不能相加。",
-        f"- 全部已记录 Sol 调用：${cost['all_recorded_sol']['returned_usage_cost_usd']:.2f}，含此前诊断。",
-        f"- 已追踪 GPU：{gpu['gpu_hours']:.2f} H200 小时，按 $0.90/小时估算 ${gpu['estimated_usd_at_0_90_per_gpu_hour']:.2f}；包含前期部分诊断，范围宽于本轮。",
-        '- 以上是 usage/资源估算，未与账单对账；未返回 usage 的潜在费用无法据此确认。', '',
-        f"核验：{data['audit']['summaries_checked']} 条汇总与 {data['audit']['unique_trajectories_checked']} 条记录轨迹一致；"
-        f"{data['audit']['pilot_gates_passed']} 组通过审计；当前基础设施错误 {data['audit']['current_infrastructure_errors']}；历史中断 {data['audit']['historical_infrastructure_errors']} 次。",
-        '原始轨迹复算验证的是聚合一致性，不是独立重放环境。中断尝试保留但不作为任务失败，恢复前已完成结果的哈希保持不变。', '',
-        '## 数据来源', '', f"冻结配置 hash：`{data['scientific_config_hash']}`。完整来源文件 hash 保存在随附结构化数据中。", '',
-        f"- [Piotr 原方法](https://github.com/piotr-teterwak/action-reward-models/tree/{data['method']['piotr_commit']})",
-        f"- [zixian ARM 集成](https://github.com/zixianma/OpenWebRL/tree/{data['method']['zixian_arm_commit']})",
-        '- 原私有 `frontier_arbiter` 未发布；当前对齐公开 builder，不能声称复原了历史私有数据生成 prompt。',
-        '- 已发布骨干为 qwen3_vl；发布数据与公开 inference builder 的 prompt 存在差异，新的标注/训练/推理链路统一采用公开版本。', '',
-        '## 解释与下一步', '', '[查看持续维护的决策记录](../DECISIONS.md)。数值表由已审计 JSON 生成；分析判断与数值来源分开维护。', '']
+    lines += ['| Accounting scope | Returned-usage cost estimate | Calls |', '|---|---:|---:|',
+        f"| Native execution window, including smoke and interrupted attempts | ${window['returned_usage_cost_usd']:.2f} | {window['calls']:,} |",
+        f"| Complete-episode attribution, including reused smoke once | ${cost['completed_episode_attributed_cost_usd']:.2f} | — |",
+        f"| All recorded Sol calls, including earlier diagnostics | ${cost['all_recorded_sol']['returned_usage_cost_usd']:.2f} | {cost['all_recorded_sol']['calls']:,} |", '',
+        'These are overlapping accounting views and must not be added together.', '',
+        '| Environment | Actor | Sol cost attributed to complete episodes |', '|---|---|---:|']
+    for (benchmark, actor), group in groups_of(data):
+        lines.append(f"| {ENV[benchmark]} | {ACTOR[actor]} | ${group['gpt5']['charged_usd']:.2f} |")
+    lines += ['', f"Tracked GPU allocation totals **{gpu['gpu_hours']:.2f} H200-hours**, or **${gpu['estimated_usd_at_0_90_per_gpu_hour']:.2f}** "
+        'at the planning rate of $0.90 per GPU-hour. This includes some earlier diagnostics and has a broader scope than this seed alone.', '',
+        'Costs are estimates from returned usage and recorded resource allocation, not reconciled invoices. '
+        'Calls without returned usage may have charges that these records cannot resolve.', '',
+        '## Completion and audit evidence', '',
+        f"- {data['audit']['summaries_checked']:,} summaries reconciled against {data['audit']['unique_trajectories_checked']:,} unique recorded trajectories.",
+        f"- {data['audit']['pilot_gates_passed']} environment–actor groups passed the launch/expansion gates, including episode completion, native image payloads, and selection membership.",
+        f"- {data['audit']['current_infrastructure_errors']} unresolved infrastructure errors; {data['audit']['historical_infrastructure_errors']} historical interruptions retained in the records.",
+        f"- {reused} smoke episodes reused as the prefix of the pilot manifests, without duplicate counting or selecting only successful outcomes.",
+        '- Completed-result hashes were preserved during recovery. Incomplete infrastructure attempts were recorded separately and rerun from the start of the episode.', '',
+        'Trajectory reconciliation verifies aggregation against recorded transitions; it is not an independent replay of the environments.', '',
+        '## Provenance and interpretation', '',
+        f"Scientific configuration SHA-256: `{data['scientific_config_hash']}`.", '',
+        f"The [immutable result package](../data/{run_id}.json) includes the frozen receipt hash, source-artifact hashes, protocol, "
+        "per-seed summaries, paired intervals, candidate diagnostics, and accounting scopes.", '',
+        f"- [Piotr reference repository at the inspected commit](https://github.com/piotr-teterwak/action-reward-models/tree/{data['method']['piotr_commit']}).",
+        f"- [Zixian ARM integration at the inspected commit](https://github.com/zixianma/OpenWebRL/tree/{data['method']['zixian_arm_commit']}).",
+        '- [Method and reproduction boundaries](../README.md#upstream-limitations-we-found): source roles, public prompt alignment, and released-material inconsistencies.',
+        '- [Research interpretation and proposed next steps](../DECISIONS.md): what the results support and what remains untested.', '']
     return '\n'.join(lines)
 
 
@@ -189,18 +254,43 @@ def render():
     for data in packages:
         atomic_write(DOCS / 'runs' / (data['id'] + '.md'), render_run(data))
     latest = packages[-1]
-    lines = ['# Action-level Rewards 实验日志', '',
-        '目标：冻结 Qwen，由 Sol 在五个候选动作中选择，评估原生 benchmark 闭环成功率；随后再决定 ARM 数据收集与训练。', '',
-        '[协议与复现边界](runs/' + latest['id'] + '.md#固定协议与原生-benchmark) · [决策、问题与下一步](DECISIONS.md) · [如何更新](MAINTENANCE.md)', '',
-        f"最近完成：**{latest['id']}**，{latest['completed_utc']}。最新实验包含 seeds `{latest['seeds']}`。当前执行范围与待办见决策记录。", '',
-        '## 最新结果', '', *success_table(latest), '',
-        f"[完整实验记录：reward、步数、无效动作、截断、候选重复、CI 与费用](runs/{latest['id']}.md)", '',
-        '所有 Qwen actor 为 4B。表中为训练集预留 pilot；单 seed 结果不能代替正式 held-out/test 评测。', '',
-        '## 实验历史', '', '| 完成日期（UTC） | 实验版本 | Seeds | 完整 episodes | 状态 |', '|---|---|---|---:|---|']
+    blocks = {
+        'SNAPSHOT': f"Latest audited snapshot: **{latest['id']}**, completed **{latest['completed_utc']}**. "
+                    f"Executed seeds: **{latest['seeds']}**; complete episodes: **{sum(r['episodes'] for r in latest['results']):,}**.",
+        'SUCCESS': '\n'.join(success_table(latest)),
+    }
+    rewards = ['| Actor | Greedy | Single sample | Random of 5 | Sol of 5 | Sol minus random [95% CI] |',
+               '|---|---:|---:|---:|---:|---:|']
+    for (benchmark, actor), group in groups_of(latest):
+        if benchmark == 'webshop':
+            values = ' | '.join(f"{group[s]['mean_reward']:.4f}" for s in STRATEGIES)
+            rewards.append(f"| {ACTOR[actor]} | {values} | {interval(group['gpt5']['paired_comparisons']['random5']['reward'], 1)} |")
+    blocks['REWARD'] = '\n'.join(rewards)
+    cost = latest['costs']; window = cost['native_execution_window']; gpu = cost['gpu_usage']
+    blocks['COST'] = '\n'.join([
+        '| Scope | Estimated cost |', '|---|---:|',
+        f"| Sol during the native execution window, including smoke and interrupted attempts ({window['calls']:,} returned-usage calls) | **${window['returned_usage_cost_usd']:.2f}** |",
+        f"| Sol attributed to complete episodes, including smoke once | ${cost['completed_episode_attributed_cost_usd']:.2f} |",
+        f"| All recorded Sol calls, including earlier diagnostics | ${cost['all_recorded_sol']['returned_usage_cost_usd']:.2f} |",
+        f"| Tracked GPU allocation ({gpu['gpu_hours']:.2f} H200-hours at $0.90/hour) | ${gpu['estimated_usd_at_0_90_per_gpu_hour']:.2f} |",
+    ])
+    history = ['## Experiment history', '', '| Completed (UTC) | Experiment | Executed seeds | Complete episodes | Status |',
+               '|---|---|---|---:|---|']
     for data in reversed(packages):
-        lines.append(f"| {data['completed_utc'][:10]} | [{data['id']}](runs/{data['id']}.md) | {data['seeds']} | {sum(r['episodes'] for r in data['results'])} | 已审计 |")
-    lines += ['', '新实验以新 ID 追加；旧结果保留。数值来自已冻结、已审计的导出数据，后续重新渲染不会运行模型或提交实验。', '']
-    atomic_write(DOCS / 'README.md', '\n'.join(lines))
+        history.append(f"| {data['completed_utc'][:10]} | [{data['id']}](runs/{data['id']}.md) | {data['seeds']} | {sum(r['episodes'] for r in data['results'])} | Audited |")
+    blocks['HISTORY'] = '\n'.join(history)
+    # Preserve the self-contained narrative; update only explicit numeric blocks.
+    # Future experiment updates must also review the surrounding interpretation.
+    path = DOCS / 'README.md'
+    overview = path.read_text(encoding='utf-8')
+    for name, content in blocks.items():
+        start, end = f'<!-- BEGIN GENERATED: {name} -->', f'<!-- END GENERATED: {name} -->'
+        if overview.count(start) != 1 or overview.count(end) != 1:
+            raise ValueError('Expected exactly one README block: ' + name)
+        before, rest = overview.split(start, 1)
+        _, after = rest.split(end, 1)
+        overview = before + start + '\n\n' + content + '\n\n' + end + after
+    atomic_write(path, overview)
     return len(packages)
 
 

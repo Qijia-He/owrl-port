@@ -1,22 +1,42 @@
-# 如何持续更新
+# Maintaining the experiment record
 
-[实验首页](README.md) · [决策记录](DECISIONS.md)
+The [main README](README.md) is the single, self-contained report for readers. This file explains how its tables and supporting records are maintained.
 
-GitHub 固定位置：[`Qijia-He/owrl-port` / `docs/action-reward-experiments/`](https://github.com/Qijia-He/owrl-port/tree/main/docs/action-reward-experiments)，分支 `main`。此目录保存实验记录、导出结果和便携渲染脚本；收集/训练/运行脚本在集群上的独立 `arm-generalization` 实验项目中维护。
+The published location is [`Qijia-He/owrl-port/docs/action-reward-experiments/`](https://github.com/Qijia-He/owrl-port/tree/main/docs/action-reward-experiments) on `main`. The folder contains the report, exported results, and a portable renderer. The full benchmark/collection/training runtime is maintained in the separate `arm-generalization` cluster project.
 
-实验结果先冻结并通过审计，再登记进日志。文档更新不会启动模型、消耗 API 或提交 Slurm 作业。
+## Files
 
-## 文件组织
+| File | Purpose |
+|---|---|
+| `README.md` | Human-maintained explanation, citations, setup, interpretation, and next steps, with explicitly marked generated numerical blocks |
+| `runs/<run-id>.md` | Generated detailed metrics, paired comparisons, diagnostics, CI procedure, costs, and audit |
+| `data/<run-id>.json` | Frozen portable result package and source-artifact SHA-256 hashes |
+| `DECISIONS.md` | Execution scope, research decisions, limitations, and operational history |
+| `tools/update_experiment_log.py` | Portable copy of the cluster project's canonical `scripts/update_experiment_log.py` |
 
-- `README.md`：自动生成的入口，展示最新已审计结果和实验历史。
-- `runs/<实验ID>.md`：每个实验版本的完整 Markdown 表格与说明。
-- `data/<实验ID>.json`：便于分享和重新渲染的结构化结果，以及原始冻结文件 SHA-256；不包含凭据、原始图片、机器路径或 API 请求内容。
-- `DECISIONS.md`：人工维护的结论、用户决定、问题和下一步；重新生成表格不会覆盖此文件。
-- 项目根目录的 `scripts/update_experiment_log.py` 负责校验和生成；发布到 GitHub 的副本保留在日志目录的 `tools/` 中。
+The public package does not contain credentials, raw images, machine-specific paths, or API request payloads. It is sufficient to regenerate the published tables; it is not the full runtime or raw episode release.
 
-## 当前实验的更新入口
+## Render existing results
 
-在集群的 `arm-generalization` 实验项目根目录执行（不是 `owrl-port` 仓库根目录）：
+From the downloaded GitHub documentation directory:
+
+```bash
+python3 tools/update_experiment_log.py --docs-root .
+```
+
+Only Python's standard library is needed. The command reads exported JSON, regenerates per-run tables, and replaces the `SNAPSHOT`, `SUCCESS`, `REWARD`, `COST`, and `HISTORY` blocks in `README.md`. It preserves prose outside those markers. The existing README must be present with each marker pair exactly once.
+
+From the cluster experiment project root, the equivalent command is:
+
+```bash
+python3 scripts/update_experiment_log.py
+```
+
+Neither command runs models, spends API credits, submits jobs, or pushes to GitHub.
+
+## Register an audited snapshot
+
+The following command runs in the cluster experiment project, **not** at the `owrl-port` repository root:
 
 ```bash
 source scripts/runtime.sh
@@ -25,27 +45,18 @@ source scripts/runtime.sh
   --id v3-sol-nativecmd-seed42
 ```
 
-登记时会检查冻结文件哈希、配置一致性、完整 task/seed 覆盖、最终审计状态，以及补充区间是否齐全。同一实验 ID 的结果不同会拒绝覆盖；新结果须使用新 ID。
+Registration additionally requires the matching experiment configuration, frozen source artifacts, and PyYAML from the experiment environment. It verifies source-file hashes, the scientific configuration hash, complete task/seed coverage, final audit status, and complete group-sensitivity results. An existing run ID cannot be overwritten with different numerical data.
 
-只重新渲染现有导出数据，无需模型、集群、API 或第三方 Python 依赖：
+`scripts/freeze_seed42_report.py` invokes registration after freezing. Future experiments need their own receipt and stable run ID. The existing frozen method contract records the original three-seed plan; the executed-seed fields and audit record the actual scope. Do not alter a frozen contract merely to rewrite historical planning metadata.
 
-```bash
-python3 scripts/update_experiment_log.py
-```
+## Update checklist for subsequent authorized work
 
-如果只下载了 GitHub 上的日志目录，在该目录下执行：
+1. Update the scope/status prose when an experiment starts, pauses, or changes. Do not put incomplete runs in an audited-results table.
+2. After completion and audit, register the new snapshot under a new ID and regenerate the tables.
+3. **Review the whole main README**, including its opening conclusion, setup, interpretation, and next steps. Numeric regeneration cannot update scientific judgments. Readers should still understand the project from that one document.
+4. Update `DECISIONS.md` with the evidence, limitations, and user decisions. If the protocol changes, revise the applicable per-run description instead of silently applying the seed-42 setup to a different design.
+5. Keep the canonical and portable renderer copies identical. Check links, table/data agreement, idempotent rendering, and preservation of existing result packages.
+6. Synchronize the local `docs/experiment-log/` directory to the published directory using the mapping in `configs/experiment-log-publish.json`. Read the latest branch head and use an expected-head check so concurrent changes are preserved.
+7. Read back the published files and verify their contents against the reviewed local files.
 
-```bash
-python3 tools/update_experiment_log.py --docs-root .
-```
-
-`scripts/freeze_seed42_report.py` 完成冻结后会调用上述登记入口。后续实验在生成相同结构的冻结 receipt 后，可用新 ID 登记；若实验设计改变，需同步更新该版本的协议说明，不能混入旧版本。
-
-## 后续工作时的维护约定
-
-1. 完成一轮已授权实验并审计后，登记对应冻结结果，生成该版本 Markdown 和首页。
-2. 更新 `DECISIONS.md`：结果判断、失败原因、参数变动和用户决定；不要用新的判断改写旧数值。
-3. 检查文档链接、导出数据与表格一致性，然后将本地 `docs/experiment-log/` 同步至 `Qijia-He/owrl-port` 的 `docs/action-reward-experiments/`。目录映射记录在实验项目的 `configs/experiment-log-publish.json`；提交前读取最新 `main`，使用 fast-forward/expected-head 检查保留并发修改。
-4. 实验开始、暂停或范围改变时，先更新 `DECISIONS.md` 的当前状态；未完成结果不放进“已审计”结果表。
-
-GitHub 同步由后续工作中的提交完成。当前生成脚本不运行定时后台上传；持续记录的约定不授权启动额外 seed、ARM 训练或正式测试。
+GitHub synchronization is performed during subsequent work, not by an unattended uploader. Maintaining this record does not itself authorize extra seeds, ARM training, or official test evaluation.

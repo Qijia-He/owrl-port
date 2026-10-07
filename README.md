@@ -14,6 +14,6 @@ Synced from klone with `tillicum/sync_to_github.sh`.
 
 ## Action-level reward experiments
 
-[Experiment log, audited results, confidence intervals, costs, and next steps](docs/action-reward-experiments/README.md).
+[Read the complete research report: motivation, method and citations, setup, results, limitations, and next steps](docs/action-reward-experiments/README.md).
 
 The log records the ALFWorld TextWorld, ALFWorld THOR, and WebShop Sol-selection pilot. Seed 42 is complete; subsequent experiment versions will be appended to the same directory.
