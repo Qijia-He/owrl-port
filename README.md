@@ -11,3 +11,9 @@ Code half of `/gscratch/cse/heqj3/owrl` (klone). Layout = `PORT_ROOT`:
 Not in git (rebuilt or copied): `envs/webrl` (conda, 20 GB — `tillicum/setup_env_tillicum.sh`), `models/OpenWebRL/OpenWebRL-4B-SFT` (HF), `ms-playwright/` (`playwright install chromium`), `secrets.env` (OPENAI_API_KEY, WANDB_API_KEY; mode 600), `outputs/` (checkpoints), `logs/`.
 
 Synced from klone with `tillicum/sync_to_github.sh`.
+
+## Action-level reward experiments
+
+[Experiment log, audited results, confidence intervals, costs, and next steps](docs/action-reward-experiments/README.md).
+
+The log records the ALFWorld TextWorld, ALFWorld THOR, and WebShop Sol-selection pilot. Seed 42 is complete; subsequent experiment versions will be appended to the same directory.

@@ -1,0 +1,4170 @@
+{
+  "schema_version": 1,
+  "id": "v3-sol-nativecmd-seed42",
+  "completed_at": 1791279638.962824,
+  "completed_utc": "2026-10-06T09:40:38.962824+00:00",
+  "run_tag": "v3-sol-nativecmd",
+  "seeds": [
+    42
+  ],
+  "source_receipt": "pilot-seed42-artifacts.json",
+  "source_receipt_sha256": "ad8d213978ec809922967412386b62a5079f94b708ff48cad1ddb674b1133f00",
+  "source_artifacts_sha256": {
+    "pilot-seed42-final-summary.json": "ee81fb75cf60ebfb08de7fca81fe9969a1ea8855c4bf2890c628da3cea8389c1",
+    "pilot-seed42-final-summary.txt": "a3a1349f0a451b80dedde567cb7e974a0dfcb5b4838042085e6e097c818ba33b",
+    "pilot-seed42-final-candidate-diagnostics.json": "cfc434bf3ddf98335a41fd9ab1e411cf0cd4d22c759a2a8b9bbd516c059a5a36",
+    "pilot-seed42-final-state.json": "519c6288e098e57828291afdf57b6fe25db78bc55f96cf54f6a360c703ca2e9d",
+    "pilot-seed42-final-costs.json": "9aa9f450a2bedc3c1b0678031c5cb7aaa482c67b87f635f6519447e3575a98b6",
+    "pilot-seed42-results.txt": "ebef04828fc22c38f424dfa6590f781e4fb53ff078cbae55f35015f5459e96e6",
+    "pilot-seed42-final-audit.json": "50b9bdee97baad59f82aecba9678162a999acb92941c1b55383f3f3ba113203b",
+    "pilot-seed42-group-sensitivity.json": "a5639da4d9676edfcf89e7acbf685018d8ca33afc360cd2b792a019ed45da4ff"
+  },
+  "scientific_config_hash": "78fc66d9a0ce60f25706e5f9537f6e184ae93117efd7cff0f1d02c53988ed7ee",
+  "protocol": {
+    "actor_prompt_version": "native-alfworld-move-v1",
+    "teacher_model": "gpt-6.1-sol",
+    "teacher_max_output_tokens": 2048,
+    "candidate_count": 5,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "top_k": -1,
+    "actor_max_tokens": 1024,
+    "enable_thinking": true,
+    "actor_context_tokens": 262144,
+    "inference_execution_mode": "graph"
+  },
+  "method": {
+    "protocol": "upstream-public-native-v3",
+    "piotr_commit": "4d6dfff869f198f282e4b0e8cf6d429c23dc9fce",
+    "zixian_arm_commit": "134f064d867170eb833f6ab0f668a1b05050c031",
+    "contract": {
+      "candidates": 5,
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "top_k": -1,
+      "response_tokens": 1024,
+      "candidate_context": "full reasoning and action",
+      "selection_history": 5,
+      "scalar_history": 8,
+      "teacher": "GPT-6.1 Sol Chat Completions 2048, no temperature/reasoning_effort/schema override",
+      "selection_parser": "zixian exact selection JSON regex; one first-candidate fallback, excluded from labels",
+      "training": "LoRA32 alpha64 dropout0.05, frozen vision/projector; SFT2 epochs1e-4; BT1epoch5e-5; 8192 cutoff; 262144 pixels; batch2x8",
+      "internal_split": "upstream draw/pair seed42 2%; not task-disjoint",
+      "pilot_split": "Fixed 10% task/product-group reserve of native training split; no official dev/test tasks",
+      "pilot_strategies": [
+        "greedy",
+        "sample",
+        "random5",
+        "gpt5"
+      ],
+      "pilot_seeds": [
+        42,
+        43,
+        44
+      ],
+      "serving": "vLLM 0.28 default compilation/CUDA graphs; native 262144 context; max16seq; native multimodal pixel settings unchanged",
+      "actor_prompt_version": "native-alfworld-move-v1",
+      "native_alfworld_place_action": "move {object} to {receptacle}; current official TextWorld grammar and THOR native admissible template"
+    },
+    "explicit_extensions": [
+      "Native text/feedback inserted before screenshot slot; preserve all actual native images, no placeholder image for text tasks.",
+      "Native action grammar and raw Qwen actors replace browser tool calls and web-specialized actor; no outcome scoring changes.",
+      "For newly collected data, public no-CoT inference builder is shared between teacher, training and inference; not the unreleased historical explain-then-JSON builder.",
+      "New Qwen3.5 reward model uses matching qwen3_5 template with non-thinking selection output; not a claim that old OpenWebRL checkpoints are Qwen3.5.",
+      "User selected gpt-6.1-sol on 2026-10-05 as the latest Sol teacher; historical GPT-5.5 and GPT-6 Astra runs remain separate. No dated Sol 6.1 snapshot is exposed; requested and returned model IDs plus timestamps are recorded.",
+      "Serving performance version v3-sol-graph: frozen graph execution for all conditions. Earlier Eager smoke is retained separately and excluded from this version.",
+      "Serving context version v3-sol-graph-262k: all three actor checkpoints advertise native max_position_embeddings=262144. Restore this full capacity without context truncation or RoPE changes. The prior 131072 serving cap failed on WebShop step 75 and is retained as diagnostic only. Candidate output remains capped at 1024 tokens.",
+      "Actor grammar correction v3-sol-nativecmd: replace legacy put in/on examples with native move to, without rewriting, repairing or resampling generated actions. Prior ALFWorld prompt-grammar results are diagnostic only. The corrected command was replayed at the failed TextWorld state and completed the native task successfully."
+    ]
+  },
+  "results": [
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "gpt5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.7,
+      "mean_reward": 0.7,
+      "mean_steps": 24.94,
+      "charged_usd": 9.819724500000001,
+      "incremental_charged_usd": 8.529589000000001,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.27826784282277467,
+      "candidate_truncation_rate": 0.22341619887730554,
+      "selected_action_truncation_rate": 0.1082598235765838,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 6235,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 236.4969411133416,
+      "step_limit_rate": 0.3,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.7,
+          "mean_reward": 0.7
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.22,
+        "ci95": [
+          0.1,
+          0.34
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.22,
+        "ci95": [
+          0.1,
+          0.34
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.22,
+            "ci95": [
+              0.1,
+              0.34
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.22,
+            "ci95": [
+              0.1,
+              0.34
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.28,
+            "ci95": [
+              0.12,
+              0.44
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.28,
+            "ci95": [
+              0.12,
+              0.44
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.24,
+            "ci95": [
+              0.1,
+              0.38
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.24,
+            "ci95": [
+              0.1,
+              0.38
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "greedy",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.48,
+      "mean_reward": 0.48,
+      "mean_steps": 30.3,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.6013201320132013,
+      "candidate_truncation_rate": 0.5168316831683168,
+      "selected_action_truncation_rate": 0.5168316831683168,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 1515,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 154.90563239683397,
+      "step_limit_rate": 0.52,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.48,
+          "mean_reward": 0.48
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              -0.08,
+              0.2
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              -0.08,
+              0.2
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.08,
+              0.12
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.08,
+              0.12
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "random5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.46,
+      "mean_reward": 0.46,
+      "mean_steps": 32.12,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.6108343711083437,
+      "candidate_truncation_rate": 0.364134495641345,
+      "selected_action_truncation_rate": 0.3574097135740971,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 8030,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 350.21454265573993,
+      "step_limit_rate": 0.54,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.46,
+          "mean_reward": 0.46
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.02,
+        "ci95": [
+          -0.12,
+          0.08
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.02,
+        "ci95": [
+          -0.12,
+          0.08
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.12,
+              0.08
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.12,
+              0.08
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.1,
+              0.18
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.1,
+              0.18
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "sample",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.42,
+      "mean_reward": 0.42,
+      "mean_steps": 34.86,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.5989672977624785,
+      "candidate_truncation_rate": 0.4010327022375215,
+      "selected_action_truncation_rate": 0.4010327022375215,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 1743,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 222.4763633628562,
+      "step_limit_rate": 0.58,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.42,
+          "mean_reward": 0.42
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.06,
+        "ci95": [
+          -0.2,
+          0.08
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.06,
+        "ci95": [
+          -0.2,
+          0.08
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.06,
+            "ci95": [
+              -0.2,
+              0.08
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.06,
+            "ci95": [
+              -0.2,
+              0.08
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.18,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.18,
+              0.1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "split": "pilot",
+      "strategy": "gpt5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.22,
+      "mean_reward": 0.22,
+      "mean_steps": 42.12,
+      "charged_usd": 1.802595,
+      "incremental_charged_usd": 1.5771514999999998,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.41263057929724595,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 10530,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 54.042456756867466,
+      "step_limit_rate": 0.78,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.22,
+          "mean_reward": 0.22
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              0.0,
+              0.14
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              0.0,
+              0.14
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.08,
+              0.12
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.08,
+              0.12
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "split": "pilot",
+      "strategy": "greedy",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.16,
+      "mean_reward": 0.16,
+      "mean_steps": 43.98,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.5056844020009095,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2199,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 5.681118200244382,
+      "step_limit_rate": 0.84,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.16,
+          "mean_reward": 0.16
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.12,
+              0.04
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.12,
+              0.04
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.08,
+              0.04
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.08,
+              0.04
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "split": "pilot",
+      "strategy": "random5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.18,
+      "mean_reward": 0.18,
+      "mean_steps": 44.0,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.48545454545454547,
+      "candidate_truncation_rate": 9.09090909090909e-05,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 11000,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 6.671486558476463,
+      "step_limit_rate": 0.82,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.18,
+          "mean_reward": 0.18
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.08
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.08
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.04,
+              0.08
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.04,
+              0.08
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.12,
+              0.08
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.12,
+              0.08
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "split": "pilot",
+      "strategy": "sample",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.2,
+      "mean_reward": 0.2,
+      "mean_steps": 43.12,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.4782003710575139,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2156,
+      "image_steps": 0,
+      "max_images": 0,
+      "mean_episode_seconds": 5.715323802046478,
+      "step_limit_rate": 0.8,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.2,
+          "mean_reward": 0.2
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.04,
+          0.12
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.04,
+          0.12
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.04,
+              0.12
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.04,
+              0.12
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.08,
+              0.12
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.08,
+              0.12
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "gpt5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.18,
+      "mean_reward": 0.18,
+      "mean_steps": 41.98,
+      "charged_usd": 28.058715999999997,
+      "incremental_charged_usd": 25.521566,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.6512625059552167,
+      "candidate_truncation_rate": 0.5755121486422106,
+      "selected_action_truncation_rate": 0.3663649356836589,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 10495,
+      "image_steps": 2099,
+      "max_images": 1,
+      "mean_episode_seconds": 472.36329754831036,
+      "step_limit_rate": 0.82,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.18,
+          "mean_reward": 0.18
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.04,
+          0.12
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.04,
+          0.12
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.04,
+              0.12
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.04,
+              0.12
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.08,
+            "ci95": [
+              0.02,
+              0.16
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.08,
+            "ci95": [
+              0.02,
+              0.16
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.1,
+            "ci95": [
+              0.0,
+              0.2
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.1,
+            "ci95": [
+              0.0,
+              0.2
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "greedy",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.14,
+      "mean_reward": 0.14,
+      "mean_steps": 43.72,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.8915827996340348,
+      "candidate_truncation_rate": 0.8055809698078683,
+      "selected_action_truncation_rate": 0.8055809698078683,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2186,
+      "image_steps": 2186,
+      "max_images": 1,
+      "mean_episode_seconds": 402.02453408688075,
+      "step_limit_rate": 0.86,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.14,
+          "mean_reward": 0.14
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              -0.02,
+              0.14
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              -0.02,
+              0.14
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "random5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.08,
+      "mean_reward": 0.08,
+      "mean_steps": 46.36,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.8619499568593615,
+      "candidate_truncation_rate": 0.7415012942191544,
+      "selected_action_truncation_rate": 0.7424503882657464,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 11590,
+      "image_steps": 2318,
+      "max_images": 1,
+      "mean_episode_seconds": 871.2014406991237,
+      "step_limit_rate": 0.92,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.08,
+          "mean_reward": 0.08
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.06,
+        "ci95": [
+          -0.14,
+          0.02
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.06,
+        "ci95": [
+          -0.14,
+          0.02
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.06,
+            "ci95": [
+              -0.14,
+              0.02
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.06,
+            "ci95": [
+              -0.14,
+              0.02
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.1,
+              0.04
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.1,
+              0.04
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "sample",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.1,
+      "mean_reward": 0.1,
+      "mean_steps": 45.48,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.8953386103781882,
+      "candidate_truncation_rate": 0.7286719437115216,
+      "selected_action_truncation_rate": 0.7286719437115216,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2274,
+      "image_steps": 2274,
+      "max_images": 1,
+      "mean_episode_seconds": 525.8487114751595,
+      "step_limit_rate": 0.9,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.1,
+          "mean_reward": 0.1
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.04,
+        "ci95": [
+          -0.1,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.04,
+        "ci95": [
+          -0.1,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.1,
+              0.0
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.1,
+              0.0
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.04,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.04,
+              0.1
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "gpt5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.14,
+      "mean_reward": 0.14,
+      "mean_steps": 45.38,
+      "charged_usd": 1.0095899999999998,
+      "incremental_charged_usd": 0.8906659999999997,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.15777875716174528,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 11345,
+      "image_steps": 2269,
+      "max_images": 1,
+      "mean_episode_seconds": 37.154122769143434,
+      "step_limit_rate": 0.86,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.14,
+          "mean_reward": 0.14
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              0.0,
+              0.14
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              0.0,
+              0.14
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              0.0,
+              0.14
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              0.0,
+              0.14
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "greedy",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.1,
+      "mean_reward": 0.1,
+      "mean_steps": 46.3,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.12915766738660908,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2315,
+      "image_steps": 2315,
+      "max_images": 1,
+      "mean_episode_seconds": 15.98854577753693,
+      "step_limit_rate": 0.9,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.1,
+          "mean_reward": 0.1
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              0.0,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              0.0,
+              0.06
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              0.0,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              0.0,
+              0.06
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "random5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.08,
+      "mean_reward": 0.08,
+      "mean_steps": 47.16,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.15182357930449533,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 11790,
+      "image_steps": 2358,
+      "max_images": 1,
+      "mean_episode_seconds": 12.986079513402656,
+      "step_limit_rate": 0.92,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.08,
+          "mean_reward": 0.08
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.02,
+        "ci95": [
+          -0.06,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.02,
+        "ci95": [
+          -0.06,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.06,
+              0.0
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.06,
+              0.0
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "sample",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.08,
+      "mean_reward": 0.08,
+      "mean_steps": 48.04,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.16069941715237301,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2402,
+      "image_steps": 2402,
+      "max_images": 1,
+      "mean_episode_seconds": 11.26897428309545,
+      "step_limit_rate": 0.92,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.08,
+          "mean_reward": 0.08
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.02,
+        "ci95": [
+          -0.06,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.02,
+        "ci95": [
+          -0.06,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.06,
+              0.0
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.02,
+            "ci95": [
+              -0.06,
+              0.0
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              0.0,
+              0.0
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "gpt5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.28,
+      "mean_reward": 0.5892666666666667,
+      "mean_steps": 16.0,
+      "charged_usd": 9.783316999999997,
+      "incremental_charged_usd": 9.616886999999997,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.09,
+      "candidate_truncation_rate": 0.204,
+      "selected_action_truncation_rate": 0.08,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 4000,
+      "image_steps": 502,
+      "max_images": 10,
+      "mean_episode_seconds": 202.73157968140674,
+      "step_limit_rate": 0.1,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.28,
+          "mean_reward": 0.5892666666666667
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.1,
+        "ci95": [
+          0.02,
+          0.18
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.17293333333333333,
+        "ci95": [
+          0.09453333333333333,
+          0.25893666666666665
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.1,
+            "ci95": [
+              0.02,
+              0.18
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.17293333333333333,
+            "ci95": [
+              0.09453333333333333,
+              0.25893666666666665
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              -0.02,
+              0.14
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.0316,
+            "ci95": [
+              -0.036733333333333326,
+              0.10826666666666665
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.06,
+            "ci95": [
+              -0.04,
+              0.16
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.059,
+            "ci95": [
+              -0.017666666666666667,
+              0.14200000000000002
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "greedy",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.18,
+      "mean_reward": 0.41633333333333333,
+      "mean_steps": 40.44,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.6859545004945599,
+      "candidate_truncation_rate": 0.6844708209693373,
+      "selected_action_truncation_rate": 0.6844708209693373,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2022,
+      "image_steps": 1542,
+      "max_images": 10,
+      "mean_episode_seconds": 375.8786578106345,
+      "step_limit_rate": 0.36,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.18,
+          "mean_reward": 0.41633333333333333
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.1,
+              0.0
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.14133333333333334,
+            "ci95": [
+              -0.22666666666666666,
+              -0.06466666666666666
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": -0.04,
+            "ci95": [
+              -0.14,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.11393333333333334,
+            "ci95": [
+              -0.21299999999999997,
+              -0.017130000000000044
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "random5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.22,
+      "mean_reward": 0.5302666666666667,
+      "mean_steps": 26.68,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.5569715142428786,
+      "candidate_truncation_rate": 0.5152923538230885,
+      "selected_action_truncation_rate": 0.5142428785607196,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 6670,
+      "image_steps": 902,
+      "max_images": 10,
+      "mean_episode_seconds": 440.7600440293131,
+      "step_limit_rate": 0.2,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.22,
+          "mean_reward": 0.5302666666666667
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.06,
+          0.14
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.11393333333333334,
+        "ci95": [
+          0.01713,
+          0.21299999999999997
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              -0.06,
+              0.14
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.11393333333333334,
+            "ci95": [
+              0.01713,
+              0.21299999999999997
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.1,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.0274,
+            "ci95": [
+              -0.10773333333333333,
+              0.05060166666666664
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "split": "pilot",
+      "strategy": "sample",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.22,
+      "mean_reward": 0.5576666666666666,
+      "mean_steps": 22.6,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.4008849557522124,
+      "candidate_truncation_rate": 0.3991150442477876,
+      "selected_action_truncation_rate": 0.3991150442477876,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 1130,
+      "image_steps": 650,
+      "max_images": 10,
+      "mean_episode_seconds": 189.78553980156778,
+      "step_limit_rate": 0.16,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.22,
+          "mean_reward": 0.5576666666666666
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.14133333333333334,
+        "ci95": [
+          0.06466666666666666,
+          0.22666666666666666
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.04,
+            "ci95": [
+              0.0,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.14133333333333334,
+            "ci95": [
+              0.06466666666666666,
+              0.22666666666666666
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.1,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.0274,
+            "ci95": [
+              -0.05060166666666666,
+              0.10773333333333333
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "gpt5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.3,
+      "mean_reward": 0.6542380952380951,
+      "mean_steps": 8.3,
+      "charged_usd": 1.716908,
+      "incremental_charged_usd": 1.6500720000000002,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.0024096385542168677,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2075,
+      "image_steps": 285,
+      "max_images": 10,
+      "mean_episode_seconds": 16.423961617480963,
+      "step_limit_rate": 0.02,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.3,
+          "mean_reward": 0.6542380952380951
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.1
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.03866666666666667,
+        "ci95": [
+          -0.015666666666666672,
+          0.09734166666666655
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.04,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.03866666666666667,
+            "ci95": [
+              -0.015666666666666672,
+              0.09734166666666655
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.04,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.05166666666666668,
+            "ci95": [
+              0.010333333333333337,
+              0.106
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.02,
+            "ci95": [
+              -0.06,
+              0.1
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.039666666666666676,
+            "ci95": [
+              -0.01633333333333334,
+              0.09933333333333333
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "greedy",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.28,
+      "mean_reward": 0.6155714285714285,
+      "mean_steps": 7.26,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.005509641873278237,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 363,
+      "image_steps": 242,
+      "max_images": 10,
+      "mean_episode_seconds": 4.510332957161591,
+      "step_limit_rate": 0.04,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.28,
+          "mean_reward": 0.6155714285714285
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ]
+      },
+      "paired_comparisons": {
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.06,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.013000000000000003,
+            "ci95": [
+              -0.00933333333333333,
+              0.047333333333333345
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.06,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.0010000000000000009,
+            "ci95": [
+              -0.011999999999999997,
+              0.015
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "random5",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.28,
+      "mean_reward": 0.6145714285714285,
+      "mean_steps": 8.42,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.0023752969121140144,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 2105,
+      "image_steps": 281,
+      "max_images": 10,
+      "mean_episode_seconds": 3.3600207493733616,
+      "step_limit_rate": 0.04,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.28,
+          "mean_reward": 0.6145714285714285
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          -0.06,
+          0.06
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.0010000000000000009,
+        "ci95": [
+          -0.015,
+          0.011999999999999997
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.06,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.0010000000000000009,
+            "ci95": [
+              -0.015,
+              0.011999999999999997
+            ]
+          }
+        },
+        "sample": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.06,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": 0.012000000000000002,
+            "ci95": [
+              -0.011333333333333332,
+              0.04667499999999989
+            ]
+          }
+        }
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "split": "pilot",
+      "strategy": "sample",
+      "episodes": 50,
+      "task_count": 50,
+      "success_rate": 0.28,
+      "mean_reward": 0.6025714285714286,
+      "mean_steps": 5.82,
+      "charged_usd": 0.0,
+      "incremental_charged_usd": 0.0,
+      "reused_smoke_episodes": 5,
+      "invalid_action_rate": 0.01718213058419244,
+      "candidate_truncation_rate": 0.0,
+      "selected_action_truncation_rate": 0.0,
+      "teacher_fallback_rate": 0.0,
+      "candidate_count": 291,
+      "image_steps": 203,
+      "max_images": 10,
+      "mean_episode_seconds": 1.909994472693652,
+      "step_limit_rate": 0.02,
+      "per_seed": {
+        "42": {
+          "episodes": 50,
+          "success_rate": 0.28,
+          "mean_reward": 0.6025714285714286
+        }
+      },
+      "seeds": [
+        42
+      ],
+      "expected_coverage_complete": true,
+      "success_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": 0.0,
+        "ci95": [
+          -0.06,
+          0.06
+        ]
+      },
+      "reward_vs_greedy": {
+        "paired_tasks": 50,
+        "delta": -0.013000000000000003,
+        "ci95": [
+          -0.047333333333333345,
+          0.00933333333333333
+        ]
+      },
+      "paired_comparisons": {
+        "greedy": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.06,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.013000000000000003,
+            "ci95": [
+              -0.047333333333333345,
+              0.00933333333333333
+            ]
+          }
+        },
+        "random5": {
+          "success": {
+            "paired_tasks": 50,
+            "delta": 0.0,
+            "ci95": [
+              -0.06,
+              0.06
+            ]
+          },
+          "reward": {
+            "paired_tasks": 50,
+            "delta": -0.012000000000000002,
+            "ci95": [
+              -0.046675,
+              0.011333333333333332
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "candidate_diagnostics": [
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "strategy": "gpt5",
+      "counts": {
+        "episodes": 50,
+        "steps": 1247,
+        "candidates": 6235,
+        "distinct_actions": 2948,
+        "single_distinct_action_pools": 536,
+        "all_candidates_truncated": 103,
+        "no_nonempty_untruncated_candidate": 103,
+        "selected_truncated": 135,
+        "selected_invalid": 347,
+        "selected_truncated_and_invalid": 135,
+        "selected_empty": 0,
+        "selected_repeats_previous": 177,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 732,
+        "selected_index_2": 181,
+        "selected_index_3": 133,
+        "selected_index_5": 85,
+        "selected_index_4": 116
+      },
+      "mean_distinct_actions_per_pool": 2.364073777064956,
+      "rates": {
+        "single_distinct_action_pools": 0.429831595829992,
+        "all_candidates_truncated": 0.08259823576583801,
+        "no_nonempty_untruncated_candidate": 0.08259823576583801,
+        "selected_truncated": 0.1082598235765838,
+        "selected_invalid": 0.27826784282277467,
+        "selected_truncated_and_invalid": 0.1082598235765838,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.14194065757818766,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "strategy": "greedy",
+      "counts": {
+        "episodes": 50,
+        "steps": 1515,
+        "candidates": 1515,
+        "distinct_actions": 1515,
+        "single_distinct_action_pools": 1515,
+        "all_candidates_truncated": 783,
+        "no_nonempty_untruncated_candidate": 783,
+        "selected_truncated": 783,
+        "selected_invalid": 911,
+        "selected_truncated_and_invalid": 783,
+        "selected_empty": 0,
+        "selected_repeats_previous": 664,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 1515
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.5168316831683168,
+        "no_nonempty_untruncated_candidate": 0.5168316831683168,
+        "selected_truncated": 0.5168316831683168,
+        "selected_invalid": 0.6013201320132013,
+        "selected_truncated_and_invalid": 0.5168316831683168,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.4382838283828383,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "strategy": "random5",
+      "counts": {
+        "episodes": 50,
+        "steps": 1606,
+        "candidates": 8030,
+        "distinct_actions": 4418,
+        "single_distinct_action_pools": 543,
+        "all_candidates_truncated": 337,
+        "no_nonempty_untruncated_candidate": 337,
+        "selected_truncated": 574,
+        "selected_invalid": 981,
+        "selected_truncated_and_invalid": 574,
+        "selected_empty": 1,
+        "selected_repeats_previous": 262,
+        "teacher_fallbacks": 0,
+        "selected_index_4": 339,
+        "selected_index_2": 306,
+        "selected_index_5": 333,
+        "selected_index_3": 317,
+        "selected_index_1": 311
+      },
+      "mean_distinct_actions_per_pool": 2.75093399750934,
+      "rates": {
+        "single_distinct_action_pools": 0.338107098381071,
+        "all_candidates_truncated": 0.20983810709838108,
+        "no_nonempty_untruncated_candidate": 0.20983810709838108,
+        "selected_truncated": 0.3574097135740971,
+        "selected_invalid": 0.6108343711083437,
+        "selected_truncated_and_invalid": 0.3574097135740971,
+        "selected_empty": 0.0006226650062266501,
+        "selected_repeats_previous": 0.16313823163138233,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "strategy": "sample",
+      "counts": {
+        "episodes": 50,
+        "steps": 1743,
+        "candidates": 1743,
+        "distinct_actions": 1743,
+        "single_distinct_action_pools": 1743,
+        "all_candidates_truncated": 699,
+        "no_nonempty_untruncated_candidate": 699,
+        "selected_truncated": 699,
+        "selected_invalid": 1044,
+        "selected_truncated_and_invalid": 699,
+        "selected_empty": 0,
+        "selected_repeats_previous": 173,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 1743
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.4010327022375215,
+        "no_nonempty_untruncated_candidate": 0.4010327022375215,
+        "selected_truncated": 0.4010327022375215,
+        "selected_invalid": 0.5989672977624785,
+        "selected_truncated_and_invalid": 0.4010327022375215,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.09925415949512335,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "strategy": "gpt5",
+      "counts": {
+        "episodes": 50,
+        "steps": 2106,
+        "candidates": 10530,
+        "distinct_actions": 2720,
+        "single_distinct_action_pools": 1571,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 869,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 663,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 1842,
+        "selected_index_2": 133,
+        "selected_index_4": 42,
+        "selected_index_3": 67,
+        "selected_index_5": 22
+      },
+      "mean_distinct_actions_per_pool": 1.291547958214625,
+      "rates": {
+        "single_distinct_action_pools": 0.7459639126305793,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.41263057929724595,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.3148148148148148,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "strategy": "greedy",
+      "counts": {
+        "episodes": 50,
+        "steps": 2199,
+        "candidates": 2199,
+        "distinct_actions": 2199,
+        "single_distinct_action_pools": 2199,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 1112,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 928,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2199
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.5056844020009095,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.4220100045475216,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "strategy": "random5",
+      "counts": {
+        "episodes": 50,
+        "steps": 2200,
+        "candidates": 11000,
+        "distinct_actions": 2931,
+        "single_distinct_action_pools": 1576,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 1068,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 922,
+        "teacher_fallbacks": 0,
+        "selected_index_4": 449,
+        "selected_index_2": 434,
+        "selected_index_5": 459,
+        "selected_index_3": 418,
+        "selected_index_1": 440
+      },
+      "mean_distinct_actions_per_pool": 1.3322727272727273,
+      "rates": {
+        "single_distinct_action_pools": 0.7163636363636363,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.48545454545454547,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.41909090909090907,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "strategy": "sample",
+      "counts": {
+        "episodes": 50,
+        "steps": 2156,
+        "candidates": 2156,
+        "distinct_actions": 2156,
+        "single_distinct_action_pools": 2156,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 1031,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 766,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2156
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.4782003710575139,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.35528756957328383,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "strategy": "gpt5",
+      "counts": {
+        "episodes": 50,
+        "steps": 2099,
+        "candidates": 10495,
+        "distinct_actions": 7740,
+        "single_distinct_action_pools": 292,
+        "all_candidates_truncated": 659,
+        "no_nonempty_untruncated_candidate": 659,
+        "selected_truncated": 769,
+        "selected_invalid": 1367,
+        "selected_truncated_and_invalid": 769,
+        "selected_empty": 0,
+        "selected_repeats_previous": 533,
+        "teacher_fallbacks": 0,
+        "selected_index_3": 404,
+        "selected_index_1": 784,
+        "selected_index_2": 398,
+        "selected_index_4": 276,
+        "selected_index_5": 237
+      },
+      "mean_distinct_actions_per_pool": 3.6874702239161508,
+      "rates": {
+        "single_distinct_action_pools": 0.1391138637446403,
+        "all_candidates_truncated": 0.31395902810862314,
+        "no_nonempty_untruncated_candidate": 0.31395902810862314,
+        "selected_truncated": 0.3663649356836589,
+        "selected_invalid": 0.6512625059552167,
+        "selected_truncated_and_invalid": 0.3663649356836589,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.2539304430681277,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "strategy": "greedy",
+      "counts": {
+        "episodes": 50,
+        "steps": 2186,
+        "candidates": 2186,
+        "distinct_actions": 2186,
+        "single_distinct_action_pools": 2186,
+        "all_candidates_truncated": 1761,
+        "no_nonempty_untruncated_candidate": 1761,
+        "selected_truncated": 1761,
+        "selected_invalid": 1949,
+        "selected_truncated_and_invalid": 1761,
+        "selected_empty": 0,
+        "selected_repeats_previous": 1657,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2186
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.8055809698078683,
+        "no_nonempty_untruncated_candidate": 0.8055809698078683,
+        "selected_truncated": 0.8055809698078683,
+        "selected_invalid": 0.8915827996340348,
+        "selected_truncated_and_invalid": 0.8055809698078683,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.7580054894784996,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "strategy": "random5",
+      "counts": {
+        "episodes": 50,
+        "steps": 2318,
+        "candidates": 11590,
+        "distinct_actions": 9264,
+        "single_distinct_action_pools": 166,
+        "all_candidates_truncated": 1299,
+        "no_nonempty_untruncated_candidate": 1299,
+        "selected_truncated": 1721,
+        "selected_invalid": 1998,
+        "selected_truncated_and_invalid": 1721,
+        "selected_empty": 2,
+        "selected_repeats_previous": 322,
+        "teacher_fallbacks": 0,
+        "selected_index_3": 500,
+        "selected_index_4": 451,
+        "selected_index_2": 452,
+        "selected_index_5": 453,
+        "selected_index_1": 462
+      },
+      "mean_distinct_actions_per_pool": 3.996548748921484,
+      "rates": {
+        "single_distinct_action_pools": 0.07161345987920621,
+        "all_candidates_truncated": 0.5603968938740294,
+        "no_nonempty_untruncated_candidate": 0.5603968938740294,
+        "selected_truncated": 0.7424503882657464,
+        "selected_invalid": 0.8619499568593615,
+        "selected_truncated_and_invalid": 0.7424503882657464,
+        "selected_empty": 0.0008628127696289905,
+        "selected_repeats_previous": 0.13891285591026747,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "strategy": "sample",
+      "counts": {
+        "episodes": 50,
+        "steps": 2274,
+        "candidates": 2274,
+        "distinct_actions": 2274,
+        "single_distinct_action_pools": 2274,
+        "all_candidates_truncated": 1657,
+        "no_nonempty_untruncated_candidate": 1657,
+        "selected_truncated": 1657,
+        "selected_invalid": 2036,
+        "selected_truncated_and_invalid": 1657,
+        "selected_empty": 1,
+        "selected_repeats_previous": 264,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2274
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.7286719437115216,
+        "no_nonempty_untruncated_candidate": 0.7286719437115216,
+        "selected_truncated": 0.7286719437115216,
+        "selected_invalid": 0.8953386103781882,
+        "selected_truncated_and_invalid": 0.7286719437115216,
+        "selected_empty": 0.00043975373790677223,
+        "selected_repeats_previous": 0.11609498680738786,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "strategy": "gpt5",
+      "counts": {
+        "episodes": 50,
+        "steps": 2269,
+        "candidates": 11345,
+        "distinct_actions": 2440,
+        "single_distinct_action_pools": 2107,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 358,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 1857,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2183,
+        "selected_index_5": 12,
+        "selected_index_2": 43,
+        "selected_index_4": 16,
+        "selected_index_3": 15
+      },
+      "mean_distinct_actions_per_pool": 1.0753635962979287,
+      "rates": {
+        "single_distinct_action_pools": 0.9286029087703834,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.15777875716174528,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.8184222124283825,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "strategy": "greedy",
+      "counts": {
+        "episodes": 50,
+        "steps": 2315,
+        "candidates": 2315,
+        "distinct_actions": 2315,
+        "single_distinct_action_pools": 2315,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 299,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 2038,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2315
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.12915766738660908,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.8803455723542116,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "strategy": "random5",
+      "counts": {
+        "episodes": 50,
+        "steps": 2358,
+        "candidates": 11790,
+        "distinct_actions": 2584,
+        "single_distinct_action_pools": 2140,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 358,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 2041,
+        "teacher_fallbacks": 0,
+        "selected_index_3": 502,
+        "selected_index_4": 461,
+        "selected_index_2": 461,
+        "selected_index_5": 470,
+        "selected_index_1": 464
+      },
+      "mean_distinct_actions_per_pool": 1.095843935538592,
+      "rates": {
+        "single_distinct_action_pools": 0.90754877014419,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.15182357930449533,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.8655640373197625,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "strategy": "sample",
+      "counts": {
+        "episodes": 50,
+        "steps": 2402,
+        "candidates": 2402,
+        "distinct_actions": 2402,
+        "single_distinct_action_pools": 2402,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 386,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 2096,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2402
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.16069941715237301,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.8726061615320566,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "strategy": "gpt5",
+      "counts": {
+        "episodes": 50,
+        "steps": 800,
+        "candidates": 4000,
+        "distinct_actions": 1862,
+        "single_distinct_action_pools": 315,
+        "all_candidates_truncated": 36,
+        "no_nonempty_untruncated_candidate": 36,
+        "selected_truncated": 64,
+        "selected_invalid": 72,
+        "selected_truncated_and_invalid": 64,
+        "selected_empty": 0,
+        "selected_repeats_previous": 194,
+        "teacher_fallbacks": 0,
+        "selected_index_5": 55,
+        "selected_index_3": 85,
+        "selected_index_1": 437,
+        "selected_index_4": 78,
+        "selected_index_2": 145
+      },
+      "mean_distinct_actions_per_pool": 2.3275,
+      "rates": {
+        "single_distinct_action_pools": 0.39375,
+        "all_candidates_truncated": 0.045,
+        "no_nonempty_untruncated_candidate": 0.045,
+        "selected_truncated": 0.08,
+        "selected_invalid": 0.09,
+        "selected_truncated_and_invalid": 0.08,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.2425,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "strategy": "greedy",
+      "counts": {
+        "episodes": 50,
+        "steps": 2022,
+        "candidates": 2022,
+        "distinct_actions": 2022,
+        "single_distinct_action_pools": 2022,
+        "all_candidates_truncated": 1384,
+        "no_nonempty_untruncated_candidate": 1384,
+        "selected_truncated": 1384,
+        "selected_invalid": 1387,
+        "selected_truncated_and_invalid": 1383,
+        "selected_empty": 0,
+        "selected_repeats_previous": 1361,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 2022
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.6844708209693373,
+        "no_nonempty_untruncated_candidate": 0.6844708209693373,
+        "selected_truncated": 0.6844708209693373,
+        "selected_invalid": 0.6859545004945599,
+        "selected_truncated_and_invalid": 0.6839762611275965,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.6730959446092978,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "strategy": "random5",
+      "counts": {
+        "episodes": 50,
+        "steps": 1334,
+        "candidates": 6670,
+        "distinct_actions": 4554,
+        "single_distinct_action_pools": 273,
+        "all_candidates_truncated": 440,
+        "no_nonempty_untruncated_candidate": 440,
+        "selected_truncated": 686,
+        "selected_invalid": 743,
+        "selected_truncated_and_invalid": 685,
+        "selected_empty": 0,
+        "selected_repeats_previous": 205,
+        "teacher_fallbacks": 0,
+        "selected_index_2": 271,
+        "selected_index_5": 280,
+        "selected_index_3": 234,
+        "selected_index_4": 278,
+        "selected_index_1": 271
+      },
+      "mean_distinct_actions_per_pool": 3.413793103448276,
+      "rates": {
+        "single_distinct_action_pools": 0.20464767616191903,
+        "all_candidates_truncated": 0.32983508245877063,
+        "no_nonempty_untruncated_candidate": 0.32983508245877063,
+        "selected_truncated": 0.5142428785607196,
+        "selected_invalid": 0.5569715142428786,
+        "selected_truncated_and_invalid": 0.5134932533733133,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.15367316341829085,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "strategy": "sample",
+      "counts": {
+        "episodes": 50,
+        "steps": 1130,
+        "candidates": 1130,
+        "distinct_actions": 1130,
+        "single_distinct_action_pools": 1130,
+        "all_candidates_truncated": 451,
+        "no_nonempty_untruncated_candidate": 451,
+        "selected_truncated": 451,
+        "selected_invalid": 453,
+        "selected_truncated_and_invalid": 451,
+        "selected_empty": 0,
+        "selected_repeats_previous": 267,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 1130
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.3991150442477876,
+        "no_nonempty_untruncated_candidate": 0.3991150442477876,
+        "selected_truncated": 0.3991150442477876,
+        "selected_invalid": 0.4008849557522124,
+        "selected_truncated_and_invalid": 0.3991150442477876,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.23628318584070795,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "strategy": "gpt5",
+      "counts": {
+        "episodes": 50,
+        "steps": 415,
+        "candidates": 2075,
+        "distinct_actions": 581,
+        "single_distinct_action_pools": 298,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 1,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 0,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 362,
+        "selected_index_2": 26,
+        "selected_index_5": 7,
+        "selected_index_4": 10,
+        "selected_index_3": 10
+      },
+      "mean_distinct_actions_per_pool": 1.4,
+      "rates": {
+        "single_distinct_action_pools": 0.7180722891566265,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.0024096385542168677,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.0,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "strategy": "greedy",
+      "counts": {
+        "episodes": 50,
+        "steps": 363,
+        "candidates": 363,
+        "distinct_actions": 363,
+        "single_distinct_action_pools": 363,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 2,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 1,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 363
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.005509641873278237,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.0027548209366391185,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "strategy": "random5",
+      "counts": {
+        "episodes": 50,
+        "steps": 421,
+        "candidates": 2105,
+        "distinct_actions": 579,
+        "single_distinct_action_pools": 304,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 1,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 0,
+        "teacher_fallbacks": 0,
+        "selected_index_2": 98,
+        "selected_index_5": 78,
+        "selected_index_3": 79,
+        "selected_index_4": 81,
+        "selected_index_1": 85
+      },
+      "mean_distinct_actions_per_pool": 1.3752969121140142,
+      "rates": {
+        "single_distinct_action_pools": 0.7220902612826603,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.0023752969121140144,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.0,
+        "teacher_fallbacks": 0.0
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "strategy": "sample",
+      "counts": {
+        "episodes": 50,
+        "steps": 291,
+        "candidates": 291,
+        "distinct_actions": 291,
+        "single_distinct_action_pools": 291,
+        "all_candidates_truncated": 0,
+        "no_nonempty_untruncated_candidate": 0,
+        "selected_truncated": 0,
+        "selected_invalid": 5,
+        "selected_truncated_and_invalid": 0,
+        "selected_empty": 0,
+        "selected_repeats_previous": 2,
+        "teacher_fallbacks": 0,
+        "selected_index_1": 291
+      },
+      "mean_distinct_actions_per_pool": 1.0,
+      "rates": {
+        "single_distinct_action_pools": 1.0,
+        "all_candidates_truncated": 0.0,
+        "no_nonempty_untruncated_candidate": 0.0,
+        "selected_truncated": 0.0,
+        "selected_invalid": 0.01718213058419244,
+        "selected_truncated_and_invalid": 0.0,
+        "selected_empty": 0.0,
+        "selected_repeats_previous": 0.006872852233676976,
+        "teacher_fallbacks": 0.0
+      }
+    }
+  ],
+  "group_sensitivity": [
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.22,
+        "ci95": [
+          0.1,
+          0.34
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.22,
+        "ci95": [
+          0.09803921568627451,
+          0.3469387755102041
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.22,
+        "ci95": [
+          0.1,
+          0.34
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.22,
+        "ci95": [
+          0.09803921568627451,
+          0.3469387755102041
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.28,
+        "ci95": [
+          0.12,
+          0.44
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.28,
+        "ci95": [
+          0.125,
+          0.4339622641509434
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.28,
+        "ci95": [
+          0.12,
+          0.44
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.28,
+        "ci95": [
+          0.125,
+          0.4339622641509434
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.24,
+        "ci95": [
+          0.1,
+          0.38
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.24,
+        "ci95": [
+          0.11538461538461539,
+          0.3695652173913043
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.24,
+        "ci95": [
+          0.1,
+          0.38
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.24,
+        "ci95": [
+          0.11538461538461539,
+          0.3695652173913043
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.12962962962962962
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.12962962962962962
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.08,
+          0.12
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.02,
+        "ci95": [
+          -0.06382978723404255,
+          0.10638297872340426
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.08,
+          0.12
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.02,
+        "ci95": [
+          -0.06382978723404255,
+          0.10638297872340426
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.09803921568627451
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen3_text",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 41,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.09803921568627451
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.04,
+          0.12
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.10416666666666667
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          -0.04,
+          0.12
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.10416666666666667
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.08,
+        "ci95": [
+          0.02,
+          0.16
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.08,
+        "ci95": [
+          0.019230769230769232,
+          0.16
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.08,
+        "ci95": [
+          0.02,
+          0.16
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.08,
+        "ci95": [
+          0.019230769230769232,
+          0.16
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.1,
+        "ci95": [
+          0.0,
+          0.2
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.1,
+        "ci95": [
+          0.0,
+          0.2037131519274375
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen35",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.1,
+        "ci95": [
+          0.0,
+          0.2
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.1,
+        "ci95": [
+          0.0,
+          0.2037131519274375
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.10204081632653061
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.04,
+        "ci95": [
+          0.0,
+          0.10204081632653061
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.1346153846153846
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.1346153846153846
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.1346153846153846
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_thor",
+      "actor": "qwen3_vl",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 42,
+        "delta": 0.06,
+        "ci95": [
+          0.0,
+          0.1346153846153846
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.1,
+        "ci95": [
+          0.02,
+          0.18
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.1,
+        "ci95": [
+          0.02,
+          0.18
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.17293333333333333,
+        "ci95": [
+          0.09453333333333333,
+          0.25893666666666665
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.1729333333333333,
+        "ci95": [
+          0.09159833333333332,
+          0.26166666666666666
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          -0.02,
+          0.14
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.06,
+        "ci95": [
+          -0.02,
+          0.16
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.0316,
+        "ci95": [
+          -0.036733333333333326,
+          0.10826666666666665
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.0316,
+        "ci95": [
+          -0.03666666666666667,
+          0.10986666666666667
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.06,
+        "ci95": [
+          -0.04,
+          0.16
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.06,
+        "ci95": [
+          -0.04,
+          0.16
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.059,
+        "ci95": [
+          -0.017666666666666667,
+          0.14200000000000002
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.059000000000000004,
+        "ci95": [
+          -0.018333333333333326,
+          0.14267499999999989
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.1
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "baseline": "greedy",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.03866666666666667,
+        "ci95": [
+          -0.015666666666666672,
+          0.09734166666666655
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.03866666666666666,
+        "ci95": [
+          -0.014666666666666668,
+          0.09666666666666666
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.04,
+          0.1
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "baseline": "sample",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.05166666666666668,
+        "ci95": [
+          0.010333333333333337,
+          0.106
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.05166666666666668,
+        "ci95": [
+          0.010333333333333337,
+          0.106
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "success",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.06,
+          0.1
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.02,
+        "ci95": [
+          -0.06,
+          0.12
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen3_vl",
+      "baseline": "random5",
+      "treatment": "gpt5",
+      "metric": "reward",
+      "seeds": [
+        42
+      ],
+      "primary_task_interval": {
+        "paired_tasks": 50,
+        "delta": 0.039666666666666676,
+        "ci95": [
+          -0.01633333333333334,
+          0.09933333333333333
+        ]
+      },
+      "supplementary_group_interval": {
+        "paired_tasks": 50,
+        "paired_groups": 50,
+        "delta": 0.03966666666666666,
+        "ci95": [
+          -0.015333333333333334,
+          0.09933333333333333
+        ]
+      }
+    }
+  ],
+  "audit": {
+    "timestamp": 1791279662.6126113,
+    "passed": true,
+    "seed": 42,
+    "scope": "Aggregation reconciliation against recorded native trajectories; not an independent environment replay.",
+    "summaries_checked": 1200,
+    "unique_trajectories_checked": 1200,
+    "groups": {
+      "alfworld_text/qwen35": 200,
+      "alfworld_text/qwen3_text": 200,
+      "alfworld_thor/qwen35": 200,
+      "alfworld_thor/qwen3_vl": 200,
+      "webshop/qwen35": 200,
+      "webshop/qwen3_vl": 200
+    },
+    "reused_smoke_episodes": 120,
+    "previous_completed_summary_hashes_preserved": {
+      "completed-before-http-recovery.json": 1186,
+      "completed-before-transport-recovery.json": 1137
+    },
+    "pilot_gates_passed": 6,
+    "current_infrastructure_errors": 0,
+    "historical_infrastructure_errors": 2,
+    "requested_seeds": [
+      42
+    ],
+    "started_seed_generations": [
+      42
+    ],
+    "mismatches": []
+  },
+  "costs": {
+    "native_execution_window": {
+      "start": 1791245130.342142,
+      "end": 1791279638.962824,
+      "calls": 7294,
+      "returned_usage_cost_usd": 56.79811750000002
+    },
+    "completed_episode_attributed_cost_usd": 52.190850499999996,
+    "all_recorded_sol": {
+      "calls": 7418,
+      "returned_usage_cost_usd": 57.75970500000002
+    },
+    "note": "Token-based estimates, not reconciled invoices. Native execution window includes smoke and interrupted attempts. Episode attribution includes smoke exactly once. GPU scope includes tracked earlier diagnostics as described in gpu_usage; it is broader than seed 42. Unknown charges without returned usage cannot be reconciled here.",
+    "gpu_usage": {
+      "available": true,
+      "gpu_hours": 46.32361111111112,
+      "estimated_usd_at_0_90_per_gpu_hour": 41.69125000000001,
+      "scope": "Current coordinator, retired Eager execution and bounded graph probe only; excludes earlier project GPU work.",
+      "note": "Estimate using the cluster submission estimate of $0.90/H200-hour, not an invoice."
+    }
+  }
+}
