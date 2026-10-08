@@ -108,7 +108,7 @@ We reserved approximately 10% of the native training data by task/product group,
 
 We first ran the first five tasks of each condition to check complete episodes, image delivery, and selection membership. After those checks passed, we expanded the same manifests to 50. **All 120 completed smoke episodes were reused, including failures, and counted once.** The smoke work was part of the final pilot rather than an extra success-selected sample.
 
-Only execution seed 42 was run: 3 environments × 2 actors × 4 conditions × 50 tasks = **1,200 complete episodes**. Seeds 43 and 44 were in the original plan but were deferred before execution.
+Only execution seed 42 was run: 3 environments (ALFWorld TextWorld, ALFWorld THOR, and WebShop) × 2 actors per environment (Qwen3.5-4B, plus Qwen3-4B-Instruct-2507 for TextWorld or Qwen3-VL-4B-Instruct for THOR/WebShop) × 4 conditions (greedy, single sample, random of 5, and Sol of 5) × 50 tasks = **1,200 complete episodes**. Seeds 43 and 44 were in the original plan but were deferred before execution.
 
 ### Generation settings
 
