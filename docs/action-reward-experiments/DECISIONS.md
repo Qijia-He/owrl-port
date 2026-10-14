@@ -9,7 +9,17 @@ Updated 2026-10-14. The [main report](README.md) is the self-contained explanati
 - Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
 - TextWorld and WebShop are selected for iterative selector training. Native-input SFT/DPO/deployment checks passed. Collection job 361267 was cancelled for a data-size review after 22m 04s; its GPU is released and completed data preserved. Full training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
-- The user halved the subsequent collection proposal: 5,000 training and 500 development examples per environment initially, then 2,500 new examples per environment per conditional DPO refresh. The first stage totals 11,000 examples; the full three-stage budget totals 21,000. No revised job is queued.
+- The user halved the subsequent collection proposal: 5,000 training and 500 development examples per environment initially, then 2,500 new examples per environment per conditional DPO refresh. The first stage totals 11,000 examples; the full three-stage budget totals 21,000. The user subsequently authorized background execution of first-round collection; CPU bootstrap 361322 starts the corrected v6b Slurm chain.
+
+## 2026-10-14 — Background first-round collection authorized
+
+The user requested a job that continues after disconnecting their computer. Implemented a normal Slurm dependency chain: one-H200 collection, then a CPU-only admission/encoding audit, then another collection job only while accepted counts are short. Each GPU allocation is bounded to eight hours and released before CPU auditing. The chain stops at the first-round datasets and never submits training, DPO, extra execution seeds, or official test evaluation.
+
+Bootstrap 361314 passed 70 checks. Source review found the new action-admission parser mistakenly treated TextWorld's bracketed `go to` template generator as literal action syntax. GPU successor 361316 was cancelled during startup after 25 seconds, with no fresh collection. The corrected rule and navigation regression coverage are preserved in a new v6b study; bootstrap 361322 repeats CPU validation and imported-data auditing. The superseded startup's data and accounting remain available.
+
+The workflow freezes source/configuration hashes, preserves native images and full raw traces, checks observation parity when resuming interrupted episodes, and reuses only audited source data. Invalid or malformed labels never count toward targets. Separate dataset exports preserve a nested 2,500-example subset. Local status files update automatically; GitHub remains a dated human-facing snapshot. These implementation changes were necessary to make the user's background-execution request concrete.
+
+Corrected bootstrap 361322 passed 70 checks and admitted 58 TextWorld + 22 WebShop saved examples, with all images preserved, no context exclusion, and a maximum of 11,300 encoded tokens. It submitted GPU collection 361323, now running; CPU audit successor 361324 is waiting on its successful completion. The audited-yield extrapolation is approximately 51 H200-hours and $538 in teacher usage for the 11,000-example target, still highly uncertain and excluding queue/CPU audit time.
 
 ## 2026-10-14 — User halves the collection budget
 
