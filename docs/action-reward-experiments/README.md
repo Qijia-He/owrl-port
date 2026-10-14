@@ -25,6 +25,8 @@ The context failure occurred after 94 executed steps when the actor's prompt plu
 
 The rest of this document explains the method and the original **50-task, 1,024-token pilot**. Its frozen tables remain unchanged. No additional tasks, seeds, training-data collection, or training followed the diagnostic.
 
+**Literature alignment (2026-10-14):** The [output-length literature audit](literature-length-alignment.md) pairs published 1,024/2,048-token settings with model names, untrained baselines, trained-actor scores, and protocol differences. These are external reference points, not directly matched results: our exact multimodal actors and native observations differ from the reviewed text-agent setups, and current ICRL request code overrides its configured 2,048-token limit. A matching number in a configuration file is insufficient; the next protocol must also establish the actual generation cap, checkpoint, thinking/decoding mode, task split, observations, and retry policy. Our primary comparison remains Sol versus the same frozen actor's Greedy baseline.
+
 ## 1. What are we trying to do?
 
 An interactive agent solves a task by repeatedly observing an environment and taking an action. For example, it might need to find and move an object in a home, or search for and buy a product that meets a shopping request.

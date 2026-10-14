@@ -13,6 +13,7 @@ The published location is [`Qijia-He/owrl-port/docs/action-reward-experiments/`]
 | `data/<run-id>.json` | Frozen portable result package and source-artifact SHA-256 hashes |
 | `diagnostics/<study-id>.json` | Audited bounded-study metrics and hashes, using a separate diagnostic schema |
 | `DECISIONS.md` | Execution scope, research decisions, limitations, and operational history |
+| `literature-length-alignment.md` | Dated paper/code audit of output limits, model identities, reported scores, and protocol differences |
 | `tools/update_experiment_log.py` | Portable copy of the cluster project's canonical `scripts/update_experiment_log.py` |
 
 The public package does not contain credentials, raw images, machine-specific paths, or API request payloads. It is sufficient to regenerate the published tables; it is not the full runtime or raw episode release.

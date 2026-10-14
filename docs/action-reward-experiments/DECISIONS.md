@@ -75,3 +75,10 @@ Earlier prompt-grammar, serving-context, serving-mode, and model diagnostics are
 - Greedy truncation decreased, but Sol selected-response truncation increased in both environments. WebShop Sol mean reward decreased from 0.5813 to 0.5413. These trajectory-level rates describe different visited states and do not isolate a causal mechanism.
 - New estimated costs: Sol $6.4198; the three one-H200 allocations, including failures, $1.3318; combined $7.7516. The [final diagnostic report](runs/v4-sol-nativecmd-output2048-diagnostic10.md) and [portable metrics](diagnostics/v4-sol-nativecmd-output2048-diagnostic10.json) preserve the results and accounting caveats.
 - ARM training/data collection remain paused until task selection. No automatic expansion or extra seed followed completion. The original published 1,200-episode snapshot is unchanged.
+
+## 2026-10-14: literature audit of 1,024 and 2,048 output tokens
+
+- Added the [model/length/success-rate audit](literature-length-alignment.md), separating prompting baselines from task-trained actors and WebShop success from continuous reward.
+- Checked papers and pinned public code. A paper's training hyperparameters do not by themselves establish every baseline's evaluation settings. ICRL's current code overrides the configured per-turn output cap with the remaining context budget and may critique/retry during evaluation; historical execution remains unverified.
+- Retained differences in checkpoint identity, thinking, images, task split, action lists, catalog/goals, and retry policy. No cross-paper score difference is interpreted as the effect of changing output length.
+- Kept Greedy as our primary baseline. The review changes no frozen data, experiment configuration, task choice, or training scope. No compute allocation or new experiment was started for the audit.
