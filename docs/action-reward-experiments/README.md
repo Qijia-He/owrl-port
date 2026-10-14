@@ -255,7 +255,7 @@ The bounded output-length diagnostic is complete. TextWorld and WebShop are sele
 
 1. Inspect success/failure cases to distinguish missing good candidates, poor choices among usable candidates, and environment/controller execution problems.
 2. Retain the 1,024-token actor cap for this training study and preserve the separate 2,048-token diagnostic as sensitivity evidence.
-3. Resolve data scale and checkpoint organization, then version the revised collection plan. Native-input training/deployment validation has passed. Compare learned selectors with Greedy and Sol; teacher imitation alone is not evidence of improved task success.
+3. Use the [concrete collection proposal](iterative-training-plan.md#concrete-collection-proposal--2026-10-14) to version the next study: collect 10,000 usable training examples plus 1,000 development examples per environment, with an initial 500-example audit and a nested 5,000-example SFT dataset. Keep native images and the original sampler. Separate selectors are recommended; later DPO data must be collected under the preceding trained student. The proposal estimates about $800–1,200 in teacher calls for the first 22,000 examples, based on sparse measured yield, and has not been launched. Compare learned selectors with Greedy and Sol; teacher imitation alone is not evidence of improved task success.
 4. After the protocol is fixed, evaluate on the official held-out/test splits. Additional execution seeds remain deferred until requested.
 
 The defensible current claim is: **a stronger action selector produces a substantial gain for frozen Qwen3.5 on this TextWorld pilot, while broader generalization and learned-ARM gains remain unproven.**

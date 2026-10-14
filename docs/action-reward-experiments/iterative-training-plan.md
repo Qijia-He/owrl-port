@@ -6,7 +6,7 @@ Status, 2026-10-14: the user selected **ALFWorld TextWorld and WebShop**, with a
 
 A frozen Qwen actor proposes five actions for the current observation. A separate Qwen selector reads that same observation, history, and candidate set, then returns an index such as `{"selection": 3}`. We want the inexpensive selector to recover as much of Sol's closed-loop task performance as possible. Agreement with Sol is a diagnostic; task success remains the main measure.
 
-The student is Qwen3.5-4B. All native WebShop product images remain part of both teacher and student input; text-only observations receive no artificial images. THOR is outside this training study. The initial configuration mixes the two selected environments in one selector; separate selectors would each use their own environment's data. Checkpoint organization is being clarified, while data remains stored separately by environment and supports either choice.
+The student is Qwen3.5-4B. All native WebShop product images remain part of both teacher and student input; text-only observations receive no artificial images. THOR is outside this training study. The frozen initial configuration mixes the two selected environments in one selector. **The revised recommendation is separate TextWorld and WebShop selectors**, so each environment's benefit can be measured independently; this is a recommendation, not a recorded user choice. Data is stored separately and remains usable for either organization.
 
 ## Iteration sequence
 
@@ -58,6 +58,81 @@ The frozen v5 configuration still records the original budget and joint-checkpoi
 Available manifest pools contain 2,969 TextWorld training task instances and 281 development instances; WebShop has 8,556 and 895 respectively. Training/development use disjoint task/product groups, and both exclude reserved pilot groups. Evaluate checkpoints on the same 50 pilot tasks per environment and seed 42, with Greedy as the primary comparison and Sol as the teacher reference. Report success, native WebShop reward, paired uncertainty, invalid actions, truncation, steps, and cost. Repeated pilot evaluation is developmental evidence, not an untouched final test result. Official test evaluation and seeds 43/44 remain excluded.
 
 Those task pools are not pre-existing SFT datasets: executing one task produces several decision states, and eligibility filtering determines the usable yield. The last completed-episode snapshots before cancellation contain **58 eligible retained states from nine TextWorld episodes and 33 from seven WebShop episodes**. These 91 states still require the formal conversion/encoding audit; interrupted episodes are not included. The completed-episode snapshots attribute approximately $3.10 in teacher usage, excluding probes and interrupted work, so this is not the total bill. The scheduler records deliberate cancellation; the runner's generic `Slurm signal 15` failure record is preserved.
+
+## Concrete collection proposal — 2026-10-14
+
+The user requested a collection plan. This section specifies that plan; it does not report a launch. The immediate deliverable is **20,000 usable SFT training examples and 2,000 development examples across two environments**. Future refresh budgets are conditional on the preceding trained selector and evaluation, not data to collect now.
+
+| Stage | TextWorld | WebShop | Behavior used to visit states |
+|---|---:|---:|---|
+| Round 0 training | 10,000 | 10,000 | Frozen actor proposes five; Sol selects and the environment executes that candidate |
+| Fixed development panel | 1,000 | 1,000 | Same round-zero behavior on disjoint development task groups |
+| Round 1, after initial SFT | 5,000 new | 5,000 new | Previous student selects; Sol labels the same candidate pool without controlling the executed choice |
+| Round 2, if further refresh is justified | 5,000 new | 5,000 new | Updated student selects; Sol supplies new preference labels |
+
+The immediate target is 22,000 retained examples. The full provisional three-stage budget is 42,000, including development. A sample contains one current observation, its native images, causal history, five original candidate responses, and one Sol index. Additional epochs, replay, candidate permutations, repeated exports, and multiple negative pairs do not increase the count of newly labeled states. Report exact state-context hashes separately from candidate-set hashes.
+
+### Task coverage and split
+
+Freeze task/product groups before collecting any labels. Keep the existing pilot reserve excluded, and keep all official ALFWorld held-out and WebShop test/development tasks untouched. Our development panel comes from the native training split, using the already separated 281 TextWorld / 895 WebShop development instances; optimizer data comes from the separate 2,969 / 8,556 training instances.
+
+Visit distinct task groups before revisiting related task instances. In TextWorld, stratify the ordering by native task type while approximately preserving the available training-pool proportions. In WebShop, spread coverage across product groups. Report task type, unique instance and unique group counts rather than just the number of rows. Collect a complete episode to the unchanged native termination/step limit, and retain at most ten eligible states per task instance, sampled deterministically across its trajectory rather than taking only its first ten turns. Retain successful and unsuccessful episodes without success-only filtering.
+
+At ten states per task, 10,000 training examples require at least 1,000 task instances per environment. The small existing collection yielded 58/9 = 6.4 states per TextWorld episode and 33/7 = 4.7 per WebShop episode. If those yields persisted, the training targets would require roughly 1,550 and 2,120 episodes respectively; post-encoding filtering may require more. These are extrapolations from only 16 episodes, not guaranteed yields. Use all available eligible task instances as the ceiling, and stop on the usable-state target; remove the obsolete 600-task ceiling in the next version. If the pool is exhausted, report the shortfall rather than duplicating records to reach the target.
+
+### Collection parameters
+
+| Setting | Proposed value | Reason |
+|---|---|---|
+| Actor | Frozen `Qwen/Qwen3.5-4B`, revision `851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a` | Same actor as the inference pilot |
+| Teacher | Existing configured Sol model, `gpt-6.1-sol` | Same teacher interface as the pilot; record returned model identity |
+| Candidates | 5; one candidate pool per visited state initially | Preserve the original selection problem |
+| Actor sampling | Temperature 0.7, top-p 0.9, top-k disabled | Match the pinned method and completed pilot |
+| Actor output | 1,024 tokens per candidate, thinking enabled | Includes reasoning and action within the same allowance; log finish reasons |
+| Actor input capacity | 262,144 tokens | Preserve existing context behavior; count context exhaustion separately |
+| Teacher output | `max_completion_tokens=2048`; selection index 1–5 | Preserve the current request; no extra temperature or reasoning-effort override |
+| Observation | Native text; all native WebShop product images | No image removal, invented TextWorld images, hidden state, or future observations |
+| Image preprocessing | Existing 65,536–262,144 pixel bounds per image | Preserve the tested multimodal pipeline |
+| Image capacity | Existing maximum 10 images per observation | If a native observation exceeds capacity, fail explicitly and version a capacity change; never silently drop images |
+| Episode limit | TextWorld 50 actions; WebShop 100 actions | Same wrapper limits as the completed pilot |
+| Randomness | Master seed 42, with deterministic round/task/step candidate seeds | Preserve reproducibility; no execution seeds 43/44 |
+| Usable selector context | 32,768 tokens after image expansion | Keep raw full inputs; audit before admission, never silently trim history or images |
+| Training target | Only `{"selection": N}` | Same short-index interface at deployment; not actor-response imitation |
+
+Sol sees only information available at the decision point. The terminal reward and future observation are saved for analysis after execution and are never included in its labeling input. The teacher is asked to select an offered candidate; it cannot supply a replacement action. Candidate duplicates and truncated raw responses stay in the offered pool exactly as generated.
+
+### Admission and audit rules
+
+1. Keep every raw episode, all candidate strings, execution metadata, native outcomes, teacher usage, and image hashes. A rejected training example is still available for analysis.
+2. Admit a state only when the teacher returns a valid offered index without parser fallback, at least two candidate actions differ, and the selected action is nonempty and structurally parseable under the environment's action syntax. Syntax does not establish that the action is correct or succeeds; native action failures remain part of the recorded episode.
+3. Exclude malformed or transport-failed teacher labels. Preserve original image bytes, image order, prompt hashes, and teacher/actor model identities. Verify teacher/training/deployment prompt parity and task-group separation.
+4. Mark every actor cutoff. Do not discard a candidate merely because it reached 1,024 tokens if its action can still be parsed. Report results separately for pools with and without truncated candidates. Never repair the action text or silently increase its generation cap.
+5. CPU-audit the full multimodal encoding before counting an example toward the final target. Quarantine examples that cannot fit the proposed selector context intact, record their task and length distribution, and replenish from additional eligible tasks. If this systematically removes long histories or particular task types, review a versioned larger-context recipe before continuing expansion.
+6. Deduplicate exact state contexts, cap each task's contribution, and report residual repeated observations/loop states. Check all collection rounds against earlier state hashes; reused examples are replay, not fresh-state credit. Do not pad a short dataset with repeated candidate draws.
+
+These selection and audit rules make the new benchmark collection an explicit adaptation. Piotr's published collection also uses repeated draws from saved demonstration states and a different internal split; our online trajectories, stricter task-group split, and fresh-state accounting are not an exact reproduction of that data distribution.
+
+### Batch order and training handoff
+
+First audit and reuse any of the 91 preserved states that satisfy the new protocol, recording the original study and source hashes. Probe samples stay excluded. Then collect in bounded batches:
+
+1. Reach **500 accepted training examples per environment** and run a CPU encoding/coverage audit. Update per-example teacher cost, calls per retained example, task yield, context exclusions, and throughput. These are the first examples of the research dataset and count toward 10,000; this is not another disposable functional smoke run.
+2. Expand to **5,000 training examples per environment** and build the fixed development panel. Freeze this dataset version for the smaller SFT fit.
+3. Expand to **10,000 training examples per environment**, retaining the 5,000-example subset. Fit both sizes from the same base checkpoint with the same training recipe; report the extra update/token exposure as well as dataset size. Use development evidence to judge whether the additional data helps. Teacher agreement and closed-loop task success are separate measures; weak evidence does not justify claiming saturation.
+4. Release collection GPUs and hand off audited manifests, image hashes, inclusion/exclusion counts, token-length statistics, costs, and task-group coverage to training. The original 50-task pilot remains a development comparison; official held-out evaluation is deferred until the protocol is fixed.
+5. Only after initial SFT, collect round-one states under that trained selector. For DPO, use Sol's index as chosen, prefer the student's disagreeing action as a negative, and retain at most two distinct rejected actions per state. Do not label another index with the same winning action as a negative. With 5,000 fresh states, replay approximately 2,143 earlier states per environment for a 30% replay mixture. The initial SFT model remains the fixed DPO reference; keep a same-state SFT control. The second refresh depends on the first refresh's results.
+
+For the proposed separate selectors, the training handoff uses one environment's data per model. The existing LLaMA-Factory recipe remains: BF16, language LoRA rank 32 / alpha 64 / dropout 0.05, frozen vision tower/projector, effective batch 16; initial SFT learning rate 1e-4 for two epochs, then DPO learning rate 1e-5 for one epoch with beta 0.1. These are starting settings, not tuned results, and research training starts from the original base rather than smoke-test weights.
+
+### Cost, runtime, and implementation boundary
+
+From completed-episode snapshots, teacher usage per retained state was approximately **$0.0265 for TextWorld** and **$0.0476 for WebShop**, using the existing logged rates. Labeling every executed step while retaining at most ten states per task explains why the cost is higher than one isolated short label call. Extending those rates to 11,000 retained examples per environment gives **about $814 for round-zero teacher calls**. A working planning range is **$800–1,200**, with possible upward revision after post-encoding filtering and the 500-example audit. This is a historical-rate extrapolation, not a current price quote or spending cap; it excludes GPU time, later rounds, training, and evaluation.
+
+The cancelled one-H200 allocation used 22m 04s while the completed-episode snapshots retained 91 states. A naive aggregate projection for 22,000 states is **about 89 H200-hours**, roughly four compute-days on one GPU, excluding queue time and later training/evaluation. Different per-environment yields, startup overhead, API latency, context filtering, and utilization make this estimate highly uncertain. Treat 70–120 GPU-hours as a rough scheduling range, not a confidence interval or completion promise. Re-estimate from the next completed batch before committing the full schedule; do not assume linear multi-GPU speedup.
+
+Use one H200 for the existing serving recipe, initially with the two existing environment workers and bounded API concurrency. Its measured reservation was about 107,581 MiB, so that recipe does not fit an 18 GiB MIG instance unchanged. The 2026-10-14 live scheduler query permits account `zixianma` with normal QoS (24-hour limit), four default CPUs per H200, and 30 GiB per CPU; use bounded resumable normal jobs, each at most eight hours, with four CPUs and 120 GiB. Installations, CPU preprocessing, and review happen without a held GPU. Improve batching or release a stalled allocation when sustained utilization is low; request extra GPUs only after measuring useful scaling. Data and checkpoints remain in project storage, with quota checked before expansion. No job is submitted as part of this planning update.
+
+Before execution, create a new study ID and configuration; preserve v5. The runner must accept the new configuration consistently, replace the 600-task ceiling, support incremental accepted-count targets, implement the admission/coverage audit, import preserved examples with provenance, and produce separate checkpoint lineages if that recommendation is adopted. These changes are specified here and have not yet been implemented or validated. The already passed native training/deployment checks do not certify these new collection changes.
 
 ## Validation and cost record
 

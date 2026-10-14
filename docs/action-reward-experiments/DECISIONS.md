@@ -22,6 +22,8 @@ A proposed larger study budgets 10,000 initial SFT examples and two 5,000-exampl
 
 ## Interpretation of the completed pilot
 
+The user subsequently requested a concrete data-collection plan. The [proposal](iterative-training-plan.md#concrete-collection-proposal--2026-10-14) now specifies round-zero data quantity, the unchanged five-candidate sampler, native image retention, group separation, accepted-sample audits, staged collection, and measured-yield cost/runtime estimates. It recommends separate environment selectors. The current turn performs planning and documentation only: no collection was resumed and no new numerical target is recorded as a user decision. DPO refresh data is deferred until a previous trained selector exists.
+
 The clearest gain is **TextWorld × Qwen3.5**: success increases from 46% with random-of-five to 70% with Sol, a paired difference of +24 percentage points with a task-bootstrap interval of [+10, +38]. The supplementary task-group bootstrap also remains above zero.
 
 The other five comparisons with random-of-five have positive point estimates, but intervals include or touch zero. This is insufficient evidence of a reliable gain across environments or execution seeds.
