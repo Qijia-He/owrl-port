@@ -9,6 +9,13 @@ Updated 2026-10-14. The [main report](README.md) is the self-contained explanati
 - Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
 - TextWorld and WebShop are selected for iterative selector training. Native-input SFT/DPO/deployment checks passed. Collection job 361267 was cancelled for a data-size review after 22m 04s; its GPU is released and completed data preserved. Full training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
+- The user halved the subsequent collection proposal: 5,000 training and 500 development examples per environment initially, then 2,500 new examples per environment per conditional DPO refresh. The first stage totals 11,000 examples; the full three-stage budget totals 21,000. No revised job is queued.
+
+## 2026-10-14 — User halves the collection budget
+
+Apply the reduction to both environments and all planned data stages. Initial audited collection milestones are now 250, 2,500, and 5,000 training examples per environment. The development panel is fixed at 500 per environment, and each later refresh targets 2,500 fresh examples per environment; approximately 1,071 replay examples preserve the 30% replay ratio. The first-stage teacher-cost extrapolation is approximately $407, with a rough $400–600 planning range, and approximately 45 H200-hours at the sparse measured throughput. These are estimates, not caps or guarantees.
+
+Candidate count, actor/teacher parameters, native images, per-task cap, split isolation, and training hyperparameters are unchanged. Later refreshes still require the preceding trained selector and evaluation. This turn updates the plan and documentation; it does not resume collection or modify frozen v5 artifacts. The larger proposal below is retained only as superseded history.
 
 ## 2026-10-14 — Data-size rationale corrected; collection paused
 
@@ -18,11 +25,11 @@ The [data-size review](iterative-training-plan.md#what-the-upstream-data-actuall
 
 Collection job 361267 was deliberately cancelled. Its completed-episode snapshots preserve 58 eligible TextWorld states from nine episodes and 33 WebShop states from seven episodes. These require formal dataset audits before training. No replacement job is queued, and no full research optimizer run occurred. Existing frozen study/configuration and cancellation logs remain intact.
 
-A proposed larger study budgets 10,000 initial SFT examples and two 5,000-example refreshes per environment, plus 1,000 development examples per environment: 42,000 retained examples overall. A nested 5,000/10,000 SFT learning curve should determine whether more data helps. This remains an assistant recommendation, not a user-approved numerical target or an upstream requirement. Checkpoint organization and revised data size remain open; a new version must also raise the current 600-task collection ceiling if this proposal is adopted.
+The superseded larger proposal budgeted 10,000 initial SFT examples and two 5,000-example refreshes per environment, plus 1,000 development examples per environment: 42,000 retained examples overall. It proposed a nested 5,000/10,000 SFT learning curve. This was an assistant recommendation, not an upstream requirement; the user subsequently halved it as recorded above. Checkpoint organization remains open, and the reduced plan still requires a new version with a sufficient task ceiling.
 
 ## Interpretation of the completed pilot
 
-The user subsequently requested a concrete data-collection plan. The [proposal](iterative-training-plan.md#concrete-collection-proposal--2026-10-14) now specifies round-zero data quantity, the unchanged five-candidate sampler, native image retention, group separation, accepted-sample audits, staged collection, and measured-yield cost/runtime estimates. It recommends separate environment selectors. The current turn performs planning and documentation only: no collection was resumed and no new numerical target is recorded as a user decision. DPO refresh data is deferred until a previous trained selector exists.
+The user requested a concrete data-collection plan, then halved its quantity. The [reduced plan](iterative-training-plan.md#concrete-collection-proposal--2026-10-14) specifies round-zero data quantity, the unchanged five-candidate sampler, native image retention, group separation, accepted-sample audits, staged collection, and measured-yield cost/runtime estimates. It recommends separate environment selectors. No collection has resumed. DPO refresh data is deferred until a previous trained selector exists.
 
 The clearest gain is **TextWorld × Qwen3.5**: success increases from 46% with random-of-five to 70% with Sol, a paired difference of +24 percentage points with a task-bootstrap interval of [+10, +38]. The supplementary task-group bootstrap also remains above zero.
 
