@@ -6,7 +6,7 @@ Updated 2026-10-14. The [main report](README.md) is the self-contained explanati
 
 - Complete: six environment–actor combinations, four conditions, 50 tasks per condition, execution seed 42; 1,200 complete episodes.
 - Complete: all 120 smoke episodes reused as part of the same task manifests, with no duplicate counting; trajectory reconciliation and all six expansion audits passed.
-- A separate 2,048-token diagnostic is in progress (see the dated entry below). Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
+- Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
 - Benchmark ARM data collection/training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
 
@@ -33,7 +33,7 @@ Candidate diagnostics describe the states each policy actually visited. They are
 ## Research sequence
 
 1. Analyze existing successes and failures to distinguish candidate quality, selection quality, and execution failures.
-2. Finish the separate, bounded 2,048-token diagnostic with Greedy as the reference. Retain the original 1,024-token snapshot unchanged.
+2. Use the completed, bounded 2,048-token diagnostic with Greedy as the reference to choose a future output-budget protocol. Retain the original 1,024-token snapshot unchanged; do not automatically expand.
 3. Decide which settings justify ARM labels and training. Use the same public prompt convention for new teacher labels, training examples, and inference.
 4. Evaluate on official held-out/test tasks once the protocol is fixed. Seeds 43 and 44 remain deferred.
 
@@ -70,4 +70,8 @@ Earlier prompt-grammar, serving-context, serving-mode, and model diagnostics are
 - Job 360836 completed five TextWorld greedy and two WebShop greedy episodes. A third WebShop greedy task executed 94 steps, with 89 responses truncated at 2,048 tokens, then exceeded the unchanged 262,144-token actor context. Both workers stopped and the GPU was released. No Sol-selection episode had begun.
 - Accounting policy `fixed-actor-context-failure-v1` was clarified after this observed error: explicitly identified actor context exhaustion is a separate failed termination, remains in the fixed task denominator, preserves the last native reward, and does not stop later tasks. Generic infrastructure errors still stop execution. No prompt/image/limit/task-list change is made to avoid the failure.
 - Job 361085 passed 57 validation tests, including continuation, resume, audit rejection, recovery evidence, and denominator checks. CPU-only job 361087 preserved and hashed the original failed summary and trajectory before reclassifying that recorded attempt. Inference resume job 361088 was submitted; the seven completed episodes and one context failure are retained.
-- This diagnostic is not yet a comparative result. ARM training/data collection remain paused until task selection. The original published 1,200-episode snapshot is unchanged.
+- Continuous monitoring followed resume through completion at 19:58 UTC. Job 361088 exited 0 after 53m 12s and released its GPU. Both environment audits passed; all 40 fixed attempts are accounted for, with zero teacher parse fallbacks and native WebShop images verified.
+- On the matched ten-task subset, TextWorld Greedy/Sol success changed from 50%/70% at 1,024 tokens to 60%/80% at 2,048. WebShop changed from 20%/40% to 30%/40%. Sol-minus-Greedy point estimates stayed +20 pp in TextWorld and narrowed from +20 to +10 pp in WebShop; intervals remain wide.
+- Greedy truncation decreased, but Sol selected-response truncation increased in both environments. WebShop Sol mean reward decreased from 0.5813 to 0.5413. These trajectory-level rates describe different visited states and do not isolate a causal mechanism.
+- New estimated costs: Sol $6.4198; the three one-H200 allocations, including failures, $1.3318; combined $7.7516. The [final diagnostic report](runs/v4-sol-nativecmd-output2048-diagnostic10.md) and [portable metrics](diagnostics/v4-sol-nativecmd-output2048-diagnostic10.json) preserve the results and accounting caveats.
+- ARM training/data collection remain paused until task selection. No automatic expansion or extra seed followed completion. The original published 1,200-episode snapshot is unchanged.

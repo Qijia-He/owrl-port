@@ -1,0 +1,469 @@
+{
+  "study": {
+    "study_id": "v4-sol-nativecmd-output2048-diagnostic10",
+    "base_experiment": "configs/experiment.yaml",
+    "source_tag": "pilot-v3-sol-nativecmd",
+    "actor": "qwen35",
+    "benchmarks": [
+      "alfworld_text",
+      "webshop"
+    ],
+    "strategies": [
+      "greedy",
+      "gpt5"
+    ],
+    "seed": 42,
+    "tasks_per_environment": 10,
+    "actor_max_tokens": 2048,
+    "task_selection": "fixed_prefix_of_original_pilot",
+    "automatic_expansion": false
+  },
+  "groups": [
+    {
+      "benchmark": "alfworld_text",
+      "cap": 1024,
+      "strategy": "greedy",
+      "episodes": 10,
+      "success_rate": 0.5,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.5,
+      "mean_steps": 30,
+      "candidate_truncation": 0.5466666666666666,
+      "selected_truncation": 0.5466666666666666,
+      "invalid_actions": 0.5866666666666667,
+      "charged_usd": 0
+    },
+    {
+      "benchmark": "alfworld_text",
+      "cap": 1024,
+      "strategy": "gpt5",
+      "episodes": 10,
+      "success_rate": 0.7,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.7,
+      "mean_steps": 24.3,
+      "candidate_truncation": 0.21810699588477367,
+      "selected_truncation": 0.0823045267489712,
+      "invalid_actions": 0.3374485596707819,
+      "charged_usd": 1.943365
+    },
+    {
+      "benchmark": "alfworld_text",
+      "cap": 2048,
+      "strategy": "greedy",
+      "episodes": 10,
+      "success_rate": 0.6,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.6,
+      "mean_steps": 27.4,
+      "candidate_truncation": 0.49635036496350365,
+      "selected_truncation": 0.49635036496350365,
+      "invalid_actions": 0.5802919708029197,
+      "charged_usd": 0
+    },
+    {
+      "benchmark": "alfworld_text",
+      "cap": 2048,
+      "strategy": "gpt5",
+      "episodes": 10,
+      "success_rate": 0.8,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.8,
+      "mean_steps": 21.7,
+      "candidate_truncation": 0.18341013824884791,
+      "selected_truncation": 0.12442396313364056,
+      "invalid_actions": 0.14285714285714285,
+      "charged_usd": 2.442786
+    },
+    {
+      "benchmark": "webshop",
+      "cap": 1024,
+      "strategy": "greedy",
+      "episodes": 10,
+      "success_rate": 0.2,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.4833333333333333,
+      "mean_steps": 34.8,
+      "candidate_truncation": 0.8045977011494253,
+      "selected_truncation": 0.8045977011494253,
+      "invalid_actions": 0.8045977011494253,
+      "charged_usd": 0
+    },
+    {
+      "benchmark": "webshop",
+      "cap": 1024,
+      "strategy": "gpt5",
+      "episodes": 10,
+      "success_rate": 0.4,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.5813333333333334,
+      "mean_steps": 13.3,
+      "candidate_truncation": 0.12781954887218044,
+      "selected_truncation": 0.022556390977443608,
+      "invalid_actions": 0.022556390977443608,
+      "charged_usd": 0.9756744999999999
+    },
+    {
+      "benchmark": "webshop",
+      "cap": 2048,
+      "strategy": "greedy",
+      "episodes": 10,
+      "success_rate": 0.3,
+      "native_completed": 9,
+      "context_exhausted": 1,
+      "mean_reward": 0.5083333333333333,
+      "mean_steps": 28.9,
+      "candidate_truncation": 0.314878892733564,
+      "selected_truncation": 0.314878892733564,
+      "invalid_actions": 0.314878892733564,
+      "charged_usd": 0
+    },
+    {
+      "benchmark": "webshop",
+      "cap": 2048,
+      "strategy": "gpt5",
+      "episodes": 10,
+      "success_rate": 0.4,
+      "native_completed": 10,
+      "context_exhausted": 0,
+      "mean_reward": 0.5413333333333333,
+      "mean_steps": 22.7,
+      "candidate_truncation": 0.21674008810572687,
+      "selected_truncation": 0.07048458149779736,
+      "invalid_actions": 0.07048458149779736,
+      "charged_usd": 3.9770635
+    }
+  ],
+  "audits": [
+    {
+      "benchmark": "alfworld_text",
+      "actor": "qwen35",
+      "seed": 42,
+      "tasks": 10,
+      "episodes": 20,
+      "steps": 491,
+      "max_images": 0,
+      "native_completed": 20,
+      "context_exhausted": 0,
+      "context_accounting_policy": "fixed-actor-context-failure-v1",
+      "candidate_truncation_rate": 0.246504782928624,
+      "teacher_fallbacks": 0,
+      "passed": true,
+      "manifest_hash": "0396c8aa9727167ac48d9b74a67353a3a05638e7b5c8ae6af18802949ca71f3b",
+      "summary_hashes": {
+        "greedy/8a315edbce2d0649.summary.json": "aa90c828aadaea3d2ea0306a684f5f8d8a5f3b82643a67dc94afdef12b6e1206",
+        "greedy/ea9949e541c050e0.summary.json": "f5ffbfeb5559b14622ce7c2e0fbb56bdc26899efaa6781b7eebaaa3ae16ca874",
+        "greedy/c81594ff814ad137.summary.json": "fd73c587d398b83684fab2dca1a5d80c99e5c2300c5b0f4193cd77f672fe89fa",
+        "greedy/a51aab4a1f66f9d8.summary.json": "a603d9ca233b2bac4a83b0d01f0251362836e60124d79cb7cd1e63164c3c0968",
+        "greedy/5b8a54cebd6ebf6d.summary.json": "1ad1a33cb65ecc677df3806199ed132d459e5a317aaab1d6e6b81fb3437fc75a",
+        "greedy/e1a71cf14027fef0.summary.json": "75355c806341b6e9ca8112c4269af68b724c742c921450814bcaf5692d61c6f0",
+        "greedy/83b2cc0cac285def.summary.json": "6d04c5434b34fcca86ebb4098e872bc4fd287cde24008d8699889e50f10b8fb2",
+        "greedy/0059785b99a02cd0.summary.json": "22c6f3ed3501af06d398df425faf002ef56b8b398611d08bde4aae85761d44cf",
+        "greedy/6db32b50fb53db47.summary.json": "096fdcfbe11bb0f18cdb785f40522a9a79e3ca7fcea07c7fa8192f6b2581f920",
+        "greedy/302ecc787c4aa819.summary.json": "b717a31398915b5cab1065ef461964ebcb3a3b4f946f6be3f5b21c9c9060ef87",
+        "gpt5/8a315edbce2d0649.summary.json": "4964c4d6eba1aae0e90591f6d6ca68f8bbdb8eb058c01aa50b0f77fc099d224c",
+        "gpt5/ea9949e541c050e0.summary.json": "6093ca2e901dd433d873c10ad1b4a8203345fa65ebbf555b66e7d51304ac17cf",
+        "gpt5/c81594ff814ad137.summary.json": "16400ea5f1f7e9c736e60a1ea0346db10d67888efd7a0d4af50816c349287bbf",
+        "gpt5/a51aab4a1f66f9d8.summary.json": "55cf97627c99ae04b3baad7fb7b7ed9d88fd0805eda3830a49aea8f22d60208b",
+        "gpt5/5b8a54cebd6ebf6d.summary.json": "213de50b084bb623103c9cf1cfa06199709ce430cd7b88ad4ac609da7058df1e",
+        "gpt5/e1a71cf14027fef0.summary.json": "2be2642a14271a0032a593d8d09712ccc2b55dcb8b122efb96d6f72acb72d68e",
+        "gpt5/83b2cc0cac285def.summary.json": "20f52798033918773fcf8046379ccdd990e866edb9630f1f7e4211f84a4b5dfa",
+        "gpt5/0059785b99a02cd0.summary.json": "d57227c21b016c3f933ddbc45b7455a5292633ca835d374374f014761042b1ab",
+        "gpt5/6db32b50fb53db47.summary.json": "1b494d0dcf0f5729555a358450d6ec9d22ca413a71662f1922336796c3accc6d",
+        "gpt5/302ecc787c4aa819.summary.json": "72bd19c26175635e96f68b7d6f18697f78b9d80245b7847fc153b760a96461f7"
+      },
+      "trajectory_hashes": {
+        "greedy/8a315edbce2d0649.summary.json": "3cbc1f1f3ac063a6d9f4b9c71c736ad99aa34a25eaccbed9f33f5e9ddd2f0520",
+        "greedy/ea9949e541c050e0.summary.json": "2e0fac1f08444d3c10c88d672268a18e67c0727bf308d8a9c8329e56a091e36d",
+        "greedy/c81594ff814ad137.summary.json": "2a177d83351645aad2ff5fb2b4151ad42426a533a92964bd0c38d3857d90c57a",
+        "greedy/a51aab4a1f66f9d8.summary.json": "5b30ad511cff07bb79aa108bd55e488d7b48e8531e05a85e967e6340822a88b1",
+        "greedy/5b8a54cebd6ebf6d.summary.json": "b7c8618cdddb3ebfbcffede8b7f379b4199002c16f78c810c406c4f760d86f89",
+        "greedy/e1a71cf14027fef0.summary.json": "8320e652de09e9596149c11c9c1e4abeb136f89492ac31384f18fbae6350d6ac",
+        "greedy/83b2cc0cac285def.summary.json": "8d0d6d53dda8ac680f6db9d4406b60add29d58f3a487285e5f6420dec5b1ab16",
+        "greedy/0059785b99a02cd0.summary.json": "23aea5e16077705090e2528929a40637e2a845f3eece92475489ae092edebb45",
+        "greedy/6db32b50fb53db47.summary.json": "936edea42e3ce195341a351874a2e7146f207d99c1399e3cacb19777ddb688a1",
+        "greedy/302ecc787c4aa819.summary.json": "bf01d7aa0379f3093f3a27fb06272f63bf2a44ee8702c080ce63b8c91fd8e42b",
+        "gpt5/8a315edbce2d0649.summary.json": "13b5a30fbe3ef53ccf158df9eb999c030939b89d8400a45cc77188f4f2b2943e",
+        "gpt5/ea9949e541c050e0.summary.json": "76c02c444e5b6ceb2b24898929db8a7ffdbb3751934b01c4bbbddd653d41aa04",
+        "gpt5/c81594ff814ad137.summary.json": "850138ecbe9486a54c957ceb8c6cc6796416adddf5959792a4d31a7c41b6a256",
+        "gpt5/a51aab4a1f66f9d8.summary.json": "e74cc136ffb092be7d4fc2f57354f548d98b47ed11551a4a6fbdd333bcf6f834",
+        "gpt5/5b8a54cebd6ebf6d.summary.json": "db9e25039c6047ef513902938903cd401b0ca07f4a39fa017302521bb2bf8a5e",
+        "gpt5/e1a71cf14027fef0.summary.json": "09f47d2045ca52fb31a06d1079c4202004c09c0fdb9520aceeb70320ee428408",
+        "gpt5/83b2cc0cac285def.summary.json": "b35b62474b18fbb75926e0645bc08c5051371f44f1ff7766f7f2abf80e8bb68d",
+        "gpt5/0059785b99a02cd0.summary.json": "e04479e940e3cb898ad367c4e36c919cf3ae81a251b02b6f085b4e3fe0632bea",
+        "gpt5/6db32b50fb53db47.summary.json": "b54963c7844a7f5cdb9b0a7393cb74c33814105e644aa7ca6b85510b530e80a8",
+        "gpt5/302ecc787c4aa819.summary.json": "800068c68bf92ac8c1019e5d128f4e444cf306648173c7a5c16d7c6c2736a0d2"
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "actor": "qwen35",
+      "seed": 42,
+      "tasks": 10,
+      "episodes": 20,
+      "steps": 516,
+      "max_images": 10,
+      "native_completed": 19,
+      "context_exhausted": 1,
+      "context_accounting_policy": "fixed-actor-context-failure-v1",
+      "candidate_truncation_rate": 0.23665730337078653,
+      "teacher_fallbacks": 0,
+      "passed": true,
+      "manifest_hash": "49df7db8c8d4ab280c46704ca921c31e52250c5a14bdf2ec41b993defc5e7c9d",
+      "summary_hashes": {
+        "greedy/c4d1b2452790d86c.summary.json": "e6e32304ad85d10ac1ef3c68dbe573a80071782b05c5745890a5ac0aac14695f",
+        "greedy/24459b9c6b7c8e3e.summary.json": "5206963a85a9a25f5c385f4ce7d7b5878ca1102dba8cb1f9ee8da05b2741ac09",
+        "greedy/e57e8deee5e5adfa.summary.json": "f09711e8caba7492f7637a3fb64cbe643441eb7f0d79f846410d9bd40eea20a1",
+        "greedy/2b1f225585e5ca3d.summary.json": "1612d4e5eb6a5bc735a88a491660fc878d61a483c89258087c38d8ba94a73283",
+        "greedy/5a93d57b913ff93e.summary.json": "f510934d435e23d1b5bf374381200db1373ec5eb0fb576a368ea126c18fb165e",
+        "greedy/5214eacc25cf6fa6.summary.json": "be5f1fd0faa64c8cf5ac8458db578b53528221f5e64af78169b4cfb8302fe13e",
+        "greedy/f7f35ac4e90b8daa.summary.json": "37529de23abc808618c589b8717bb211541a1889f1d6fb7c4c8aa3324bc28b30",
+        "greedy/49ad7293c98eacf8.summary.json": "82e422a0de1edec9d13e68f7abdbc409be311f5c678e559d9cf1b6abd92591b1",
+        "greedy/08495dde29befac2.summary.json": "efa11c58ff1ee6405a13cab89aead83a33deace0c3808031d4fc63f9734223e8",
+        "greedy/22e249cddceacc57.summary.json": "efb6dd1ef794039cd1c9150863c06d3e43e8bdbd03703cc822e05624207b1a8e",
+        "gpt5/c4d1b2452790d86c.summary.json": "8fd9a3ba55e51ae27b6e00c04fa2434834d26e772e3c71caaaf149a7a55f6606",
+        "gpt5/24459b9c6b7c8e3e.summary.json": "d96e16fbc432387905b0a202679c30f106cd420a07aee0038b1fa0c9946b03c1",
+        "gpt5/e57e8deee5e5adfa.summary.json": "ff37954c99cc53d454d3add8a95a45d80c20812c5be3b7efa0eb74803487ba5f",
+        "gpt5/2b1f225585e5ca3d.summary.json": "5886ce48600df5e994cb49c6d500aa8c0f69ce047f5a72acb1b3cc1e45004eb8",
+        "gpt5/5a93d57b913ff93e.summary.json": "73cedb23491d97069ec496dc6bf7eb1a8c50e01717d86df3f3178b07b9833b29",
+        "gpt5/5214eacc25cf6fa6.summary.json": "8a49f0cf868e01e99d708673088c89da0c4c378559898c1a6e6add734eba36cd",
+        "gpt5/f7f35ac4e90b8daa.summary.json": "c3d316ba1f7589ba0701f9c4177b06432dda0c440d43c9d53e9cc4da9f9d4e6b",
+        "gpt5/49ad7293c98eacf8.summary.json": "865d607095931ee1fe5519a18c2e62d57d1fcf99212d414a2b11c9911a3c0899",
+        "gpt5/08495dde29befac2.summary.json": "fd4aeba1817b211fe3477ac07dd7c12a3a2728017ec1099b2fbf8b6d13d504b5",
+        "gpt5/22e249cddceacc57.summary.json": "72e9a1f107ffd87ebf38f9a8326c9817006c4ea89969aef7214386b01f7afb8c"
+      },
+      "trajectory_hashes": {
+        "greedy/c4d1b2452790d86c.summary.json": "116663e324cede9884396bb27a91271d25937e9b8b56ffc8a6a88ca92a3189dd",
+        "greedy/24459b9c6b7c8e3e.summary.json": "3a94429cc8206ac5d3a82bd39da72a2b98b2d869b60b9e1ef00926275f2c6c11",
+        "greedy/e57e8deee5e5adfa.summary.json": "fd620399836ad7f16f2f401cf61f20416ad059c6248afbc5534d80f52125fe5e",
+        "greedy/2b1f225585e5ca3d.summary.json": "12fc8ea368c54e92260c7213adda4df7f0ce729a4e0746d8ee4793aa3a19de4c",
+        "greedy/5a93d57b913ff93e.summary.json": "5f6d9a2b30cc2759e37c1a6e542d3c8c9470bab41a63219aefd296ab41366f0c",
+        "greedy/5214eacc25cf6fa6.summary.json": "709e164505724ac41291f22db56f70a9b0a922aed10b029e1790e5c153b0bfec",
+        "greedy/f7f35ac4e90b8daa.summary.json": "b365e7a839a8f9450b3ec80faf34c9d9de3bcfda83e0854aa86a2df45e7bf417",
+        "greedy/49ad7293c98eacf8.summary.json": "8d96fda611ecd2032066ecf1713fb404c2e7fad2d17b79b43bc6cdbbcd9f368d",
+        "greedy/08495dde29befac2.summary.json": "f9fb9e2205e83325341ddb7b242973bdfd89f537a8e8fa3f799461b7e240d92a",
+        "greedy/22e249cddceacc57.summary.json": "cbd504989ff85ceb3315271da43f582ff0b21701fa3aa538f40aa7b7751edc56",
+        "gpt5/c4d1b2452790d86c.summary.json": "ab8929d497fed13e3b5fae659b91be8bff357d7ed46e8d7d5374cb6292f9ce8d",
+        "gpt5/24459b9c6b7c8e3e.summary.json": "18b92082989115a074e296c5fca6e985c3cfa1faea613f4b857915ee08e06e80",
+        "gpt5/e57e8deee5e5adfa.summary.json": "60edb90eb957a5c9c4e9943a0b56b79139a35bcbcab8e07ceee6e2e9ee6b31b7",
+        "gpt5/2b1f225585e5ca3d.summary.json": "cef2b535d00d8407f6a87e811844e2861fa5e19e5a78914e49d3a81b55141c0d",
+        "gpt5/5a93d57b913ff93e.summary.json": "0b2c34305596b2c8fa9073d1bd1bad149675bd0ac12a0473dc5dea81fedbdc7d",
+        "gpt5/5214eacc25cf6fa6.summary.json": "1629e285b75590e91b0319b76ed9d22645f036c6c8130f7e19c08cb8fbbe9cb3",
+        "gpt5/f7f35ac4e90b8daa.summary.json": "bb93d489b81be43ebf9ebca24fdd56bd267e212f78da4999b0cc478fac140253",
+        "gpt5/49ad7293c98eacf8.summary.json": "2b200aba1b9bb3ddec7f613fc007dfec1f531a425214350d670b3308610a96fa",
+        "gpt5/08495dde29befac2.summary.json": "f0e0a4b2e053bc49a1462362ec912b8d348400cc3213909ecf3d1b72b9a6462f",
+        "gpt5/22e249cddceacc57.summary.json": "7bdf0c0671ae896e9dbce93a3763090a17422f3a9472727dff9c6ffcb6aeaf37"
+      }
+    }
+  ],
+  "comparison": [
+    {
+      "benchmark": "alfworld_text",
+      "cap": 1024,
+      "contrast": "Sol minus greedy",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.2,
+        "ci95": [
+          0,
+          0.5
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.2,
+        "ci95": [
+          0,
+          0.5
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "cap": 2048,
+      "contrast": "Sol minus greedy",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.2,
+        "ci95": [
+          -0.2,
+          0.6
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.2,
+        "ci95": [
+          -0.2,
+          0.6
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "strategy": "greedy",
+      "contrast": "2048 minus 1024",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.1,
+        "ci95": [
+          -0.2,
+          0.4
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.1,
+        "ci95": [
+          -0.2,
+          0.4
+        ]
+      }
+    },
+    {
+      "benchmark": "alfworld_text",
+      "strategy": "gpt5",
+      "contrast": "2048 minus 1024",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.1,
+        "ci95": [
+          0,
+          0.3
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.1,
+        "ci95": [
+          0,
+          0.3
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "cap": 1024,
+      "contrast": "Sol minus greedy",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.2,
+        "ci95": [
+          0,
+          0.5
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.098,
+        "ci95": [
+          0.026666666666666665,
+          0.181
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "cap": 2048,
+      "contrast": "Sol minus greedy",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.1,
+        "ci95": [
+          0,
+          0.3
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.033,
+        "ci95": [
+          0,
+          0.083
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "strategy": "greedy",
+      "contrast": "2048 minus 1024",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0.1,
+        "ci95": [
+          0,
+          0.3
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": 0.025,
+        "ci95": [
+          0,
+          0.075
+        ]
+      }
+    },
+    {
+      "benchmark": "webshop",
+      "strategy": "gpt5",
+      "contrast": "2048 minus 1024",
+      "success": {
+        "paired_tasks": 10,
+        "delta": 0,
+        "ci95": [
+          0,
+          0
+        ]
+      },
+      "reward": {
+        "paired_tasks": 10,
+        "delta": -0.039999999999999994,
+        "ci95": [
+          -0.10666666666666666,
+          0
+        ]
+      }
+    }
+  ],
+  "new_episode_cost_usd": 6.4198495,
+  "new_api_ledger_cost_usd": 6.419849500000005,
+  "artifact_type": "bounded_output_length_diagnostic",
+  "completed_at_utc": "2026-10-14T19:58:19.735Z",
+  "source_comparison_sha256": "ce8dfa346f5d30994ae20970152804cc62e0d9adb046d342d2c91fd05d5e0702",
+  "gpu_allocations": [
+    {
+      "job_id": "360313",
+      "state": "FAILED",
+      "elapsed_seconds": 907,
+      "gpus": 1
+    },
+    {
+      "job_id": "360836",
+      "state": "FAILED",
+      "elapsed_seconds": 1228,
+      "gpus": 1
+    },
+    {
+      "job_id": "361088",
+      "state": "COMPLETED",
+      "elapsed_seconds": 3192,
+      "gpus": 1
+    }
+  ],
+  "gpu_hour_rate_usd_estimate": 0.9,
+  "gpu_cost_usd_estimate": 1.33175,
+  "total_cost_usd_estimate": 7.751599500000005,
+  "accounting_notes": [
+    "All 40 fixed task-condition attempts are retained: 39 native completed episodes and one context-exhausted failure.",
+    "The context-failure rule was clarified after observing the error; original evidence was retained.",
+    "The historical 1024-token subset has no new charges in this diagnostic.",
+    "Bootstrap intervals resample the 10 task pairs; they do not capture execution-seed or API-model variation."
+  ]
+}

@@ -11,10 +11,13 @@ The published location is [`Qijia-He/owrl-port/docs/action-reward-experiments/`]
 | `README.md` | Human-maintained explanation, citations, setup, interpretation, and next steps, with explicitly marked generated numerical blocks |
 | `runs/<run-id>.md` | Generated detailed metrics, paired comparisons, diagnostics, CI procedure, costs, and audit |
 | `data/<run-id>.json` | Frozen portable result package and source-artifact SHA-256 hashes |
+| `diagnostics/<study-id>.json` | Audited bounded-study metrics and hashes, using a separate diagnostic schema |
 | `DECISIONS.md` | Execution scope, research decisions, limitations, and operational history |
 | `tools/update_experiment_log.py` | Portable copy of the cluster project's canonical `scripts/update_experiment_log.py` |
 
 The public package does not contain credentials, raw images, machine-specific paths, or API request payloads. It is sufficient to regenerate the published tables; it is not the full runtime or raw episode release.
+
+The bounded output-length diagnostic uses a different design from the original six-group, four-condition pilot. Its portable metrics live in `diagnostics/`, and its report and main-README diagnostic section are maintained from those audited metrics. Do not put this schema in `data/` or pass it to the original pilot renderer. The renderer still updates only the original pilot's marked blocks; it does not refresh the diagnostic narrative or tables. Keep both schemas and result versions distinct, and preserve the context-exhausted attempt in the diagnostic denominator.
 
 ## Render existing results
 

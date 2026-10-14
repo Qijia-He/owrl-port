@@ -2,11 +2,28 @@
 
 This document explains the project from the beginning: the research question, the reference method, what we implemented, the experimental setup, the results, and the next decision. No prior familiarity with action reward models is assumed.
 
-**Current answer:** In the completed pilot, Sol substantially improves Qwen3.5 on text-based ALFWorld: success rises from **46% to 70%** compared with randomly selecting one of five candidate actions. The other five environment–model combinations have positive point estimates, but their uncertainty intervals include or touch zero. We have a promising result in one setting, not yet evidence of reliable improvement across all settings.
+**Current answer:** In the original 50-task pilot, Sol improves Qwen3.5 on text-based ALFWorld from **48% with Greedy to 70% with Sol**. A separate ten-task output-length diagnostic also retains a positive Sol-versus-Greedy point estimate when the actor receives 2,048 output tokens. That small diagnostic improves Greedy by one task in each environment, but does not establish that longer output is uniformly better or that the selection gain generalizes reliably.
 
-**Status (monitoring snapshot, 2026-10-14 around 19:45 UTC):** The original 1,024-token seed-42 pilot is complete and audited. A separate [1,024-versus-2,048-token diagnostic](runs/v4-sol-nativecmd-output2048-diagnostic10.md) is running as Slurm job 361088; its results are not included in the audited tables below. Of 40 fixed task-condition attempts, 37 native episodes have completed and one WebShop greedy attempt ended in actor context exhaustion. TextWorld is finished; two WebShop Sol attempts remain. The full diagnostic audit and comparison are still pending. Seeds 43 and 44 remain deferred. ARM training and training-data collection remain paused until the task/data choice is settled.
+**Status (2026-10-14, 19:58 UTC):** The original 1,024-token seed-42 pilot and the separate [output-length diagnostic](runs/v4-sol-nativecmd-output2048-diagnostic10.md) are complete and audited. The diagnostic accounts for 40 fixed attempts: 39 native completed episodes and one WebShop greedy context-exhaustion failure. Job 361088 exited successfully and released its GPU; no diagnostic experiment remains running. Seeds 43 and 44 remain deferred. ARM training and training-data collection remain paused until the task/data choice is settled.
 
-The diagnostic asks whether a larger response allowance improves **Greedy** and changes **Sol-of-five's gain over Greedy**. It uses Qwen3.5-4B, TextWorld and WebShop, the same first 10 reserved pilot tasks in each environment, and seed 42. Both conditions receive the new 2,048-token actor cap; observations, native images, prompts, sampling, context capacity, and step limits stay fixed. It compares against the matching historical 10-task subset. Context-exhausted attempts remain unsuccessful in the fixed denominator and are reported separately from native completed episodes. There is no new Sol-versus-Greedy conclusion yet.
+## Latest diagnostic: does a larger output allowance help?
+
+We tested frozen Qwen3.5-4B on the same first **10 reserved pilot tasks per environment**, seed 42. Both Greedy and Sol-of-five received the new 2,048-token actor cap. Observations, native images, prompts, sampling, the 262,144-token context capacity, and step limits stayed fixed. Historical comparisons below use exactly those same ten tasks, not the full 50-task average. A context-exhausted attempt remains unsuccessful in the fixed denominator and is listed separately from native completed episodes.
+
+| Environment | Actor output cap | Greedy success | Sol-of-five success | Sol minus Greedy: pp [95% CI] |
+|---|---:|---:|---:|---:|
+| TextWorld | 1,024 | 50% | 70% | +20 [0, +50] |
+| TextWorld | 2,048 | 60% | 80% | +20 [-20, +60] |
+| WebShop | 1,024 | 20% | 40% | +20 [0, +50] |
+| WebShop | 2,048 | 30% | 40% | +10 [0, +30] |
+
+Greedy gained one success out of ten in both environments. Sol gained one in TextWorld and had unchanged task-level success in WebShop. The intervals resample ten matched task pairs 10,000 times; they are exploratory, and do not measure execution-seed or API-model variation. The positive point estimates are not proof of a stable gain.
+
+Greedy response truncation decreased from **54.7% to 49.6% in TextWorld** and **80.5% to 31.5% in WebShop**. Sol's selected-response truncation increased, from 8.2% to 12.4% and from 2.3% to 7.0% respectively. WebShop's Sol mean reward decreased from **0.5813 to 0.5413**, although it remained above the new Greedy mean of 0.5083. Policies visit different states, so these aggregate changes do not isolate a causal explanation. The result supports checking a stronger Greedy baseline, not assuming that a larger cap fixes the remaining failures.
+
+The context failure occurred after 94 executed steps when the actor's prompt plus requested output exceeded its unchanged context window. Its original trace and error were retained; the post-observation accounting clarification and full audit are documented in the [diagnostic report](runs/v4-sol-nativecmd-output2048-diagnostic10.md). Both environment audits passed, including native images and selection from the offered candidates, with no teacher parse fallback. New usage was approximately **$6.42 for Sol plus $1.33 for GPU allocations**, including failed attempts: **$7.75 total**. The [portable metrics](diagnostics/v4-sol-nativecmd-output2048-diagnostic10.json) preserve the numerical results and audit hashes.
+
+The rest of this document explains the method and the original **50-task, 1,024-token pilot**. Its frozen tables remain unchanged. No additional tasks, seeds, training-data collection, or training followed the diagnostic.
 
 ## 1. What are we trying to do?
 
@@ -232,10 +249,10 @@ These are token-usage and resource estimates, not invoices. The API views overla
 
 ## 7. What should happen next?
 
-The immediate work is the bounded output-length diagnostic described above. Training-data collection remains paused. The research sequence is:
+The bounded output-length diagnostic is complete. Training-data collection remains paused pending task/data selection. The research sequence is:
 
 1. Inspect success/failure cases to distinguish missing good candidates, poor choices among usable candidates, and environment/controller execution problems.
-2. Finish the separate 2,048-token diagnostic and compare Sol with Greedy at both output limits. Preserve this pilot as the fixed 1,024-token result; do not expand the diagnostic automatically.
+2. Use the completed diagnostic to decide the next output-budget protocol. Preserve both result versions; no automatic expansion follows this ten-task sensitivity check.
 3. Decide which settings justify teacher-label collection and ARM training. Compare a learned selector with both Sol and the same actor baselines; teacher imitation alone is not evidence of improved task success.
 4. After the protocol is fixed, evaluate on the official held-out/test splits. Additional execution seeds remain deferred until requested.
 
