@@ -7,8 +7,18 @@ Updated 2026-10-14. The [main report](README.md) is the self-contained explanati
 - Complete: six environment–actor combinations, four conditions, 50 tasks per condition, execution seed 42; 1,200 complete episodes.
 - Complete: all 120 smoke episodes reused as part of the same task manifests, with no duplicate counting; trajectory reconciliation and all six expansion audits passed.
 - Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
-- TextWorld and WebShop are selected for iterative selector training. Native-input SFT/DPO/deployment checks passed; initial research-data collection is submitted as job 361267. Full training and official held-out/test evaluation have not started.
+- TextWorld and WebShop are selected for iterative selector training. Native-input SFT/DPO/deployment checks passed. Collection job 361267 was cancelled for a data-size review after 22m 04s; its GPU is released and completed data preserved. Full training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
+
+## 2026-10-14 — Data-size rationale corrected; collection paused
+
+The user questioned whether 1,500 SFT examples per environment was an assistant-selected number. It was: no source establishes that this amount is sufficient. The frozen original plan totals 3,000 initial SFT examples, 3,000 fresh examples over two refreshes, and 300 development examples. Replay and multiple preference pairs must not inflate the count of new teacher-labeled examples.
+
+The [data-size review](iterative-training-plan.md#what-the-upstream-data-actually-contains) distinguishes Piotr's 39,155 released SFT training rows / 2,992 distinct training contexts from Zixian's 5,540-state joint actor SFT/DPO corpus. Our available training task pools are 2,969 TextWorld and 8,556 WebShop instances after separation; these are task counts, not ready-made SFT rows.
+
+Collection job 361267 was deliberately cancelled. Its completed-episode snapshots preserve 58 eligible TextWorld states from nine episodes and 33 WebShop states from seven episodes. These require formal dataset audits before training. No replacement job is queued, and no full research optimizer run occurred. Existing frozen study/configuration and cancellation logs remain intact.
+
+A proposed larger study budgets 10,000 initial SFT examples and two 5,000-example refreshes per environment, plus 1,000 development examples per environment: 42,000 retained examples overall. A nested 5,000/10,000 SFT learning curve should determine whether more data helps. This remains an assistant recommendation, not a user-approved numerical target or an upstream requirement. Checkpoint organization and revised data size remain open; a new version must also raise the current 600-task collection ceiling if this proposal is adopted.
 
 ## Interpretation of the completed pilot
 

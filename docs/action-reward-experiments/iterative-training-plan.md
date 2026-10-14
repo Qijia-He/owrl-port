@@ -1,6 +1,6 @@
 # Iterative Qwen selector training on TextWorld and WebShop
 
-Status, 2026-10-14: the user selected **ALFWorld TextWorld and WebShop**, with a frozen Qwen3.5-4B actor and the original 1,024-token candidate cap. Task manifests, CPU encoding, three-step SFT/DPO updates, frozen-reference integrity, and trained-selector deployment on zero/ten images all passed. Validation job 361259 completed and released its GPU. Round-zero research collection is submitted as job 361267; full SFT has not started. Collection remains separated by environment and is useful for either checkpoint organization. Existing seed-42 inference results are unchanged.
+Status, 2026-10-14: the user selected **ALFWorld TextWorld and WebShop**, with a frozen Qwen3.5-4B actor and the original 1,024-token candidate cap. Task manifests, CPU encoding, three-step SFT/DPO updates, frozen-reference integrity, and trained-selector deployment on zero/ten images all passed. After the user questioned the data-size rationale, collection job 361267 was cancelled after 22m 04s and its GPU was released. Its completed episodes and labels are preserved. **The 1,500-state target was an assistant-selected starting budget, not an upstream requirement or a demonstrated sufficient size.** Full SFT has not started. Data sizing is under review; the larger budget below is a proposal, not an active collection target. Existing seed-42 inference results are unchanged.
 
 ## What is being trained?
 
@@ -30,15 +30,34 @@ Training uses BF16 and gradient checkpointing, language-backbone LoRA (rank 32, 
 
 A sample is one decision state: observation and native images, history, five candidates, and Sol's selected index. It is not a complete episode. Retain states with at least two distinct action strings and valid teacher choices, up to ten per task instance. Successful and unsuccessful trajectories can contribute labels.
 
+### What the upstream data actually contains
+
+- **Piotr selection SFT:** our complete audit of the [released train/validation files at revision `13905e69`](https://huggingface.co/datasets/PTeterwak/action-reward-models-data/tree/13905e69ef10169167eab388533997008694bd6d/openwebrl_actor/selection_sft) counted **39,155 training rows and 782 validation rows**. Training rows contain **2,992 distinct state contexts**. Multiple candidate draws from the same context explain why rows greatly outnumber states. The [pipeline description](https://github.com/piotr-teterwak/action-reward-models/blob/4d6dfff869f198f282e4b0e8cf6d429c23dc9fce/README.md#stage-1--data-generation-data_generation) describes roughly 3,000 states expanded to 49,500 candidate sets; generated sets and retained SFT rows are different counts. The published internal validation split is by draw and shares state contexts with training; our task-group separation is intentionally stricter.
+- **Zixian offline actor training:** the [pinned summary](https://github.com/zixianma/OpenWebRL/blob/134f064d867170eb833f6ab0f668a1b05050c031/openwebrl/docs/ARM_SUMMARY.md#2-offline-filtered-sft-and-preference-learning) records **8,394 turns** for C2/1A filtered SFT and **5,540 retained training states** for the matched joint SFT/DPO comparison (3,464 C2 + 2,076 Piotr). The [joint-data inventory](https://github.com/zixianma/OpenWebRL/blob/134f064d867170eb833f6ab0f668a1b05050c031/openwebrl/docs/ARM_JOINT_DATA.md) records **658 validation pairs**. These recipes train full actor responses, unlike our selection-index student. Their counts do not prescribe our required sample size.
+
+Neither source establishes that 1,500 examples per environment will recover Sol's performance. Conversely, Piotr's 39,155 rows are not 39,155 independent states, so merely matching that row count would not establish comparable coverage or quality.
+
+### Original budget, now paused
+
 | Stage | TextWorld new training states | WebShop new training states | Development states | Update |
 |---|---:|---:|---:|---|
 | Round 0 | 1,500 | 1,500 | 150 per environment | SFT |
 | Round 1 | 750 | 750 | Reuse the fixed panel | DPO and same-data SFT control |
 | Round 2 | 750 | 750 | Reuse the fixed panel | DPO and same-data SFT control |
 
-These are planned retained counts, not already collected data. Each refresh also replays 321 earlier training states per environment, approximately 30% of its resulting training set. If selectors are separate, each initial fit uses 1,500 training states; a joint fit uses 3,000. Development labels never enter optimizer updates.
+These were assistant-proposed retained counts, not already collected data or a user-specified total. The initial SFT target was 3,000 training samples across both environments. Including both refresh rounds, the original plan reserved **6,000 new training examples plus 300 development examples = 6,300 retained labels**. Each refresh also replays 321 earlier training states per environment, approximately 30% of its resulting training set. Replay and additional epochs are repeated exposures, not new data. DPO may derive up to two distinct rejected-action pairs per state; pairs are not additional teacher-labeled states. Development labels never enter optimizer updates.
+
+### Proposed sizing study, not yet launched
+
+Use a **10,000-example initial SFT budget per environment**, with a nested 5,000-example fit to measure the benefit of increasing data. Cover diverse task/product groups before adding repeated draws from the same context. This is a research budget informed by the upstream scale, not a claim that 10,000 is optimal or sufficient. Compare teacher agreement and closed-loop success on disjoint development data; do not choose a size using official test results.
+
+If refresh is useful, provision **5,000 new decision examples per environment per refresh**, initially for two rounds. This corresponds to **40,000 new training examples across both environments and all three stages**, plus a proposed fixed **1,000-example development panel per environment**: **42,000 retained examples in total**, before replay. The actual amount should change only in a recorded version after examining the learning curve, task coverage, label yield, and student-versus-teacher failure cases. Strong early saturation can justify stopping below this budget; continuing improvement can justify expansion. No guarantee of matching Sol follows from these counts.
+
+The frozen v5 configuration still records the original budget and joint-checkpoint proposal. Its 600-task collection ceiling would permit at most 6,000 retained states per environment under the ten-state cap, so the larger proposal requires a new version with a sufficient task ceiling, not just editing the sample target. No revised collection or fit is queued. Separate-versus-joint checkpoints remain unresolved; storage is already separated by environment.
 
 Available manifest pools contain 2,969 TextWorld training task instances and 281 development instances; WebShop has 8,556 and 895 respectively. Training/development use disjoint task/product groups, and both exclude reserved pilot groups. Evaluate checkpoints on the same 50 pilot tasks per environment and seed 42, with Greedy as the primary comparison and Sol as the teacher reference. Report success, native WebShop reward, paired uncertainty, invalid actions, truncation, steps, and cost. Repeated pilot evaluation is developmental evidence, not an untouched final test result. Official test evaluation and seeds 43/44 remain excluded.
+
+Those task pools are not pre-existing SFT datasets: executing one task produces several decision states, and eligibility filtering determines the usable yield. The last completed-episode snapshots before cancellation contain **58 eligible retained states from nine TextWorld episodes and 33 from seven WebShop episodes**. These 91 states still require the formal conversion/encoding audit; interrupted episodes are not included. The completed-episode snapshots attribute approximately $3.10 in teacher usage, excluding probes and interrupted work, so this is not the total bill. The scheduler records deliberate cancellation; the runner's generic `Slurm signal 15` failure record is preserved.
 
 ## Validation and cost record
 
