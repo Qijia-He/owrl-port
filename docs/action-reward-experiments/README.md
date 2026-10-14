@@ -4,7 +4,9 @@ This document explains the project from the beginning: the research question, th
 
 **Current answer:** In the completed pilot, Sol substantially improves Qwen3.5 on text-based ALFWorld: success rises from **46% to 70%** compared with randomly selecting one of five candidate actions. The other five environment–model combinations have positive point estimates, but their uncertainty intervals include or touch zero. We have a promising result in one setting, not yet evidence of reliable improvement across all settings.
 
-**Status:** Seed 42 is complete and audited. No experiment is running. Seeds 43 and 44 are deferred at the user's request. Training an action reward model has not started.
+**Status (2026-10-14):** The original 1,024-token seed-42 pilot is complete and audited. A separate [1,024-versus-2,048-token diagnostic](runs/v4-sol-nativecmd-output2048-diagnostic10.md) is in progress; its results are not included in the tables below. Seven native episodes have completed, and one WebShop greedy attempt ended in actor context exhaustion. The remaining work has been submitted as Slurm job 361088 after 57 checks passed. Seeds 43 and 44 remain deferred. ARM training and training-data collection remain paused until the task/data choice is settled.
+
+The diagnostic asks whether a larger response allowance improves **Greedy** and changes **Sol-of-five's gain over Greedy**. It uses Qwen3.5-4B, TextWorld and WebShop, the same first 10 reserved pilot tasks in each environment, and seed 42. Both conditions receive the new 2,048-token actor cap; observations, native images, prompts, sampling, context capacity, and step limits stay fixed. It compares against the matching historical 10-task subset. Context-exhausted attempts remain unsuccessful in the fixed denominator and are reported separately from native completed episodes. There is no new Sol-versus-Greedy conclusion yet.
 
 ## 1. What are we trying to do?
 
@@ -230,10 +232,10 @@ These are token-usage and resource estimates, not invoices. The API views overla
 
 ## 7. What should happen next?
 
-The immediate research decision is to understand the existing result before scaling up annotation:
+The immediate work is the bounded output-length diagnostic described above. Training-data collection remains paused. The research sequence is:
 
 1. Inspect success/failure cases to distinguish missing good candidates, poor choices among usable candidates, and environment/controller execution problems.
-2. If testing a larger response budget or more diverse proposals, define a separate protocol version with comparable controls. Preserve this pilot as the fixed 1,024-token result.
+2. Finish the separate 2,048-token diagnostic and compare Sol with Greedy at both output limits. Preserve this pilot as the fixed 1,024-token result; do not expand the diagnostic automatically.
 3. Decide which settings justify teacher-label collection and ARM training. Compare a learned selector with both Sol and the same actor baselines; teacher imitation alone is not evidence of improved task success.
 4. After the protocol is fixed, evaluate on the official held-out/test splits. Additional execution seeds remain deferred until requested.
 
