@@ -1,6 +1,10 @@
 # Actor output-length sensitivity: 1,024 versus 2,048 tokens
 
-Status on 2026-10-14: job 360836 started inference successfully and finished seven native episodes (five TextWorld greedy and two WebShop greedy). WebShop task `webshop/4843` then exhausted the fixed actor context after 94 executed steps. The supervisor stopped both workers and released the GPU after 20 minutes 28 seconds. No Sol-selection episodes had started. CPU-only job 361085 passed 57 tests, and job 361087 preserved and reclassified the context-failure evidence. Inference resume job 361088 has been submitted for the remaining 32 task-condition attempts. Iterative training and training-data collection remain paused pending task selection.
+Monitoring snapshot, 2026-10-14 around 19:45 UTC: resume job 361088 is running. Of 40 fixed task-condition attempts, 37 native episodes have completed and one WebShop greedy attempt ended in actor context exhaustion. TextWorld has finished both conditions; WebShop has finished greedy and eight of ten Sol attempts. The full audit and comparison are pending. Iterative training and training-data collection remain paused pending task selection.
+
+The finished TextWorld summaries show 6/10 greedy successes and 8/10 Sol successes at the 2,048-token cap, compared with 5/10 and 7/10 on the matching historical 1,024-token tasks. Both caps therefore have a +20 percentage-point point estimate for Sol minus greedy on this small subset. This is a preliminary monitoring observation, not an audited final conclusion or evidence across execution seeds.
+
+Recovery history: job 360836 finished seven native episodes before WebShop task `webshop/4843` exhausted the fixed actor context after 94 executed steps. The supervisor stopped both workers and released the GPU after 20 minutes 28 seconds. No Sol-selection episodes had started at that point. CPU-only job 361085 passed 57 tests, and job 361087 preserved and reclassified the context-failure evidence. Job 361088 resumed the remaining 32 attempts without rerunning the seven completed episodes or the recorded context failure.
 
 ## Question
 
