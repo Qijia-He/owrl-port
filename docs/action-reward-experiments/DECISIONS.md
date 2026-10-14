@@ -7,7 +7,7 @@ Updated 2026-10-14. The [main report](README.md) is the self-contained explanati
 - Complete: six environment–actor combinations, four conditions, 50 tasks per condition, execution seed 42; 1,200 complete episodes.
 - Complete: all 120 smoke episodes reused as part of the same task manifests, with no duplicate counting; trajectory reconciliation and all six expansion audits passed.
 - Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
-- Benchmark ARM data collection/training and official held-out/test evaluation have not started.
+- TextWorld and WebShop are selected for iterative selector training. Native-input SFT/DPO/deployment checks passed; initial research-data collection is submitted as job 361267. Full training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
 
 ## Interpretation of the completed pilot
@@ -82,3 +82,9 @@ Earlier prompt-grammar, serving-context, serving-mode, and model diagnostics are
 - Checked papers and pinned public code. A paper's training hyperparameters do not by themselves establish every baseline's evaluation settings. ICRL's current code overrides the configured per-turn output cap with the remaining context budget and may critique/retry during evaluation; historical execution remains unverified.
 - Retained differences in checkpoint identity, thinking, images, task split, action lists, catalog/goals, and retry policy. No cross-paper score difference is interpreted as the effect of changing output length.
 - Kept Greedy as our primary baseline. The review changes no frozen data, experiment configuration, task choice, or training scope. No compute allocation or new experiment was started for the audit.
+
+## 2026-10-14: iterative training authorized for TextWorld and WebShop
+
+- The user selected initial selector SFT followed by iterative refresh/DPO for these two environments. Keep the Qwen3.5 actor and 1,024-token candidate limit fixed; retain native WebShop images. Initial data target: 1,500 training states and 150 development states per environment, followed by two 750-state refreshes per environment, replay, and SFT controls. Separate versus joint selector checkpoints is being clarified.
+- Frozen manifests exclude reserved pilot groups and official evaluation tasks. Native-input encoding passed, with 0/10-image train/deployment prefix parity. Job 361256 failed before optimization because the container lacked git, then released its GPU. CPU job 361258 passed after checkout verification was fixed. Job 361259 passed 67 checks, three SFT/DPO optimizer steps each, reference integrity, and deployment; its GPU was released. Initial per-environment collection is submitted as job 361267 and does not depend on the separate/joint checkpoint choice.
+- Probe weights are discarded as research initializers. The [training record](iterative-training-plan.md) distinguishes planned counts from collected data and functional validation from scientific results. No historical numerical result was changed.

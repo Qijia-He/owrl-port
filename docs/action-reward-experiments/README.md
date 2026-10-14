@@ -4,7 +4,7 @@ This document explains the project from the beginning: the research question, th
 
 **Current answer:** In the original 50-task pilot, Sol improves Qwen3.5 on text-based ALFWorld from **48% with Greedy to 70% with Sol**. A separate ten-task output-length diagnostic also retains a positive Sol-versus-Greedy point estimate when the actor receives 2,048 output tokens. That small diagnostic improves Greedy by one task in each environment, but does not establish that longer output is uniformly better or that the selection gain generalizes reliably.
 
-**Status (2026-10-14, 19:58 UTC):** The original 1,024-token seed-42 pilot and the separate [output-length diagnostic](runs/v4-sol-nativecmd-output2048-diagnostic10.md) are complete and audited. The diagnostic accounts for 40 fixed attempts: 39 native completed episodes and one WebShop greedy context-exhaustion failure. Job 361088 exited successfully and released its GPU; no diagnostic experiment remains running. Seeds 43 and 44 remain deferred. ARM training and training-data collection remain paused until the task/data choice is settled.
+**Status (2026-10-14):** The original 1,024-token seed-42 pilot and the separate [output-length diagnostic](runs/v4-sol-nativecmd-output2048-diagnostic10.md) are complete and audited. The diagnostic accounts for 40 fixed attempts: 39 native completed episodes and one WebShop greedy context-exhaustion failure. Its GPU was released. TextWorld and WebShop are now selected for [iterative Qwen selector training](iterative-training-plan.md), keeping the actor frozen and its candidate cap at 1,024. Native-input encoding, small SFT/DPO updates, and trained-selector deployment have passed. Initial label collection is submitted as job 361267. There are no full-training or learned-selector benchmark results yet. Seeds 43 and 44 remain deferred.
 
 ## Latest diagnostic: does a larger output allowance help?
 
@@ -251,11 +251,11 @@ These are token-usage and resource estimates, not invoices. The API views overla
 
 ## 7. What should happen next?
 
-The bounded output-length diagnostic is complete. Training-data collection remains paused pending task/data selection. The research sequence is:
+The bounded output-length diagnostic is complete. TextWorld and WebShop are selected for [iterative selector training](iterative-training-plan.md): initial SFT, followed by refreshed index DPO, with the actor frozen. The initial target is 1,500 training states plus 150 development states per environment. The research sequence is:
 
 1. Inspect success/failure cases to distinguish missing good candidates, poor choices among usable candidates, and environment/controller execution problems.
-2. Use the completed diagnostic to decide the next output-budget protocol. Preserve both result versions; no automatic expansion follows this ten-task sensitivity check.
-3. Decide which settings justify teacher-label collection and ARM training. Compare a learned selector with both Sol and the same actor baselines; teacher imitation alone is not evidence of improved task success.
+2. Retain the 1,024-token actor cap for this training study and preserve the separate 2,048-token diagnostic as sensitivity evidence.
+3. Finish native-input training/deployment validation, collect isolated training data, and run the three-version selector study. Compare learned selectors with Greedy and Sol; teacher imitation alone is not evidence of improved task success.
 4. After the protocol is fixed, evaluate on the official held-out/test splits. Additional execution seeds remain deferred until requested.
 
 The defensible current claim is: **a stronger action selector produces a substantial gain for frozen Qwen3.5 on this TextWorld pilot, while broader generalization and learned-ARM gains remain unproven.**
