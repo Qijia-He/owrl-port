@@ -1,6 +1,6 @@
 # Decisions, limitations, and next steps
 
-Updated 2026-10-14. The [main report](README.md) is the self-contained explanation of the project. This file preserves the decisions and operational history behind it.
+Updated 2026-10-15 UTC. The [main report](README.md) is the self-contained explanation of the project. This file preserves the decisions and operational history behind it.
 
 ## Current scope
 
@@ -9,7 +9,17 @@ Updated 2026-10-14. The [main report](README.md) is the self-contained explanati
 - Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
 - TextWorld and WebShop are selected for iterative selector training. Native-input SFT/DPO/deployment checks passed. Collection job 361267 was cancelled for a data-size review after 22m 04s; its GPU is released and completed data preserved. Full training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
-- The user halved the subsequent collection proposal: 5,000 training and 500 development examples per environment initially, then 2,500 new examples per environment per conditional DPO refresh. The first stage totals 11,000 examples; the full three-stage budget totals 21,000. The user subsequently authorized background execution of first-round collection; CPU bootstrap 361322 starts the corrected v6b Slurm chain.
+- The user halved the subsequent collection proposal: 5,000 training and 500 development examples per environment initially, then 2,500 new examples per environment per conditional DPO refresh. The first stage totals 11,000 examples; the full three-stage budget totals 21,000. The user subsequently authorized background execution of first-round collection; the v6b chain later stopped on an image-download HTTP 502. Recovery bootstrap 362095 passed 75 checks and audited 265 examples; GPU job 362097 is submitted under the new v6c study.
+
+## 2026-10-15 UTC — Native image-download failure and recovery
+
+Collection 361323 stopped at 2026-10-14 16:20:25 UTC after 44m 59s when the native Amazon image host returned HTTP 502. The adapter previously made one request. Slurm cancelled dependent audit 361324 and released the GPU. The failure was discovered at the next status check; no collection ran between the failure and recovery. Previous statements that the job was running described an earlier check, not continuous monitoring.
+
+The same original URL now returns HTTP 200. Recovery version v6c adds at most four same-URL attempts with 2/4/8-second backoffs and explicit transport-event logging. It never substitutes or omits images. Permanent failures and exhausted retries still stop the chain. No candidate-generation, observation, action, scoring, teacher, split, or seed parameter changed. A source snapshot verified against the v6b frozen hashes preserves the implementation that failed.
+
+CPU-only bootstrap 362095 passed 75 checks, re-audited 48 completed episodes, and admitted **171 TextWorld + 94 WebShop training examples**. These include all 80 previously admitted examples. Native image hashes and train/deployment prefixes passed; no context exclusion occurred and the largest retained example has 11,658 image-expanded tokens. The two unfinished tasks restart; their old partial/error records remain outside the retained counts. Completed-episode teacher charges including imports total approximately $10.81, excluding unfinished calls and probes. There are still zero development examples.
+
+GPU successor 362097 is submitted and awaiting startup. The same round-zero-only stopping conditions remain in force. The 35–60 H200-hour planning range excludes the interruption, scheduler queueing, and CPU audit time; the elapsed completion date must move accordingly. A new empirical projection will follow the first audited 250 training examples per environment.
 
 ## 2026-10-14 — Background first-round collection authorized
 
@@ -19,7 +29,7 @@ Bootstrap 361314 passed 70 checks. Source review found the new action-admission 
 
 The workflow freezes source/configuration hashes, preserves native images and full raw traces, checks observation parity when resuming interrupted episodes, and reuses only audited source data. Invalid or malformed labels never count toward targets. Separate dataset exports preserve a nested 2,500-example subset. Local status files update automatically; GitHub remains a dated human-facing snapshot. These implementation changes were necessary to make the user's background-execution request concrete.
 
-Corrected bootstrap 361322 passed 70 checks and admitted 58 TextWorld + 22 WebShop saved examples, with all images preserved, no context exclusion, and a maximum of 11,300 encoded tokens. It submitted GPU collection 361323, now running; CPU audit successor 361324 is waiting on its successful completion. The audited-yield extrapolation is approximately 51 H200-hours and $538 in teacher usage for the 11,000-example target, still highly uncertain and excluding queue/CPU audit time.
+Corrected bootstrap 361322 passed 70 checks and admitted 58 TextWorld + 22 WebShop saved examples, with all images preserved, no context exclusion, and a maximum of 11,300 encoded tokens. It submitted GPU collection 361323 and dependent CPU audit 361324. The GPU job later failed and the audit was cancelled, as recorded in the recovery entry above. The audited-yield extrapolation is approximately 51 H200-hours and $538 in teacher usage for the 11,000-example target, still highly uncertain and excluding queue/CPU audit time.
 
 ## 2026-10-14 — User halves the collection budget
 
@@ -39,7 +49,7 @@ The superseded larger proposal budgeted 10,000 initial SFT examples and two 5,00
 
 ## Interpretation of the completed pilot
 
-The user requested a concrete data-collection plan, then halved its quantity. The [reduced plan](iterative-training-plan.md#concrete-collection-proposal--2026-10-14) specifies round-zero data quantity, the unchanged five-candidate sampler, native image retention, group separation, accepted-sample audits, staged collection, and measured-yield cost/runtime estimates. It recommends separate environment selectors. No collection has resumed. DPO refresh data is deferred until a previous trained selector exists.
+The user requested a concrete data-collection plan, then halved its quantity. The [reduced plan](iterative-training-plan.md#concrete-collection-proposal--2026-10-14) specifies round-zero data quantity, the unchanged five-candidate sampler, native image retention, group separation, accepted-sample audits, staged collection, and measured-yield cost/runtime estimates. It recommends separate environment selectors. Round-zero background collection has since been authorized; its interruption and recovery are recorded above. DPO refresh data is deferred until a previous trained selector exists.
 
 The clearest gain is **TextWorld × Qwen3.5**: success increases from 46% with random-of-five to 70% with Sol, a paired difference of +24 percentage points with a task-bootstrap interval of [+10, +38]. The supplementary task-group bootstrap also remains above zero.
 
