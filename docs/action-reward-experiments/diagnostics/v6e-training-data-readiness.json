@@ -1,0 +1,270 @@
+{
+  "schema": "selection-training-data-readiness-v1",
+  "readiness": {
+    "study_id": "v6e-native-image-data-audit-text-web-1024-seed42",
+    "job_id": "364409",
+    "passed": true,
+    "source_audit_sha256": "d8796a6493c7f205ed3f5bdbc8dd1c2bdfe3b7eecfe3dcb0264827ea8d0b544b",
+    "benchmarks": {
+      "alfworld_text": {
+        "counts": {
+          "actor_prompt_hash_verified": 1060,
+          "head_text_reconstructable": 1060,
+          "original_token_ids_missing": 1060,
+          "panels_with_truncated_candidate": 526,
+          "selected_candidate_truncated": 1,
+          "selected_native_invalid": 170,
+          "train": 871,
+          "development": 189
+        },
+        "groups": {
+          "train": 132,
+          "development": 33
+        },
+        "tasks": {
+          "train": 133,
+          "development": 33
+        },
+        "task_type_counts": {
+          "train": {
+            "pick_two_obj_and_place": 226,
+            "pick_clean_then_place_in_recep": 150,
+            "pick_and_place_simple": 106,
+            "pick_cool_then_place_in_recep": 201,
+            "look_at_obj_in_light": 52,
+            "pick_heat_then_place_in_recep": 136
+          },
+          "development": {
+            "look_at_obj_in_light": 22,
+            "pick_cool_then_place_in_recep": 29,
+            "pick_clean_then_place_in_recep": 34,
+            "pick_two_obj_and_place": 60,
+            "pick_and_place_simple": 20,
+            "pick_heat_then_place_in_recep": 24
+          }
+        },
+        "teacher_positions": {
+          "2": 213,
+          "3": 150,
+          "4": 114,
+          "1": 466,
+          "5": 117
+        },
+        "candidate_finish_reasons": {
+          "length": 1058,
+          "stop": 4242
+        },
+        "distinct_actions_per_panel": {
+          "3": 255,
+          "2": 539,
+          "4": 139,
+          "5": 127
+        },
+        "teacher_equivalent_actions": {
+          "1": 262,
+          "4": 369,
+          "3": 224,
+          "2": 205
+        },
+        "actor_prompt_tokens": {
+          "50": 2688,
+          "90": 11546,
+          "95": 15310,
+          "99": 19702,
+          "100": 37058
+        },
+        "head_panels_sha256": "77443329c6e6de13761a72172d06399d0f0bff472c0b96ab1689d0d1cdbef0c3",
+        "native_test_task_overlap": 0,
+        "pilot_group_overlap": 0,
+        "train_dev_group_overlap": 0,
+        "sft_ready": true,
+        "head_labels_ready": true,
+        "head_features_ready": false
+      },
+      "webshop": {
+        "counts": {
+          "actor_prompt_hash_verified": 949,
+          "head_text_reconstructable": 949,
+          "original_token_ids_missing": 949,
+          "panels_with_truncated_candidate": 574,
+          "selected_candidate_truncated": 0,
+          "selected_native_invalid": 8,
+          "train": 807,
+          "development": 142
+        },
+        "groups": {
+          "train": 186,
+          "development": 44
+        },
+        "tasks": {
+          "train": 186,
+          "development": 44
+        },
+        "task_type_counts": {
+          "train": {
+            "shopping": 807
+          },
+          "development": {
+            "shopping": 142
+          }
+        },
+        "teacher_positions": {
+          "1": 348,
+          "2": 216,
+          "5": 96,
+          "3": 159,
+          "4": 130
+        },
+        "candidate_finish_reasons": {
+          "stop": 3591,
+          "length": 1154
+        },
+        "distinct_actions_per_panel": {
+          "2": 352,
+          "3": 239,
+          "4": 202,
+          "5": 156
+        },
+        "teacher_equivalent_actions": {
+          "4": 253,
+          "3": 163,
+          "2": 146,
+          "1": 387
+        },
+        "actor_prompt_tokens": {
+          "50": 5661,
+          "90": 65075,
+          "95": 84879,
+          "99": 110797,
+          "100": 161591
+        },
+        "head_panels_sha256": "07c7d129af583a41fae259227662837dae6411844b25023daf2af687f2ba8fdb",
+        "native_test_task_overlap": 0,
+        "pilot_group_overlap": 0,
+        "train_dev_group_overlap": 0,
+        "sft_ready": true,
+        "head_labels_ready": true,
+        "head_features_ready": false
+      }
+    },
+    "dataset_sha256": {
+      "alfworld_text": {
+        "records.json": "49dbf1d9eae7d5ece4b4ae814dc6c888739e082c821983519e38d347fbf7cfc7",
+        "sft_train.json": "b2693c363531b98923c9a0b6aaa9ce0e36348af07035f72e9cb10e11a5eaea79",
+        "sft_development.json": "a7784ca8c6bca8f97f5fdf6fccc77224d087f793563751689e97ea93a46dcdeb",
+        "head-panels.jsonl": "77443329c6e6de13761a72172d06399d0f0bff472c0b96ab1689d0d1cdbef0c3"
+      },
+      "webshop": {
+        "records.json": "4e3f37fc56a9cea37977aa11208898f36b9b9a5dfa64fd46ceb95d378cbf363f",
+        "sft_train.json": "b0d4d35d3f9dc5869d05154a0909e10406d5d96b2f75a748e6dd26d9a26891de",
+        "sft_development.json": "b9fe1edba612fd00a6f51f237c6211a78fc82716eadc5e065b83f7ed039aa7cf",
+        "head-panels.jsonl": "07c7d129af583a41fae259227662837dae6411844b25023daf2af687f2ba8fdb"
+      }
+    },
+    "teacher_labels_changed": false,
+    "new_teacher_calls": 0,
+    "gpu_used": false,
+    "training_started": false,
+    "head_original_generation_tokens_available": false,
+    "head_feature_extraction_required": true,
+    "online_capture_parity_verified": false,
+    "test_isolation_scope": "Native held-out task IDs; pilot and train/development groups. Shared catalog products are not a claim of official product-disjoint evaluation."
+  },
+  "encoding_audit": {
+    "counts": {
+      "alfworld_text": {
+        "train": 871,
+        "development": 189
+      },
+      "webshop": {
+        "train": 807,
+        "development": 142
+      }
+    },
+    "episodes": {
+      "alfworld_text": 167,
+      "webshop": 231
+    },
+    "exclusions": {
+      "identical_actions": 3752,
+      "selected_action_syntax": 899
+    },
+    "image_processing_policy": "native-qwen-single-resize-v1",
+    "prefix_audit_policy": "every-sample-prefix-and-native-pixels-v3",
+    "fresh_prefix_checks": 2009,
+    "fresh_native_pixel_panels": 420,
+    "maximum_retained_tokens": 15721,
+    "image_counts": {
+      "0": 1419,
+      "10": 423,
+      "1": 167
+    },
+    "encoding_considered": 2009,
+    "context_excluded": 0,
+    "completed_episode_teacher_usd_including_imports": {
+      "alfworld_text": 31.023298000000008,
+      "webshop": 68.3406735
+    },
+    "group_counts": {
+      "train": 318,
+      "development": 77
+    },
+    "task_counts": {
+      "alfworld_text": 166,
+      "webshop": 230
+    },
+    "length_percentiles": {
+      "50": 3930,
+      "90": 8812,
+      "95": 9939,
+      "99": 12027
+    },
+    "updated_at": 1792191070.8496652,
+    "artifact_bytes": 87496603
+  },
+  "dataset_invariants": {
+    "prior_687_records_preserved": true,
+    "prior_count": 687,
+    "current_count": 2009,
+    "benchmarks": {
+      "alfworld_text": {
+        "maximum_states_per_task": 10,
+        "task_cap_violations": {},
+        "unique_states": 1060,
+        "records": 1060,
+        "first_candidate_equivalent_agreement": 0.5481132075471699,
+        "uniform_expected_equivalent_agreement": 0.5320754716981131
+      },
+      "webshop": {
+        "maximum_states_per_task": 10,
+        "task_cap_violations": {},
+        "unique_states": 949,
+        "records": 949,
+        "first_candidate_equivalent_agreement": 0.46891464699683877,
+        "uniform_expected_equivalent_agreement": 0.45943097997892507
+      }
+    }
+  },
+  "textworld_native_replay": {
+    "passed": true,
+    "job_id": "364417",
+    "seconds": 183.87080454826355,
+    "counts": {
+      "replayed_episodes": 55,
+      "flagged_labels": 170,
+      "flagged_without_admissible_candidate": 146,
+      "returned_nothing_happens": 170,
+      "flagged_with_admissible_alternative": 24
+    },
+    "labels_changed": false,
+    "teacher_calls": 0,
+    "note": "Native replay diagnostics only. No alternative action was executed and no outcomes were used to change training labels."
+  },
+  "reference_boundary": "CPU parity with native Hugging Face image preprocessing under recorded serving limits; no new live GPU deployment/optimizer check.",
+  "source_report_sha256": {
+    "training-readiness.json": "acc9c0839f07ffd9348ba97f0c5864c7b833504921bbb52b89537e80f29457fa",
+    "audit.json": "d8796a6493c7f205ed3f5bdbc8dd1c2bdfe3b7eecfe3dcb0264827ea8d0b544b",
+    "dataset-invariants.json": "f0e3a3a334711459c19dc87eb9fc3f5011e8997612bc88989a406a695e9d7268",
+    "textworld-label-validity.json": "cac8e32c85fa9b0ab706c82b9ebe455128f331926e63a10f64ace937c56906e9"
+  }
+}
