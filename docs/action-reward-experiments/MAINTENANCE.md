@@ -66,3 +66,5 @@ Registration additionally requires the matching experiment configuration, frozen
 7. Read back the published files and verify their contents against the reviewed local files.
 
 GitHub synchronization is performed during subsequent work, not by an unattended uploader. Maintaining this record does not itself authorize extra seeds, ARM training, or official test evaluation.
+
+The authorized v6f continuation records exact actor token IDs and preserves all v6e accepted examples. Its Slurm chain freezes top-level `armbench/*.py`, `scripts/*.py`, and `scripts/runtime.sh`; changing those while collection is active causes the next stage to stop. Preserve the source snapshot and create a new study version for runtime changes. Compiler caches are regenerable scratch data; observations, labels, dataset snapshots, and training artifacts remain in project storage. The [v6f validation receipt](diagnostics/v6f-pipeline-validation.json) records pipeline checks only. Do not place their tiny-batch losses or checkpoint counts in benchmark accuracy tables.

@@ -1,0 +1,139 @@
+{
+  "study_id": "v6f-exact-token-collection-text-web-1024-seed42",
+  "head_and_token_validation_job_id": "364454",
+  "pipeline_validation_job_id": "364491",
+  "pipeline_checks_passed": true,
+  "resolved_validation_errors": [
+    "Initial SFT reload check passed BatchEncoding instead of input_ids; training checkpoint retained and reload check corrected.",
+    "WebShop backward compilation exhausted home quota before its first update; kernel caches moved to scratch and subsequent container jobs explicitly forward cache paths."
+  ],
+  "research_training_started": false,
+  "benchmark_results_available": false,
+  "iterative_dpo_deferred": true,
+  "target_per_environment": {
+    "train": 5000,
+    "development": 500
+  },
+  "original_accepted_counts": {
+    "alfworld_text": {
+      "train": 871,
+      "development": 189
+    },
+    "webshop": {
+      "train": 807,
+      "development": 142
+    }
+  },
+  "exact_token_logging": {
+    "passed": true,
+    "policy": "vllm-exact-ids-v1",
+    "native_prefix_and_output_decoding_checks": 15,
+    "job_id": "364454",
+    "source_hashes": {
+      "armbench/providers.py": "b58228ed8e98b384ec32cf91bb9c8a57c78bcf1ce60e8399bfb92eca61986091",
+      "armbench/core.py": "e67996512373d1b1e4110d31ae99d35d102ad917985ce1b14a376b58583a1309",
+      "armbench/iterative_collect.py": "197ab264781997e501707fc3a69eba2b027e3dbe2a6fc1e9ae60ccc79551feb1"
+    }
+  },
+  "head": {
+    "panels": 12,
+    "full_history": true,
+    "layers": [
+      16,
+      24,
+      32
+    ],
+    "maximum_actor_prompt_tokens": 161591,
+    "native_image_counts": [
+      0,
+      1,
+      10
+    ],
+    "candidate_pool_parity_checks": 40,
+    "prefix_pool_parity_checks": 8,
+    "peak_gpu_gib": 28.885889053344727,
+    "feature_seconds_including_jit": 167.24277538903698,
+    "maximum_prefix_abs_drift_between_forward_shapes": 0.4024658203125,
+    "online_generation_feature_parity_verified": false,
+    "serving_efficiency_claim": false,
+    "training_smoke": {
+      "alfworld_text": {
+        "train_panels": 2,
+        "development_panels": 2,
+        "losses": [
+          1.92998468875885,
+          0.7006034851074219,
+          0.705862283706665
+        ],
+        "pointwise": true,
+        "value_loss": false,
+        "standardizer_train_only": true,
+        "reload_and_permutation_checks": true
+      },
+      "webshop": {
+        "train_panels": 4,
+        "development_panels": 4,
+        "losses": [
+          1.5150998830795288,
+          0.6834272742271423,
+          0.5402671098709106
+        ],
+        "pointwise": true,
+        "value_loss": false,
+        "standardizer_train_only": true,
+        "reload_and_permutation_checks": true
+      }
+    }
+  },
+  "generative_sft_smoke": {
+    "alfworld_text": {
+      "passed": true,
+      "smoke_only": true,
+      "global_step": 3,
+      "adapter_sha256": "2a755d5218f076e3f6ccdf5941ebf8f4ff4d398e1691a15691f62731b5bb4223",
+      "finite_reloaded_logits": true,
+      "job_id": "364474"
+    },
+    "webshop": {
+      "passed": true,
+      "smoke_only": true,
+      "global_step": 3,
+      "adapter_sha256": "3f715804de472575d3c887561ac03b4b97dba39901e5197fac3817ebad482510",
+      "finite_reloaded_logits": true,
+      "job_id": "364491"
+    }
+  },
+  "cohort_hashes": {
+    "alfworld_text": "77443329c6e6de13761a72172d06399d0f0bff472c0b96ab1689d0d1cdbef0c3",
+    "webshop": "07c7d129af583a41fae259227662837dae6411844b25023daf2af687f2ba8fdb"
+  },
+  "checks_sha256": {
+    "head-passed.json": "4bf08b0ad348a42aeff735353c2059a0289e286558d2b5274969ca76be46f03d",
+    "token-logging-passed.json": "3ce9ea839ca4736144795106afc5f53231bcdde59435a2df6b16245f9670ecf6",
+    "cohort.json": "5b83034f81f47ec7bb2f5fa4d3921b5ecfcf4a475db81acd5e28e3c31865b9e0"
+  },
+  "runtime": {
+    "transformers": "5.8.0",
+    "torch": "2.13.0+cu129",
+    "fla-core": "0.5.2",
+    "convolution": "native-pytorch-conv1d",
+    "attention": "sdpa",
+    "dtype": "bfloat16"
+  },
+  "collection_at_publication": {
+    "status": "awaiting_gpu_collection",
+    "job_id": "364492",
+    "next_job_id": "364528",
+    "counts": {
+      "alfworld_text": {
+        "train": 871,
+        "development": 189
+      },
+      "webshop": {
+        "train": 807,
+        "development": 142
+      }
+    },
+    "updated_at": 1792194045.817007
+  }
+}

@@ -4,12 +4,22 @@ Updated 2026-10-16 UTC. The [main report](README.md) is the self-contained expla
 
 ## Current scope
 
+- Current continuation: v6f preserves the 2,009 accepted examples and records original tokens in new collection. Shared 12-state full-history feature checks, per-environment pointwise-head and SFT optimizer/reload checks passed. CPU bootstrap 364492 passed and queued GPU continuation 364528 toward 5,000 train/500 development per environment. Research fits, efficient online head deployment, and benchmark results remain outstanding.
+
 - Complete: six environment–actor combinations, four conditions, 50 tasks per condition, execution seed 42; 1,200 complete episodes.
 - Complete: all 120 smoke episodes reused as part of the same task manifests, with no duplicate counting; trajectory reconciliation and all six expansion audits passed.
 - Complete: the separate 2,048-token diagnostic, 40 fixed attempts (39 native completed episodes and one context-exhausted failure), both audits passed. Its GPU allocation has been released. Seeds 43 and 44 remain deferred because the user requested a summary after one seed.
 - TextWorld and WebShop were selected for iterative selector training; the user now prioritizes one-round SelectionARM/head comparisons, with iterative DPO deferred. Native-input SFT/DPO/deployment checks passed. Collection job 361267 was cancelled for a data-size review after 22m 04s; its GPU is released and completed data preserved. Full training and official held-out/test evaluation have not started.
 - Earlier upstream inference checks and two optimizer steps per training recipe were installation checks, not full ARM training or a reproduction of all upstream results.
 - The user halved the subsequent collection proposal: 5,000 training and 500 development examples per environment initially, then 2,500 new examples per environment per conditional DPO refresh. The first stage totals 11,000 examples; the full three-stage budget totals 21,000. The user subsequently authorized background execution of first-round collection; the v6b chain later stopped on an image-download HTTP 502. Recovery bootstrap 362095 passed 75 checks and audited 265 examples. Subsequent collection completed, then a native-image encoding audit stopped the chain; see the October 16 entry.
+
+## 2026-10-16 UTC — Shared pipeline validation and exact-token continuation
+
+The user authorized exact-token logging, small-batch head extraction, preservation of existing data, and continued collection to 11,000 total states. Version v6f imports v6e with a preserved source snapshot and previous selected-ID order. The final frozen cohort exports both methods' inputs from the same records. Scientific sampling, native observations/actions/rewards, seed 42, and splits are retained.
+
+Job 364454 validated 15 exact generated-token sequences, reconstructed native prompt IDs, and 12 full-history head panels, including 161,591 tokens. Forty candidate-pooling and eight prefix-pooling checks matched directly returned hidden states. Both pointwise heads completed three updates and reload/permutation checks. TextWorld SFT completed three updates; its first reload check exposed a BatchEncoding/Tensor mismatch. The saved adapter was retained and the corrected reload passed in 364474. WebShop then stopped before its first update because Triton compilation exhausted home quota. CPU job 364482 moved regenerable caches to scratch and passed 27 tests. With explicit cache forwarding and allocation-based compiler thread limits, WebShop SFT and reload passed in 364491. Failed logs and checkpoints are preserved. These are pipeline checks, not accuracy measurements; [portable evidence](diagnostics/v6f-pipeline-validation.json) records their limits.
+
+CPU bootstrap 364492 passed 82 tests and re-audited all 2,009 examples and 420 image panels in 4m 35s, preserving all previous selected IDs. GPU continuation 364528 is queued; the durable GPU/CPU chain advances automatically. Source freezing now includes the runtime shell configuration. The final collection target automatically exports matching SFT and head panels. No research fit, iterative DPO, extra seed, or official test is submitted by the collection workflow. Generation-time feature reuse and live selector serving still need separate validation.
 
 ## 2026-10-16 UTC — Full data audit passes with native image preprocessing
 
