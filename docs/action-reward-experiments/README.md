@@ -4,7 +4,7 @@ This document explains the project from the beginning: the research question, th
 
 **Current answer:** In the original 50-task pilot, Sol improves Qwen3.5 on text-based ALFWorld from **48% with Greedy to 70% with Sol**. A separate ten-task output-length diagnostic also retains a positive Sol-versus-Greedy point estimate when the actor receives 2,048 output tokens. That small diagnostic improves Greedy by one task in each environment, but does not establish that longer output is uniformly better or that the selection gain generalizes reliably.
 
-**Status (2026-10-15 UTC):** The original 1,024-token seed-42 pilot and separate [output-length diagnostic](runs/v4-sol-nativecmd-output2048-diagnostic10.md) are complete and audited. Authorized [round-zero data collection](iterative-training-plan.md#background-execution-record) targets 5,000 training plus 500 development examples per environment, with the actor frozen and native images retained. The previous GPU job stopped after 44m 59s because a native WebShop image download returned HTTP 502; its CPU successor was cancelled and the GPU released. Recovery study `v6c-sol-collection-half-text-web-1024-seed42` adds bounded retries of the same image URL. CPU bootstrap **362095 passed 75 checks** and audited **171 TextWorld + 94 WebShop training examples**, with zero context exclusions and no development examples yet. GPU collection **362097 is submitted and awaiting startup**. Completed episodes are reused; interrupted attempts and the old implementation are preserved. The workflow stops at audited datasets and does not submit full research training or DPO. There are no learned-selector benchmark results yet. Seeds 43 and 44 remain deferred.
+**Status (2026-10-16 UTC):** The original seed-42 inference pilot and output-length diagnostic are complete. The next priority is [Table 1(c): generative SelectionARM versus selection head](selection-arm-head-plan.md), with iterative DPO deferred. The paper has been cloned and its actual table checked. Two collection GPU jobs completed, but the following CPU audit stopped on a native-image train/deployment encoding mismatch. The last completed audit contained 687 examples; later counters show approximately 1,930 provisionally eligible examples awaiting a stronger audit. No GPU is running or queued, and automatic collection continuation is disabled. Existing data is preserved. No learned-selector benchmark result is available yet; seeds 43 and 44 remain deferred.
 
 ## Latest diagnostic: does a larger output allowance help?
 
@@ -251,14 +251,27 @@ These are token-usage and resource estimates, not invoices. The API views overla
 
 ## 7. What should happen next?
 
-The bounded output-length diagnostic is complete. TextWorld and WebShop are selected for [iterative selector training](iterative-training-plan.md): initial SFT, followed by refreshed index DPO, with the actor frozen. The user halved the larger data proposal and authorized background execution of its first stage. The reduced plan uses 5,000 initial SFT examples per environment, checked against a nested 2,500-example fit, then up to two conditional 2,500-example refreshes per environment. This would provision 20,000 new training examples plus 1,000 development examples. The first-stage job chain targets 11,000 audited examples and exports data separately by environment; it does not start research training. The original 91 provisionally eligible states are preserved for re-auditing and reuse. The research sequence is:
+The user now prioritizes **Table 1(c), comparing Piotr-style SelectionARM with Zixian's selection head**, before iterative training. The [detailed implementation plan](selection-arm-head-plan.md) records the paper audit, pinned code, data requirements, adaptation details, validation and remaining blockers.
 
-1. Inspect success/failure cases to distinguish missing good candidates, poor choices among usable candidates, and environment/controller execution problems.
-2. Retain the 1,024-token actor cap for this training study and preserve the separate 2,048-token diagnostic as sensitivity evidence.
-3. Complete the [background collection chain](iterative-training-plan.md#background-execution-record), then train on its audited datasets. The initial planning estimate was $400–600 for teacher calls and 35–60 H200-hours, based on sparse provisional yield; update it after the first 250 accepted examples per environment, adding queue and CPU audit time separately. Later DPO data must be collected under the preceding trained student. Compare learned selectors with Greedy and Sol; teacher imitation alone is not evidence of improved task success.
-4. After the protocol is fixed, evaluate on the official held-out/test splits. Additional execution seeds remain deferred until requested.
+Both methods leave the Qwen3.5 actor frozen. The first trains a separate Qwen3.5 selector with supervised learning to generate a candidate index. The second trains a small pointwise MLP on features from the actor's own candidate responses, using cross-entropy on Sol's choice. They share the same labelled states and group split. For TextWorld and WebShop, separate fits produce four artifacts: two generative selectors and two heads. Neither method needs DPO for this first comparison.
 
-The defensible current claim is: **a stronger action selector produces a substantial gain for frozen Qwen3.5 on this TextWorld pilot, while broader generalization and learned-ARM gains remain unproven.**
+| Qwen3.5-4B condition | TextWorld success | WebShop success | Evidence |
+|---|---:|---:|---|
+| Greedy | 48% | 18% | Completed historical 50-task pilot |
+| Sol of five | 70% | 28% | Completed historical 50-task pilot |
+| Piotr-style SelectionARM of five | Pending | Pending | One-round SFT planned |
+| Selection head of five | Pending | Pending | Pointwise head adaptation planned |
+
+The paper currently uses single-sample controls (42% and 22%). For the requested Greedy comparison, the historical gains are **+22 pp and +10 pp**. The two learned methods need separate rows. These are training-reserve pilot tasks, not official test results. If the head requires a different serving backend or generation protocol, all four conditions need a new matched evaluation; the old numbers remain historical references.
+
+The immediate work is:
+
+1. Make training and deployment use the same native image processing, then re-audit every retained example. The first failing image exposed an omitted processing limit; a stronger check exposed a second resize/rounding mismatch. Passing a small installation check did not guarantee parity across all native image dimensions.
+2. Freeze a common training/development dataset. The previously authorized target remains 5,000 train plus 500 development states per environment; both methods reuse it. Current provisional counters are not certified dataset sizes. Official evaluation and pilot groups remain excluded from training.
+3. Train the generative selector and implement the Qwen3.5 head. The upstream head uses a 36-layer Qwen3-VL actor with sglang; our 32-layer hybrid Qwen3.5 actor and vLLM deployment require verified feature extraction. A full second forward pass is a correctness prototype, and cannot support the upstream feature-reuse efficiency claim.
+4. Evaluate at seed 42 against Greedy and Sol, with native success/reward, paired confidence intervals, failure diagnostics and measured cost. Keep iterative DPO and official held-out/test evaluation deferred until their respective protocols are fixed.
+
+Our current labels come from Sol observing the state **before** executing an action. They do not include lookahead execution evidence. The [upstream selection-head description](https://github.com/zixianma/OpenWebRL/blob/da20e8e45123682627c732bc5f9828f441d9ea33/openwebrl/docs/ARM_SELECTION_HEAD.md) and its [trainer](https://github.com/zixianma/OpenWebRL/blob/da20e8e45123682627c732bc5f9828f441d9ea33/scripts/train_selection_head.py) support this one-round teacher-imitation route; it must be distinguished from the paper's richer lookahead-supervision experiments.
 
 ## Technical appendix: exact versions and implementation details
 
