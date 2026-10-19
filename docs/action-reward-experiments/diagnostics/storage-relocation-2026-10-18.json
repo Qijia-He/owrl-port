@@ -1,0 +1,49 @@
+{
+  "job_id": "369586",
+  "status": "completed",
+  "policy": "verified-rebuildable-only-v1",
+  "started_at": 1792373677.0992675,
+  "finished_at": 1792373697.0964484,
+  "scratch_purge_days": 60,
+  "original_research_data_moved": false,
+  "final_model_weights_moved": false,
+  "relocated_bytes": 3623265815,
+  "project_blocks_removed": 3764929024,
+  "capacity_estimate": {
+    "basis": "v6f bytes and its 903 newly audited states; approximate, not an allocation guarantee",
+    "v6f_directory_bytes": {
+      "collection": 689989862,
+      "images": 308117308,
+      "teacher_cache": 5413939,
+      "datasets": 237514809,
+      "audit-cache": 120334556
+    },
+    "new_states_in_basis": 903,
+    "remaining_states": 8088,
+    "remaining_raw_and_images_gib": 8.371051901722469,
+    "remaining_export_gib_at_current_average": 0.6143849872661611,
+    "excludes": [
+      "final cohort duplicate exports",
+      "head features",
+      "future training checkpoints",
+      "other users writes"
+    ]
+  },
+  "categories": {
+    "rebuildable_audit_cache": {
+      "directories": 7,
+      "files": 1975,
+      "bytes": 424512468,
+      "project_blocks_bytes": 563091968
+    },
+    "redundant_smoke_checkpoint_final_model_retained": {
+      "directories": 4,
+      "files": 48,
+      "bytes": 3198753347,
+      "project_blocks_bytes": 3201837056
+    }
+  },
+  "verification": "All copied files matched source SHA-256, size and mtime; sources were checked again before symlink replacement. Each relocated smoke checkpoint contains the same model weights as the final adapter retained on project.",
+  "reporting_caveat": "3.51 GiB is the sum of removed project file block allocations, not a refreshed group quota reading. Snapshots/reporting lag and other users can affect headroom.",
+  "backup_configuration_status": "No destination has been supplied for external archival storage; no external data transfer performed."
+}

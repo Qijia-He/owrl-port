@@ -1,5 +1,9 @@
 # Decisions, limitations, and next steps
 
+## 2026-10-18 UTC — Relieve project storage pressure
+
+The user asked how the 99%-full project fileset would be handled. CPU-only job 369586 completed in 25 seconds, relocating seven rebuildable audit caches and four redundant smoke checkpoints to Scrubbed after full file-hash verification. Final adapter weights remain on project and match the moved checkpoint copies; all original research data and frozen datasets remain in place. Removed file allocations total 3.51 GiB, subject to quota reporting/snapshot caveats. The remaining collection is roughly 9 GiB before final duplicate exports and training outputs. The 4 GiB submission guard remains; no other users’ files or external storage were changed. The [storage plan and receipt](collection-status.md#storage-and-remaining-work) record preservation and recovery semantics.
+
 ## 2026-10-18 UTC — Recover collection and add Slurm supervision
 
 Job 364528 stopped after 3h 47m on an empty native WebShop image source; its successor was cancelled and its GPU released. The failure was discovered during this status check, not automatically repaired overnight. CPU audit 369538 accepted 903 more states, bringing the preserved total to 2,912. A native catalog/template check found 717 empty main-image sources and reproduced empty-source results/item pages. Version v6g retains native text/actions, explicitly marks an unavailable image only for an empty source, and still requires every available image. It passed 87 regression checks. Old code, traces and validation evidence are preserved.
