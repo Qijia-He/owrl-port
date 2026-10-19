@@ -1,12 +1,16 @@
 # Can we use the data already collected?
 
-**Yes: the saved data supports both methods, and a shared small batch has now passed their training and checkpoint-reload checks.** The current CPU audit covers **2,912 accepted examples** after recovery on October 18; the original detailed v6e audit below covered 2,009. The GPU validation below covers 12 states, including native images and the longest actor history. Full feature extraction for the final research cohort, serving/deployment validation, and learned-selector benchmark evaluation remain to be done.
+**Yes: the saved data supports both methods, and a shared small batch has now passed their training and checkpoint-reload checks.** The current CPU audit covers **3,183 accepted examples** after the October 19 horizon transition; the original detailed v6e audit below covered 2,009. The GPU validation below covers 12 states, including native images and the longest actor history. Full feature extraction for the final research cohort, serving/deployment validation, and learned-selector benchmark evaluation remain to be done.
 
 This report covers the `v6e-native-image-data-audit-text-web-1024-seed42` audit and the subsequent `v6f` continuation, on 2026-10-16 UTC. [Data-audit evidence](diagnostics/v6e-training-data-readiness.json) and [GPU-validation evidence](diagnostics/v6f-pipeline-validation.json) accompany the [Table 1(c) plan](selection-arm-head-plan.md). Iterative DPO remains deferred.
 
-## October 19 startup recovery
+## October 19: WebShop maximum reduced to 30 actions
 
-The dataset is still **2,912 accepted states**. Job 369558 ended before collection when the five-minute service-readiness deadline interrupted ongoing startup. Version v6h changes only startup waiting/diagnostics and supervisor classification: 900 seconds total, 600 seconds without log growth, bounded retry for a progressing timeout. Native-input/token checks are inherited only after source-hash verification. New startup/supervisor tests (27) and existing collection regression tests (87) passed. See the [collection record](collection-status.md) for current execution and failure evidence; no new training result is implied.
+At the user's request, version v6i uses a 30-action maximum for new WebShop episodes and retains TextWorld's 50-action maximum. CPU bootstrap 370003 preserved the historical cohort and accepted 271 additional states, bringing the total to 3,183. Imported WebShop data retains its 100-step provenance; full saved actor histories and native images are not truncated. Both methods will train on the same frozen cohort, with collection-horizon provenance disclosed. New WebShop controls and trained-selector evaluations must all use 30 steps; historical 100-step scores are not substitutes. Six horizon/history tests, 27 startup/supervisor checks and 87 regressions passed. Current jobs and audit evidence are in the [collection record](collection-status.md).
+
+## Earlier October 19 startup recovery
+
+At that earlier checkpoint, the dataset contained **2,912 accepted states**. Job 369558 ended before collection when the five-minute service-readiness deadline interrupted ongoing startup. Version v6h changes only startup waiting/diagnostics and supervisor classification: 900 seconds total, 600 seconds without log growth, bounded retry for a progressing timeout. Native-input/token checks are inherited only after source-hash verification. New startup/supervisor tests (27) and existing collection regression tests (87) passed. See the [collection record](collection-status.md) for current execution and failure evidence; no new training result is implied.
 
 ## October 18 collection update
 
@@ -14,7 +18,7 @@ The [collection and recovery record](collection-status.md) reports **1,429 train
 
 ## Authorized continuation: exact tokens and a shared validation cohort
 
-The October 16 continuation was `v6f-exact-token-collection-text-web-1024-seed42`; the active recovery is v6g as described above. It preserves the v6e source snapshot and all accepted examples. Collection targets remain **5,000 training and 500 development states per environment**: 8,991 additional accepted states were needed at the start of this continuation. Sampling stays at five independent candidates, temperature 0.7, top-p 0.9, 1,024 output tokens, thinking enabled, and seed 42. Native images, actions, rewards, task grouping, and pilot exclusion stay part of the protocol.
+The October 16 continuation was `v6f-exact-token-collection-text-web-1024-seed42`; the subsequent recovery was v6g, followed by v6h/v6i as described above. It preserves the v6e source snapshot and all accepted examples. Collection targets remain **5,000 training and 500 development states per environment**: 8,991 additional accepted states were needed at the start of this continuation. Sampling stays at five independent candidates, temperature 0.7, top-p 0.9, 1,024 output tokens, thinking enabled, and seed 42. Native images, actions, rewards, task grouping, and pilot exclusion stay part of the protocol.
 
 New actor requests ask vLLM to return the original prompt and generated token IDs, including its stopping metadata. The collector fails if required IDs are absent. Existing records keep the explicit provenance **re-encoded saved response plus EOS**; recording tokens now cannot retroactively recover their original generation IDs. Both groups remain usable, with provenance preserved.
 

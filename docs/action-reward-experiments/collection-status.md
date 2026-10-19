@@ -1,32 +1,38 @@
 # Data collection and automatic recovery
 
-Updated 2026-10-19 UTC. This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. It contains no trained-selector benchmark results. The [main report](README.md) explains the full experiment, and the [training-data report](training-data-readiness.md) explains the methods and validation.
+Updated 2026-10-19 UTC. This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
+
+## Current protocol and execution
+
+The user requested **a maximum of 30 WebShop environment actions per episode**. Active study `v6i-webshop30-text50-1024-seed42` uses `configs/experiment-webshop30.yaml`; TextWorld stays at 50 actions. Five independently sampled candidates, Sol selection, temperature 0.7, top-p 0.9, 1,024 output tokens, thinking mode, seed 42, native images and full actor history are unchanged. A 30-step cap ends the rollout; it does not remove earlier history from the prompt.
+
+Old GPU job **369791 was intentionally stopped** after 1h 13m 44s. Its original execution receipt records SIGTERM/exit 1; the protocol-transition receipt records the user-directed reason. Old audit 369796 and watcher 369793 were cancelled, and the old supervisor's STOP marker prevents an unwanted 100-step restart. Completed old tasks and raw partial traces remain saved; incomplete tasks restart under the new cap.
+
+CPU bootstrap **370003 completed** the fresh import/audit and submitted continuation. GPU continuation **370030 has been submitted**; model readiness and new 30-step task results remain unverified. The supervisor currently records watcher **370032** for job **370030**. See the [transition receipt](diagnostics/v6i-webshop30-transition.json). Queued/ready work is distinct from newly completed episodes.
 
 ## Accepted data
 
 | Environment | Accepted training | Accepted development | Total | Target |
 |---|---:|---:|---:|---:|
-| ALFWorld TextWorld | 1,429 | 189 | 1,618 | 5,000 + 500 |
-| WebShop | 1,152 | 142 | 1,294 | 5,000 + 500 |
-| Total | 2,581 | 331 | **2,912** | **11,000** |
+| ALFWorld TextWorld | 1,644 | 189 | 1,833 | 5,000 + 500 |
+| WebShop | 1,208 | 142 | 1,350 | 5,000 + 500 |
+| Total | 2,852 | 331 | **3,183** | **11,000** |
 
-There are **8,088 accepted states still to collect**, or 26.5% complete. One state contains five candidate responses and one teacher selection; it is not five independent labels or a complete episode. CPU recovery audit **369538** accepted 903 additional states, preserving the original 2,009. The stopped worker's progress snapshot understated the final saved yield. New states passed full prompt and native-pixel checks; none was excluded for selector-context overflow. The largest retained selector input remains 15,721 tokens. Full actor history is stored separately and is never shortened to that selector limit.
+There are **7,817 accepted states still to collect**. The previous confirmed total was 2,912. Before the intentional stop, job 369791 saved 33 new completed TextWorld tasks and 11 WebShop tasks, containing 215 and 56 provisionally eligible states respectively. The new audit accepted **271 additional states**. These came from the preceding 100-step WebShop protocol; they are not evidence that the new cap has already generated data.
 
-CPU bootstrap **369540** previously passed 87 regression checks and revalidated all 2,912 states and 583 native image panels. Its GPU successor **369558 subsequently failed during startup and produced no new episodes**. Watcher **369559** ran and stopped for review because this failure was not yet recognized as retryable. The current recovery is **v6h-bounded-startup-text-web-1024-seed42**; its CPU bootstrap **369779 completed in 6m 12s**, revalidating all 2,912 states and 583 native image panels with zero selector-context exclusions. GPU continuation **369791 is now running**: it started at 21:34:49 Pacific on October 18, and model readiness took **105 seconds**. Worker logs contain **19 newly finished TextWorld tasks and 3 WebShop tasks** at the latest check. This confirms live collection has resumed; these task counts do not yet add audited states to the table above. Recent job-local GPU utilization samples were 91–100%. CPU audit successor **369796** waits for successful collection completion. Initial watcher **369781** handed monitoring to **369793**, which waits for collection to finish in any state. The [startup recovery receipt](diagnostics/v6h-startup-recovery.json) records the latest stage.
+<a id="new-data-awaiting-audit"></a>
 
-## New data awaiting audit
+One state contains five candidate responses and one teacher selection. Reporting must separate audited states from newly screened states awaiting audit. Worker rolling totals are not safe increments over the last audit because imported and new tasks are visited in manifest order. The full CPU audit checks native image processing, prompt encoding, selector-context capacity and duplicates before updating the accepted dataset.
 
-The latest check found **138 new provisionally eligible states** in completed task summaries from GPU job 369791, beyond the 2,912 audited states above:
+## Historical data, validation and evaluation
 
-| Environment | New completed tasks | New states awaiting full audit |
-|---|---:|---:|
-| TextWorld | 19 | 122 |
-| WebShop | 3 | 16 |
-| Total | **22** | **138** |
+Existing accepted data is preserved in order. Imported completed summaries record `collection_max_steps` and their source study; original traces are unchanged. Thus the eventual training cohort includes historical 100-step WebShop trajectories plus new 30-step trajectories. **Both SelectionARM and the pointwise head use exactly the same frozen cohort.** It must not be described as an entirely 30-step collection.
 
-These counts come only from new summaries for this GPU job, excluding imported summaries. They do not subtract the worker's rolling counter from the previous audited total: the worker visits saved and new tasks in manifest order, so its rolling counter can temporarily omit previously accepted tasks that it has not reached yet. The previous audited states have not been lost.
+Six checks cover the explicit horizon migration, rejection of undeclared changes, rejection of hidden sampling/other-environment changes, and a collector that stops at exactly 30 actions when the environment never terminates. That rollout check confirms history lengths 0 through 29, with no history shortening. The 27 startup/supervisor checks and 87 collection regressions also passed. These CPU checks do not constitute a new live 30-step benchmark result.
 
-Reporting should distinguish **2,912 audited + 138 newly screened, pending audit**, rather than describing the unchanged audited table as zero new output. The pending states already have candidate responses and teacher labels. The later CPU audit verifies native images and complete prompt encoding, checks context capacity, removes duplicate states, and exports the accepted cohort. Its accepted increment can be smaller than 138. This full audit runs after the current GPU batch; it does not run after every episode. Both raw traces and pending labels remain saved meanwhile.
+The original WebShop RL [baseline default](https://github.com/princeton-nlp/WebShop/blob/64fa2a5c15c7daa698b9ac93f5bb5437b634c9bd/baseline_models/train_rl.py) was 100 steps; examples of shorter recent training protocols include [GiGPO's 15 steps](https://arxiv.org/html/2505.10978#A5.SS1) and [ICRL's 30 interaction turns](https://arxiv.org/html/2605.15224v1#A3). Those papers differ in other settings and do not establish identical benchmark protocols.
+
+New WebShop evaluations must use 30 steps consistently for Greedy, Sol, generative SelectionARM and the head. Historical 100-step Greedy/Sol scores stay unchanged and require new matched 30-step controls. Research fitting and evaluation are later stages and are not launched by this collection chain. The earlier 4–6 day estimate was based on 100-step collection; the 30-step ETA needs measured throughput and audited yield.
 
 ## October 19: startup timeout and its repair
 
@@ -65,8 +71,8 @@ The project fileset was approximately **99% used**, with about 10 GiB reported f
 
 **Storage mitigation completed:** CPU-only job **369586** moved seven rebuildable audit-cache directories and four redundant smoke-test checkpoint directories to Scrubbed. All files passed SHA-256/size/mtime checks before the project originals were replaced with links. The final adapter weights remain on project and match those in the moved checkpoints. Original trajectories, teacher labels, native images, frozen datasets and source snapshots were not moved. Removed project file allocations total **3.51 GiB**. A subsequent quota reading at 04:28 UTC on October 19 reported **13.10 GiB free**, passing the unchanged 4 GiB guard; this is shared, time-varying headroom. The active audit-cache link also sends subsequent cache growth to Scrubbed. See the [storage receipt](diagnostics/storage-relocation-2026-10-18.json).
 
-Using the previous 903-state increment as a rough basis, the remaining 8,088 states require about **8.37 GiB for raw collection/images/teacher cache plus 0.61 GiB for incremental exports**. Final duplicate cohort exports and training outputs are additional; other users can consume the shared headroom. Full-history head features and disposable training intermediates should use scratch, while the final dataset/model and paid raw data keep persistent copies. A further **20–30 GiB of project headroom or an approved persistent storage destination** is a planning recommendation for completing collection and training comfortably, not a measured training-space requirement. The 4 GiB guard remains.
+Before the horizon change, using the previous 903-state increment as a rough basis, 8,088 remaining states were estimated to require about **8.37 GiB for raw collection/images/teacher cache plus 0.61 GiB for incremental exports**. Final duplicate cohort exports and training outputs are additional; other users can consume the shared headroom. Full-history head features and disposable training intermediates should use scratch, while the final dataset/model and paid raw data keep persistent copies. A further **20–30 GiB of project headroom or an approved persistent storage destination** is a planning recommendation for completing collection and training comfortably, not a measured training-space requirement. The 4 GiB guard remains.
 
 After collection reaches 5,000 training and 500 development states per environment, both methods receive the same frozen cohort. Full feature extraction, research training, deployment validation and paired Greedy/Sol comparisons still follow. Iterative DPO, extra seeds and official test evaluation remain deferred. The supervisor does not authorize or launch those stages.
 
-The [current startup-recovery receipt](diagnostics/v6h-startup-recovery.json) records the publication-time jobs and checks; the [earlier recovery receipt](diagnostics/v6g-collection-recovery.json) remains a historical snapshot. Cluster `STATUS.md`, `status.json`, and `supervisor/status.json` update during execution. GitHub is a reviewed snapshot, not an unattended live uploader.
+The [current horizon-transition receipt](diagnostics/v6i-webshop30-transition.json) records the latest reviewed jobs and checks; the [startup-recovery receipt](diagnostics/v6h-startup-recovery.json) is historical; the [earlier recovery receipt](diagnostics/v6g-collection-recovery.json) remains a historical snapshot. Cluster `STATUS.md`, `status.json`, and `supervisor/status.json` update during execution. GitHub is a reviewed snapshot, not an unattended live uploader.

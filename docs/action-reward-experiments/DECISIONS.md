@@ -1,5 +1,11 @@
 # Decisions, limitations, and next steps
 
+## 2026-10-19 UTC — Apply the user-requested WebShop 30-step maximum
+
+The user explicitly requested a 30-step maximum. The old GPU job 369791 was intentionally stopped, its dependent audit/watcher cancelled, and its recovery disabled. New study v6i has a separate base config changing only WebShop's maximum from 100 to 30; TextWorld remains 50. Explicit migration validation rejects undeclared actor, sampling or other-environment changes. Old completed data remains in order with the historical horizon recorded. Incomplete tasks restart, and their old partial traces remain saved.
+
+Six horizon/history checks, 27 startup/supervisor tests and 87 regressions passed. CPU bootstrap 370003 audited 3,183 states, including 271 additional accepted states from the intentionally stopped job. GPU continuation **370030 has been submitted**; model readiness and new 30-step task results remain unverified. Supervision remains installed. New WebShop comparisons require matched 30-step Greedy/Sol controls; existing 18%/28% results remain historical 100-step scores. Both learned methods receive the same frozen mixed-provenance cohort. No research fit or evaluation was launched. See the [current record](collection-status.md) and [transition receipt](diagnostics/v6i-webshop30-transition.json).
+
 ## 2026-10-19 UTC — Repair a readiness deadline that interrupted startup
 
 GPU job 369558 failed after 5m 14s without collecting an episode. The logs show successful weight loading and ongoing image-encoder profiling when the wrapper reached its five-minute deadline and terminated the server. Watcher 369559 completed but classified the error as unrecognized and stopped; it did not retry. The previous status report therefore cannot be interpreted as evidence that collection had resumed.

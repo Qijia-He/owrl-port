@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "snapshot_at": "2026-10-19T05:58:19.584978+00:00",
+  "study_id": "v6i-webshop30-text50-1024-seed42",
+  "counts": {
+    "alfworld_text": {
+      "train": 1644,
+      "development": 189
+    },
+    "webshop": {
+      "train": 1208,
+      "development": 142
+    }
+  },
+  "accepted_total": 3183,
+  "target_total": 11000,
+  "remaining": 7817,
+  "newly_audited_since_v6h": 271,
+  "source_protocol": {
+    "source_study_id": "v6h-bounded-startup-text-web-1024-seed42",
+    "horizon_changes": {
+      "webshop": {
+        "from": 100,
+        "to": 30
+      }
+    },
+    "new_collection_max_steps": {
+      "alfworld_text": 50,
+      "webshop": 30
+    },
+    "import_policy": "Preserve completed historical episodes and their original horizon; restart incomplete tasks under the new horizon.",
+    "historical_states_are_not_relabelled_as_new_horizon": true
+  },
+  "old_job_transition": {
+    "requested_at": "2026-10-19T05:48:30.337467+00:00",
+    "from_webshop_max_steps": 100,
+    "to_webshop_max_steps": 30,
+    "next_study": "v6i-webshop30-text50-1024-seed42",
+    "reason": "User explicitly requested a 30-step WebShop maximum.",
+    "preserve": "All completed source episodes and historical raw traces; interrupted tasks restart under the new cap.",
+    "cancelled_successors": [
+      "369796",
+      "369793"
+    ],
+    "stopping_gpu_job": "369791",
+    "old_gpu_stopped": true,
+    "source_new_pending": {
+      "alfworld_text": {
+        "finished_tasks": 33,
+        "pending_states": 215
+      },
+      "webshop": {
+        "finished_tasks": 11,
+        "pending_states": 56
+      }
+    },
+    "bootstrap_job": "370003",
+    "supervisor_installer_job": "370006"
+  },
+  "old_execution": {
+    "phase": "collect",
+    "job_id": "369791",
+    "started_at": 1792384492.735052,
+    "status": "failed",
+    "error_type": "RuntimeError",
+    "error": "Slurm signal 15",
+    "finished_at": 1792388913.1896935
+  },
+  "bootstrap": {
+    "phase": "bootstrap",
+    "job_id": "370003",
+    "started_at": 1792389032.3962524,
+    "status": "completed",
+    "finished_at": 1792389448.522743
+  },
+  "audit": {
+    "counts": {
+      "alfworld_text": {
+        "train": 1644,
+        "development": 189
+      },
+      "webshop": {
+        "train": 1208,
+        "development": 142
+      }
+    },
+    "episodes": {
+      "alfworld_text": 282,
+      "webshop": 322
+    },
+    "exclusions": {
+      "identical_actions": 6152,
+      "selected_action_syntax": 1619
+    },
+    "image_processing_policy": "native-qwen-single-resize-v1",
+    "prefix_audit_policy": "every-sample-prefix-and-native-pixels-v3",
+    "fresh_prefix_checks": 3183,
+    "fresh_native_pixel_panels": 599,
+    "maximum_retained_tokens": 15721,
+    "image_counts": {
+      "0": 2362,
+      "10": 597,
+      "1": 224
+    },
+    "encoding_considered": 3183,
+    "context_excluded": 0,
+    "completed_episode_teacher_usd_including_imports": {
+      "alfworld_text": 53.82009550000001,
+      "webshop": 95.93472350000008
+    },
+    "group_counts": {
+      "train": 522,
+      "development": 77
+    },
+    "task_counts": {
+      "alfworld_text": 279,
+      "webshop": 321
+    },
+    "length_percentiles": {
+      "50": 3675,
+      "90": 8788,
+      "95": 9863,
+      "99": 12106
+    },
+    "updated_at": 1792389444.2727277,
+    "artifact_bytes": 4742945
+  },
+  "collection_status": {
+    "status": "awaiting_gpu_collection",
+    "job_id": "370003",
+    "next_job_id": "370030",
+    "error": null,
+    "updated_at": 1792389448.522285,
+    "counts": {
+      "alfworld_text": {
+        "train": 1644,
+        "development": 189
+      },
+      "webshop": {
+        "train": 1208,
+        "development": 142
+      }
+    },
+    "audit": {
+      "counts": {
+        "alfworld_text": {
+          "train": 1644,
+          "development": 189
+        },
+        "webshop": {
+          "train": 1208,
+          "development": 142
+        }
+      },
+      "episodes": {
+        "alfworld_text": 282,
+        "webshop": 322
+      },
+      "exclusions": {
+        "identical_actions": 6152,
+        "selected_action_syntax": 1619
+      },
+      "image_processing_policy": "native-qwen-single-resize-v1",
+      "prefix_audit_policy": "every-sample-prefix-and-native-pixels-v3",
+      "fresh_prefix_checks": 3183,
+      "fresh_native_pixel_panels": 599,
+      "maximum_retained_tokens": 15721,
+      "image_counts": {
+        "0": 2362,
+        "10": 597,
+        "1": 224
+      },
+      "encoding_considered": 3183,
+      "context_excluded": 0,
+      "completed_episode_teacher_usd_including_imports": {
+        "alfworld_text": 53.82009550000001,
+        "webshop": 95.93472350000008
+      },
+      "group_counts": {
+        "train": 522,
+        "development": 77
+      },
+      "task_counts": {
+        "alfworld_text": 279,
+        "webshop": 321
+      },
+      "length_percentiles": {
+        "50": 3675,
+        "90": 8788,
+        "95": 9863,
+        "99": 12106
+      },
+      "updated_at": 1792389444.2727277,
+      "artifact_bytes": 4742945
+    },
+    "no_progress_audits": 0,
+    "next_phase": "collect"
+  },
+  "submitted_gpu_job": "370030",
+  "server_startup": null,
+  "supervisor": {
+    "total_recoveries": 0,
+    "phase_failures": {
+      "bootstrap": 0
+    },
+    "events": [
+      {
+        "watched_job": "370003",
+        "phase": "bootstrap",
+        "slurm_state": "COMPLETED",
+        "at": 1792389482.117416,
+        "supervisor_job": "370007",
+        "action": "follow",
+        "next_job": "370030"
+      }
+    ],
+    "handled_jobs": [
+      "370003"
+    ],
+    "source_sha256": "97dd45ebab583ab9ee16d23474c8cdbfa1963bebebd335876de66c77218f1de2",
+    "status": "watching",
+    "watched_job": "370030",
+    "watched_phase": "collect",
+    "next_watcher": "370032",
+    "updated_at": 1792389482.2170115,
+    "maximum_recoveries_per_phase": 2,
+    "maximum_total_recoveries": 6
+  },
+  "tests_passed": {
+    "horizon_and_history": 6,
+    "startup_and_supervisor": 27,
+    "collection_regressions": 87
+  },
+  "quota_before_submission": {
+    "fileset": "/gpfs/projects/krishna",
+    "free_gib": 12.61181640625,
+    "minimum_free_gib": 4,
+    "at": 1792389448.4596682,
+    "passed": true,
+    "raw_csv": "path,type,id,kib_used,kib_max,files\n/gpfs/projects/krishna,fileset,project-krishna,1060517376,1073741824,2614705\n/gpfs/projects/krishna,user,heqj3,6303104,0,30825\n"
+  },
+  "runtime_sources_match_freeze": true,
+  "interpretation": "Historical WebShop states were generated under the 100-step cap. New WebShop episodes use 30. Both learned selectors receive the same frozen mixed-provenance cohort. Historical 100-step benchmark scores are not 30-step controls."
+}
