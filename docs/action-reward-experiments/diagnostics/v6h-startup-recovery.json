@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_at": "2026-10-19T04:29:39.955125+00:00",
+  "snapshot_at": "2026-10-19T05:13:46.350856+00:00",
   "study_id": "v6h-bounded-startup-text-web-1024-seed42",
   "source_study_id": "v6g-native-empty-image-text-web-1024-seed42",
   "counts": {
@@ -58,7 +58,7 @@
     "supervisor": 22,
     "collection_regressions": 87,
     "passed": true,
-    "live_gpu_startup_verified": false
+    "live_gpu_startup_verified": true
   },
   "bootstrap": {
     "phase": "bootstrap",
@@ -120,18 +120,39 @@
     "artifact_bytes": 4572765
   },
   "collection_status": {
-    "status": "awaiting_gpu_collection",
-    "job_id": "369779",
-    "next_job_id": "369791",
-    "next_phase": "collect",
-    "updated_at": 1792384109.263411
+    "status": "collect",
+    "job_id": "369791",
+    "next_job_id": "369796",
+    "next_phase": "audit",
+    "updated_at": 1792386821.1499429
   },
   "gpu_successor": {
     "job_id": "369791",
-    "state": "PENDING",
-    "reason": "Priority",
-    "server_ready": false,
-    "new_completed_episodes": 0
+    "state": "RUNNING",
+    "started_at_pacific": "2026-10-18T21:34:49-07:00",
+    "server_ready": true,
+    "server_startup": {
+      "status": "ready",
+      "elapsed_seconds": 105.13998529402306,
+      "timeout_seconds": 900,
+      "stall_seconds": 600,
+      "seconds_since_log_growth": 0.0037508269888348877,
+      "log_bytes": 56264,
+      "server_process_alive": true,
+      "expected_models": [
+        "Qwen/Qwen3.5-4B"
+      ],
+      "observed_models": [
+        "Qwen/Qwen3.5-4B"
+      ],
+      "last_probe_error_type": "ConnectionError",
+      "at": 1792384598.0054548
+    },
+    "new_finished_task_log_records": {
+      "alfworld_text": 17,
+      "webshop": 3
+    },
+    "counts_are_pre_audit": true
   },
   "supervisor": {
     "total_recoveries": 0,
@@ -175,10 +196,26 @@
     "scientific_settings_unchanged": true
   },
   "limitations": [
-    "The startup tests use simulated time/readiness and do not establish live GPU success.",
-    "The queued GPU has no allocation yet.",
+    "The live service is ready and new tasks have finished, but this does not establish completion of the full collection batch.",
     "The accepted count changes only after auditing completed data.",
-    "Shared quota is time-varying and can lag.",
+    "The last quota reading is a pre-submission snapshot; shared usage can change.",
     "GitHub is a reviewed snapshot; cluster status is authoritative."
-  ]
+  ],
+  "live_collection_observation": {
+    "at": "2026-10-19T05:13:46.350856+00:00",
+    "new_finished_task_records": {
+      "alfworld_text": 17,
+      "webshop": 3
+    },
+    "recent_job_local_gpu_utilization_percent": [
+      100,
+      100,
+      100,
+      91
+    ],
+    "cpu_audit_job": "369796",
+    "watcher_job": "369793",
+    "accepted_states": 2912,
+    "note": "Worker cumulative eligible-state counters include imported summary counters and are not a new CPU audit. New task records are not benchmark success rates."
+  }
 }
