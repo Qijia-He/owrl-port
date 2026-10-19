@@ -1,5 +1,11 @@
 # Decisions, limitations, and next steps
 
+## 2026-10-18 UTC — Recover collection and add Slurm supervision
+
+Job 364528 stopped after 3h 47m on an empty native WebShop image source; its successor was cancelled and its GPU released. The failure was discovered during this status check, not automatically repaired overnight. CPU audit 369538 accepted 903 more states, bringing the preserved total to 2,912. A native catalog/template check found 717 empty main-image sources and reproduced empty-source results/item pages. Version v6g retains native text/actions, explicitly marks an unavailable image only for an empty source, and still requires every available image. It passed 87 regression checks. Old code, traces and validation evidence are preserved.
+
+The user explicitly requested automatic restart after failures. Added an event-driven CPU Slurm supervisor with afterany dependencies, five-minute delayed recoveries, an audit before GPU recovery, duplicate-submission protection, two consecutive retries per phase and six total. Cancellation, deterministic/unclassified errors, OOM and storage errors stop for review. Its 21 tests passed. Project storage is 99% used; each new GPU submission requires 4 GiB free quota. See the [collection record](collection-status.md) and its receipt for current job IDs and production status. Research training, DPO, extra seeds and final test remain outside this job chain.
+
 Updated 2026-10-16 UTC. The [main report](README.md) is the self-contained explanation of the project. This file preserves the decisions and operational history behind it.
 
 ## Current scope
@@ -19,7 +25,7 @@ The user authorized exact-token logging, small-batch head extraction, preservati
 
 Job 364454 validated 15 exact generated-token sequences, reconstructed native prompt IDs, and 12 full-history head panels, including 161,591 tokens. Forty candidate-pooling and eight prefix-pooling checks matched directly returned hidden states. Both pointwise heads completed three updates and reload/permutation checks. TextWorld SFT completed three updates; its first reload check exposed a BatchEncoding/Tensor mismatch. The saved adapter was retained and the corrected reload passed in 364474. WebShop then stopped before its first update because Triton compilation exhausted home quota. CPU job 364482 moved regenerable caches to scratch and passed 27 tests. With explicit cache forwarding and allocation-based compiler thread limits, WebShop SFT and reload passed in 364491. Failed logs and checkpoints are preserved. These are pipeline checks, not accuracy measurements; [portable evidence](diagnostics/v6f-pipeline-validation.json) records their limits.
 
-CPU bootstrap 364492 passed 82 tests and re-audited all 2,009 examples and 420 image panels in 4m 35s, preserving all previous selected IDs. GPU continuation 364528 is queued; the durable GPU/CPU chain advances automatically. Source freezing now includes the runtime shell configuration. The final collection target automatically exports matching SFT and head panels. No research fit, iterative DPO, extra seed, or official test is submitted by the collection workflow. Generation-time feature reuse and live selector serving still need separate validation.
+CPU bootstrap 364492 passed 82 tests and re-audited all 2,009 examples and 420 image panels in 4m 35s, preserving all previous selected IDs. GPU continuation 364528 was queued at that publication time; it later failed as recorded in the October 18 entry. Source freezing now includes the runtime shell configuration. The final collection target automatically exports matching SFT and head panels. No research fit, iterative DPO, extra seed, or official test is submitted by the collection workflow. Generation-time feature reuse and live selector serving still need separate validation.
 
 ## 2026-10-16 UTC — Full data audit passes with native image preprocessing
 

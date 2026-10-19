@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "published_snapshot_at": "2026-10-19T01:09:28.313687+00:00",
+  "study_id": "v6g-native-empty-image-text-web-1024-seed42",
+  "source_study_id": "v6f-exact-token-collection-text-web-1024-seed42",
+  "counts": {
+    "alfworld_text": {
+      "train": 1429,
+      "development": 189
+    },
+    "webshop": {
+      "train": 1152,
+      "development": 142
+    }
+  },
+  "accepted_total": 2912,
+  "target_total": 11000,
+  "remaining": 8088,
+  "newly_accepted": 903,
+  "previous_accepted": 2009,
+  "audit": {
+    "fresh_prefix_checks": 2912,
+    "fresh_native_pixel_panels": 583,
+    "context_excluded": 0,
+    "maximum_retained_tokens": 15721,
+    "image_counts": {
+      "0": 2118,
+      "10": 582,
+      "1": 212
+    },
+    "episodes": {
+      "alfworld_text": 249,
+      "webshop": 311
+    },
+    "task_counts": {
+      "alfworld_text": 247,
+      "webshop": 310
+    }
+  },
+  "native_empty_image_check": {
+    "passed": true,
+    "job_id": "369540",
+    "catalog_products": 1181430,
+    "empty_main_images": 717,
+    "diagnostic_only": true,
+    "teacher_calls": 0,
+    "pages": {
+      "results": {
+        "native_empty_src": true,
+        "image_count": 0,
+        "native_text_and_actions_preserved": true,
+        "html_sha256": "bdcf74ff4520dc8718902529300bb7b9d11bbf690abaea35ae3c3f1b29ed0f8b"
+      },
+      "item": {
+        "native_empty_src": true,
+        "image_count": 0,
+        "native_text_and_actions_preserved": true,
+        "html_sha256": "712e9cc9eb93af5d7502ad9589b4f3f42929474851211e3b79f84baee1554208"
+      }
+    },
+    "environment_source_sha256": "0bd84faa113d43780a71351fffe611dc4e4606af40fc62f10637b71bc08c73c1",
+    "at": 1792371681.3212774
+  },
+  "bootstrap": {
+    "phase": "bootstrap",
+    "job_id": "369540",
+    "started_at": 1792371708.980886,
+    "status": "completed",
+    "finished_at": 1792372075.6716607
+  },
+  "regression_tests_passed": 87,
+  "supervisor_tests_passed": 21,
+  "collection_status": {
+    "status": "awaiting_gpu_collection",
+    "job_id": "369540",
+    "next_job_id": "369558",
+    "next_phase": "collect",
+    "updated_at": 1792372075.671226
+  },
+  "supervisor": {
+    "total_recoveries": 0,
+    "phase_failures": {
+      "bootstrap": 0
+    },
+    "events": [
+      {
+        "watched_job": "369540",
+        "phase": "bootstrap",
+        "slurm_state": "COMPLETED",
+        "at": 1792372113.1859403,
+        "supervisor_job": "369551",
+        "action": "follow",
+        "next_job": "369558"
+      }
+    ],
+    "handled_jobs": [
+      "369540"
+    ],
+    "source_sha256": "f24804c26553f1c6600887112705cc0ff11d076fec2d8b7d2e9b9c285b6f88df",
+    "status": "watching",
+    "watched_job": "369558",
+    "watched_phase": "collect",
+    "next_watcher": "369559",
+    "updated_at": 1792372113.2811036,
+    "maximum_recoveries_per_phase": 2,
+    "maximum_total_recoveries": 6
+  },
+  "quota": {
+    "free_gib": 10.03076171875,
+    "minimum_free_gib": 4,
+    "passed": true,
+    "at": 1792372075.6106021
+  },
+  "previous_failure": {
+    "phase": "collect",
+    "job_id": "364528",
+    "started_at": 1792194521.9629161,
+    "status": "failed",
+    "error_type": "RuntimeError",
+    "error": "Collection worker failed",
+    "finished_at": 1792208146.071564
+  },
+  "cpu_recovery_audit_job": "369538",
+  "corrected_cpu_invocations": [
+    {
+      "job": "369533",
+      "issue": "Direct encoding invoked the collection environment instead of the training container; corrected wrapper in 369538."
+    },
+    {
+      "job": "369539",
+      "issue": "Configuration file creation used an unavailable python alias; recreated with python3 before 369540."
+    }
+  ],
+  "scope": {
+    "autonomous_research_training": false,
+    "iterative_dpo": false,
+    "extra_seeds": false,
+    "official_test": false,
+    "live_failure_recovery_observed": false,
+    "note": "Controller tests pass; a production transient-failure recovery has not been induced.",
+    "live_successor_handoff_observed": true
+  }
+}
