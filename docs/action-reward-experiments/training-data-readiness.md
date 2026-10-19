@@ -4,6 +4,10 @@
 
 This report covers the `v6e-native-image-data-audit-text-web-1024-seed42` audit and the subsequent `v6f` continuation, on 2026-10-16 UTC. [Data-audit evidence](diagnostics/v6e-training-data-readiness.json) and [GPU-validation evidence](diagnostics/v6f-pipeline-validation.json) accompany the [Table 1(c) plan](selection-arm-head-plan.md). Iterative DPO remains deferred.
 
+## October 19 startup recovery
+
+The dataset is still **2,912 accepted states**. Job 369558 ended before collection when the five-minute service-readiness deadline interrupted ongoing startup. Version v6h changes only startup waiting/diagnostics and supervisor classification: 900 seconds total, 600 seconds without log growth, bounded retry for a progressing timeout. Native-input/token checks are inherited only after source-hash verification. New startup/supervisor tests (27) and existing collection regression tests (87) passed. See the [collection record](collection-status.md) for current execution and failure evidence; no new training result is implied.
+
 ## October 18 collection update
 
 The [collection and recovery record](collection-status.md) reports **1,429 train + 189 development** TextWorld states and **1,152 train + 142 development** WebShop states. GPU job 364528 failed on an empty native image URL after 3h 47m; recovery audit 369538 retained another 903 states with zero selector-context exclusions. Version v6g fixes that native edge case and adds a tested, bounded Slurm recovery supervisor. Available images remain mandatory. The current shortage is **8,088 states**, and project quota is a material constraint. Full research training has not begun.

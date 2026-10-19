@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "snapshot_at": "2026-10-19T04:29:39.955125+00:00",
+  "study_id": "v6h-bounded-startup-text-web-1024-seed42",
+  "source_study_id": "v6g-native-empty-image-text-web-1024-seed42",
+  "counts": {
+    "alfworld_text": {
+      "train": 1429,
+      "development": 189
+    },
+    "webshop": {
+      "train": 1152,
+      "development": 142
+    }
+  },
+  "accepted_total": 2912,
+  "target_total": 11000,
+  "remaining": 8088,
+  "newly_accepted_since_v6g": 0,
+  "failed_launch": {
+    "phase": "collect",
+    "job_id": "369558",
+    "started_at": 1792373977.1666465,
+    "status": "failed",
+    "error_type": "RuntimeError",
+    "error": "Server readiness exceeded five minutes",
+    "finished_at": 1792374286.364133,
+    "slurm_elapsed": "00:05:14",
+    "new_episodes": 0,
+    "teacher_calls": 0,
+    "audit_successor_cancelled": "369591",
+    "weights_loaded_pacific": "2026-10-18T18:44:29-07:00",
+    "image_encoder_profiling_pacific": "2026-10-18T18:44:30-07:00",
+    "wrapper_termination_pacific": "2026-10-18T18:44:37-07:00",
+    "prior_watcher_job": "369559",
+    "prior_watcher_action": "stop: unclassified failure requires review"
+  },
+  "configuration_changes": {
+    "study_id": {
+      "previous": "v6g-native-empty-image-text-web-1024-seed42",
+      "current": "v6h-bounded-startup-text-web-1024-seed42"
+    },
+    "source_study_id": {
+      "previous": "v6f-exact-token-collection-text-web-1024-seed42",
+      "current": "v6g-native-empty-image-text-web-1024-seed42"
+    },
+    "server_startup_timeout_seconds": {
+      "previous": null,
+      "current": 900
+    },
+    "server_startup_stall_seconds": {
+      "previous": null,
+      "current": 600
+    }
+  },
+  "tests": {
+    "startup_wait": 5,
+    "supervisor": 22,
+    "collection_regressions": 87,
+    "passed": true,
+    "live_gpu_startup_verified": false
+  },
+  "bootstrap": {
+    "phase": "bootstrap",
+    "job_id": "369779",
+    "started_at": 1792383742.1873698,
+    "status": "completed",
+    "finished_at": 1792384109.2638156
+  },
+  "audit": {
+    "counts": {
+      "alfworld_text": {
+        "train": 1429,
+        "development": 189
+      },
+      "webshop": {
+        "train": 1152,
+        "development": 142
+      }
+    },
+    "episodes": {
+      "alfworld_text": 249,
+      "webshop": 311
+    },
+    "exclusions": {
+      "identical_actions": 5614,
+      "selected_action_syntax": 1440
+    },
+    "image_processing_policy": "native-qwen-single-resize-v1",
+    "prefix_audit_policy": "every-sample-prefix-and-native-pixels-v3",
+    "fresh_prefix_checks": 2912,
+    "fresh_native_pixel_panels": 583,
+    "maximum_retained_tokens": 15721,
+    "image_counts": {
+      "0": 2118,
+      "10": 582,
+      "1": 212
+    },
+    "encoding_considered": 2912,
+    "context_excluded": 0,
+    "completed_episode_teacher_usd_including_imports": {
+      "alfworld_text": 48.090811000000016,
+      "webshop": 89.48941850000004
+    },
+    "group_counts": {
+      "train": 479,
+      "development": 77
+    },
+    "task_counts": {
+      "alfworld_text": 247,
+      "webshop": 310
+    },
+    "length_percentiles": {
+      "50": 3750,
+      "90": 8826,
+      "95": 9943,
+      "99": 12027
+    },
+    "updated_at": 1792384105.4424033,
+    "artifact_bytes": 4572765
+  },
+  "collection_status": {
+    "status": "awaiting_gpu_collection",
+    "job_id": "369779",
+    "next_job_id": "369791",
+    "next_phase": "collect",
+    "updated_at": 1792384109.263411
+  },
+  "gpu_successor": {
+    "job_id": "369791",
+    "state": "PENDING",
+    "reason": "Priority",
+    "server_ready": false,
+    "new_completed_episodes": 0
+  },
+  "supervisor": {
+    "total_recoveries": 0,
+    "phase_failures": {
+      "bootstrap": 0
+    },
+    "events": [
+      {
+        "watched_job": "369779",
+        "phase": "bootstrap",
+        "slurm_state": "COMPLETED",
+        "at": 1792384131.8813775,
+        "supervisor_job": "369781",
+        "action": "follow",
+        "next_job": "369791"
+      }
+    ],
+    "handled_jobs": [
+      "369779"
+    ],
+    "source_sha256": "97dd45ebab583ab9ee16d23474c8cdbfa1963bebebd335876de66c77218f1de2",
+    "status": "watching",
+    "watched_job": "369791",
+    "watched_phase": "collect",
+    "next_watcher": "369793",
+    "updated_at": 1792384131.9702487,
+    "maximum_recoveries_per_phase": 2,
+    "maximum_total_recoveries": 6
+  },
+  "quota_before_gpu_submission": {
+    "fileset": "/gpfs/projects/krishna",
+    "free_gib": 13.103759765625,
+    "minimum_free_gib": 4,
+    "at": 1792384109.2080917,
+    "passed": true,
+    "raw_csv": "path,type,id,kib_used,kib_max,files\n/gpfs/projects/krishna,fileset,project-krishna,1060001536,1073741824,2606984\n/gpfs/projects/krishna,user,heqj3,5950848,0,29615\n"
+  },
+  "verification": {
+    "runtime_sources_match_frozen_study": true,
+    "base_experiment_unchanged": true,
+    "scientific_settings_unchanged": true
+  },
+  "limitations": [
+    "The startup tests use simulated time/readiness and do not establish live GPU success.",
+    "The queued GPU has no allocation yet.",
+    "The accepted count changes only after auditing completed data.",
+    "Shared quota is time-varying and can lag.",
+    "GitHub is a reviewed snapshot; cluster status is authoritative."
+  ]
+}

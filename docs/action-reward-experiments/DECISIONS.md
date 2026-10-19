@@ -1,5 +1,11 @@
 # Decisions, limitations, and next steps
 
+## 2026-10-19 UTC — Repair a readiness deadline that interrupted startup
+
+GPU job 369558 failed after 5m 14s without collecting an episode. The logs show successful weight loading and ongoing image-encoder profiling when the wrapper reached its five-minute deadline and terminated the server. Watcher 369559 completed but classified the error as unrecognized and stopped; it did not retry. The previous status report therefore cannot be interpreted as evidence that collection had resumed.
+
+Version v6h preserves v6g and the 2,912 accepted states, keeps the vLLM command/model/scientific settings unchanged, and records bounded startup status: 900 seconds total and 600 seconds without log growth. A distinct progressing-timeout exception is retryable within the existing limits; stalls and hard errors remain nonretryable. New startup/supervisor checks (27) and all collection regressions (87) passed. CPU bootstrap 369779 completed, freshly revalidated all 2,912 states and 583 image panels, and submitted GPU successor 369791; watcher 369781 handed monitoring to 369793. The GPU was queued at publication. Live GPU readiness and any new episode results must be verified separately; see the [collection record](collection-status.md).
+
 ## 2026-10-18 UTC — Relieve project storage pressure
 
 The user asked how the 99%-full project fileset would be handled. CPU-only job 369586 completed in 25 seconds, relocating seven rebuildable audit caches and four redundant smoke checkpoints to Scrubbed after full file-hash verification. Final adapter weights remain on project and match the moved checkpoint copies; all original research data and frozen datasets remain in place. Removed file allocations total 3.51 GiB, subject to quota reporting/snapshot caveats. The remaining collection is roughly 9 GiB before final duplicate exports and training outputs. The 4 GiB submission guard remains; no other users’ files or external storage were changed. The [storage plan and receipt](collection-status.md#storage-and-remaining-work) record preservation and recovery semantics.
