@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "study_id": "v6i-webshop30-text50-1024-seed42",
+  "snapshot_at": "2026-10-19T21:15:38.177583+00:00",
+  "current_job": "371521",
+  "current_job_pending": {
+    "alfworld_text": {
+      "finished_tasks": 16,
+      "pending_states": 124,
+      "recorded_steps": 507
+    },
+    "webshop": {
+      "finished_tasks": 52,
+      "pending_states": 191,
+      "recorded_steps": 424
+    }
+  },
+  "native_collection_summary_horizon_check": {
+    "alfworld_text": {
+      "finished_tasks": 371,
+      "maximum_observed_steps": 50,
+      "over_cap": 0
+    },
+    "webshop": {
+      "finished_tasks": 603,
+      "maximum_observed_steps": 30,
+      "over_cap": 0
+    }
+  },
+  "accepted_counts": {
+    "alfworld_text": {
+      "train": 3675,
+      "development": 500
+    },
+    "webshop": {
+      "train": 3039,
+      "development": 500
+    }
+  },
+  "accepted_total": 7714,
+  "target_total": 11000,
+  "remaining": 3286,
+  "pending_total": 315,
+  "pending_included_in_accepted": false,
+  "completed_batches": [
+    {
+      "audit_job": "370034",
+      "gpu_job": "370030",
+      "gpu_seconds": 15131,
+      "counts": {
+        "alfworld_text": {
+          "train": 2202,
+          "development": 448
+        },
+        "webshop": {
+          "train": 1729,
+          "development": 395
+        }
+      },
+      "total": 4774,
+      "context_excluded": 0,
+      "at": 1792405468.041603
+    },
+    {
+      "audit_job": "370624",
+      "gpu_job": "370622",
+      "gpu_seconds": 10189,
+      "counts": {
+        "alfworld_text": {
+          "train": 2559,
+          "development": 500
+        },
+        "webshop": {
+          "train": 2247,
+          "development": 500
+        }
+      },
+      "total": 5806,
+      "context_excluded": 0,
+      "at": 1792415891.0914698
+    },
+    {
+      "audit_job": "370759",
+      "gpu_job": "370757",
+      "gpu_seconds": 12618,
+      "counts": {
+        "alfworld_text": {
+          "train": 3117,
+          "development": 500
+        },
+        "webshop": {
+          "train": 2518,
+          "development": 500
+        }
+      },
+      "total": 6635,
+      "context_excluded": 0,
+      "at": 1792428796.492376
+    },
+    {
+      "audit_job": "370993",
+      "gpu_job": "370991",
+      "gpu_seconds": 11155,
+      "counts": {
+        "alfworld_text": {
+          "train": 3675,
+          "development": 500
+        },
+        "webshop": {
+          "train": 3039,
+          "development": 500
+        }
+      },
+      "total": 7714,
+      "context_excluded": 0,
+      "at": 1792440141.3970387
+    }
+  ],
+  "supervisor": {
+    "total_recoveries": 0,
+    "watcher_job": "371530",
+    "cpu_audit_job": "371558"
+  },
+  "quota": {
+    "free_gib": 7.3741455078125,
+    "minimum_free_gib": 4,
+    "raw_csv": "path,type,id,kib_used,kib_max,files\n/gpfs/projects/krishna,fileset,project-krishna,1066009472,1073741824,2647236\n/gpfs/projects/krishna,user,heqj3,11401856,0,59300\n",
+    "shared_fileset": true
+  },
+  "estimate": {
+    "remaining_gpu_hours": [
+      10,
+      15
+    ],
+    "queue_and_cpu_audit_time_additional": true,
+    "assumes_continued_throughput_and_sufficient_storage": true,
+    "excludes_training_and_evaluation": true
+  },
+  "interpretation": "The cohort retains historical WebShop data generated under a 100-step cap; new WebShop episodes have a 30-step cap. Both learned methods will use the same frozen cohort. No research selector fits or benchmark evaluations have been run by this collection chain."
+}

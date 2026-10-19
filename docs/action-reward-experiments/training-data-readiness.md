@@ -1,8 +1,12 @@
 # Can we use the data already collected?
 
-**Yes: the saved data supports both methods, and a shared small batch has now passed their training and checkpoint-reload checks.** The current CPU audit covers **3,183 accepted examples** after the October 19 horizon transition; the original detailed v6e audit below covered 2,009. The GPU validation below covers 12 states, including native images and the longest actor history. Full feature extraction for the final research cohort, serving/deployment validation, and learned-selector benchmark evaluation remain to be done.
+**Yes: the saved data supports both methods, and a shared small batch has now passed their training and checkpoint-reload checks.** The current CPU audit covers **7,714 accepted examples** after four successful v6i collection/audit batches; the original detailed v6e audit below covered 2,009. The GPU validation below covers 12 states, including native images and the longest actor history. Full feature extraction for the final research cohort, serving/deployment validation, and learned-selector benchmark evaluation remain to be done.
 
 This report covers the `v6e-native-image-data-audit-text-web-1024-seed42` audit and the subsequent `v6f` continuation, on 2026-10-16 UTC. [Data-audit evidence](diagnostics/v6e-training-data-readiness.json) and [GPU-validation evidence](diagnostics/v6f-pipeline-validation.json) accompany the [Table 1(c) plan](selection-arm-head-plan.md). Iterative DPO remains deferred.
+
+## October 19, 21:15 UTC: four successful collection batches
+
+The accepted cohort now contains TextWorld **3,675 training + 500 development** states and WebShop **3,039 + 500**. Both development targets are complete; 3,286 training states remain. The current GPU job has another 315 provisionally eligible states awaiting audit, excluded from the accepted count. The supervisor followed all four successful batches without a recovery. Completed new-version summaries contain 603 WebShop tasks, none exceeding 30 actions. The latest audit reports zero selector-context exclusions. See the [collection record](collection-status.md) and [progress receipt](diagnostics/v6i-collection-progress-2026-10-19.json). These collection checks do not establish trained-selector accuracy.
 
 ## October 19: WebShop maximum reduced to 30 actions
 

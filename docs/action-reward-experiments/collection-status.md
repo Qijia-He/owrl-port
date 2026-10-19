@@ -1,6 +1,6 @@
 # Data collection and automatic recovery
 
-Updated 2026-10-19 UTC. This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
+Updated 2026-10-19 at 21:15 UTC (14:15 Pacific). This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
 
 ## Current protocol and execution
 
@@ -8,21 +8,34 @@ The user requested **a maximum of 30 WebShop environment actions per episode**. 
 
 Old GPU job **369791 was intentionally stopped** after 1h 13m 44s. Its original execution receipt records SIGTERM/exit 1; the protocol-transition receipt records the user-directed reason. Old audit 369796 and watcher 369793 were cancelled, and the old supervisor's STOP marker prevents an unwanted 100-step restart. Completed old tasks and raw partial traces remain saved; incomplete tasks restart under the new cap.
 
-CPU bootstrap **370003 completed** the fresh import/audit and submitted continuation. GPU continuation **370030 has been submitted**; model readiness and new 30-step task results remain unverified. The supervisor currently records watcher **370032** for job **370030**. See the [transition receipt](diagnostics/v6i-webshop30-transition.json). Queued/ready work is distinct from newly completed episodes.
+CPU bootstrap **370003** completed the fresh import/audit. Since then, **four GPU collection stages and their CPU audits have completed successfully**, with **zero automatic recoveries**. The fifth GPU stage, **371521**, is running; CPU audit **371558** and supervisor **371530** are queued on dependencies. Its model service became ready in approximately 105 seconds. See the [current progress receipt](diagnostics/v6i-collection-progress-2026-10-19.json); the [transition receipt](diagnostics/v6i-webshop30-transition.json) preserves the earlier launch snapshot.
+
+| GPU collection job | GPU elapsed | CPU audit job | Accepted states after audit |
+|---|---:|---|---:|
+| 370030 | 4h 12m 11s | 370034 | 4,774 |
+| 370622 | 2h 49m 49s | 370624 | 5,806 |
+| 370757 | 3h 30m 18s | 370759 | 6,635 |
+| 370991 | 3h 05m 55s | 370993 | **7,714** |
+
+Completed summaries from the new version, excluding historical imports, cover **603 WebShop tasks with a maximum of 30 actions** and **371 TextWorld tasks with a maximum of 50**. None exceeds its configured cap. These are live collection checks, not learned-selector evaluation scores.
 
 ## Accepted data
 
 | Environment | Accepted training | Accepted development | Total | Target |
 |---|---:|---:|---:|---:|
-| ALFWorld TextWorld | 1,644 | 189 | 1,833 | 5,000 + 500 |
-| WebShop | 1,208 | 142 | 1,350 | 5,000 + 500 |
-| Total | 2,852 | 331 | **3,183** | **11,000** |
+| ALFWorld TextWorld | 3,675 | 500 | 4,175 | 5,000 + 500 |
+| WebShop | 3,039 | 500 | 3,539 | 5,000 + 500 |
+| Total | 6,714 | 1,000 | **7,714 (70.1%)** | **11,000** |
 
-There are **7,817 accepted states still to collect**. The previous confirmed total was 2,912. Before the intentional stop, job 369791 saved 33 new completed TextWorld tasks and 11 WebShop tasks, containing 215 and 56 provisionally eligible states respectively. The new audit accepted **271 additional states**. These came from the preceding 100-step WebShop protocol; they are not evidence that the new cap has already generated data.
+There are **3,286 accepted states still to collect**: 1,325 TextWorld training states and 1,961 WebShop training states. Both 500-state development cohorts are complete. The horizon-transition bootstrap previously increased the total from 2,912 to 3,183 by accepting 271 states saved before the intentional stop; those remain historical data. The four subsequent successful batches added another **4,531 audited states**.
 
 <a id="new-data-awaiting-audit"></a>
 
+At this snapshot, the current GPU job has saved **315 additional provisionally eligible states awaiting CPU audit**: 124 from 16 completed TextWorld tasks and 191 from 52 completed WebShop tasks. These are not included in 7,714 and may change after encoding, deduplication and task-cap checks. Unfinished tasks are not counted here.
+
 One state contains five candidate responses and one teacher selection. Reporting must separate audited states from newly screened states awaiting audit. Worker rolling totals are not safe increments over the last audit because imported and new tasks are visited in manifest order. The full CPU audit checks native image processing, prompt encoding, selector-context capacity and duplicates before updating the accepted dataset.
+
+The latest audit reports zero selector-context exclusions and a maximum retained selector input of 15,721 tokens. It performed 1,079 fresh prefix checks and 229 fresh native-image-panel checks; earlier checks are reused only through validated cache fingerprints. These figures do not mean full-history actor prompts are shortened to selector-prompt length.
 
 ## Historical data, validation and evaluation
 
@@ -32,7 +45,9 @@ Six checks cover the explicit horizon migration, rejection of undeclared changes
 
 The original WebShop RL [baseline default](https://github.com/princeton-nlp/WebShop/blob/64fa2a5c15c7daa698b9ac93f5bb5437b634c9bd/baseline_models/train_rl.py) was 100 steps; examples of shorter recent training protocols include [GiGPO's 15 steps](https://arxiv.org/html/2505.10978#A5.SS1) and [ICRL's 30 interaction turns](https://arxiv.org/html/2605.15224v1#A3). Those papers differ in other settings and do not establish identical benchmark protocols.
 
-New WebShop evaluations must use 30 steps consistently for Greedy, Sol, generative SelectionARM and the head. Historical 100-step Greedy/Sol scores stay unchanged and require new matched 30-step controls. Research fitting and evaluation are later stages and are not launched by this collection chain. The earlier 4–6 day estimate was based on 100-step collection; the 30-step ETA needs measured throughput and audited yield.
+New WebShop evaluations must use 30 steps consistently for Greedy, Sol, generative SelectionARM and the head. Historical 100-step Greedy/Sol scores stay unchanged and require new matched 30-step controls. Research fitting and evaluation are later stages and are not launched by this collection chain.
+
+**Updated completion estimate:** approximately **10–15 more GPU hours, plus queue and CPU-audit time**, provided throughput continues and storage does not pause submission. The four completed collection stages used 13.64 GPU hours and added 2,342 TextWorld states and 2,189 WebShop states: approximately 172 and 161 accepted states per GPU hour respectively. WebShop is the remaining bottleneck; its 1,961-state audited shortfall takes about 12.2 hours at that rate, or about 11.0 hours if all 191 pending WebShop states pass. This estimate accounts for the separate environment targets rather than dividing the combined shortage by aggregate throughput. It supersedes the earlier 4–6 day estimate based on 100-step collection, and excludes training and evaluation.
 
 ## October 19: startup timeout and its repair
 
@@ -67,6 +82,8 @@ The original supervisor passed **21 tests**; the startup-recovery revision passe
 
 ## Storage and remaining work
 
+**Latest quota reading, October 19:** approximately **7.37 GiB free**, about 3.37 GiB above the unchanged 4 GiB submission guard. This is a shared, delayed quota reading and does not establish enough room for all remaining raw data, final exports and training outputs. Collection can pause at the guard even if its throughput-based ETA has not elapsed.
+
 The project fileset was approximately **99% used**, with about 10 GiB reported free when recovery was prepared. Every future GPU submission now checks the fileset quota and stops if fewer than **4 GiB** remain. The check runs once per multi-hour batch, not in a polling loop. Quota reporting can lag and other users share the space; this guard cannot guarantee enough capacity for the entire remaining collection. Irreplaceable observations, labels and exports remain in project storage.
 
 **Storage mitigation completed:** CPU-only job **369586** moved seven rebuildable audit-cache directories and four redundant smoke-test checkpoint directories to Scrubbed. All files passed SHA-256/size/mtime checks before the project originals were replaced with links. The final adapter weights remain on project and match those in the moved checkpoints. Original trajectories, teacher labels, native images, frozen datasets and source snapshots were not moved. Removed project file allocations total **3.51 GiB**. A subsequent quota reading at 04:28 UTC on October 19 reported **13.10 GiB free**, passing the unchanged 4 GiB guard; this is shared, time-varying headroom. The active audit-cache link also sends subsequent cache growth to Scrubbed. See the [storage receipt](diagnostics/storage-relocation-2026-10-18.json).
@@ -75,4 +92,4 @@ Before the horizon change, using the previous 903-state increment as a rough bas
 
 After collection reaches 5,000 training and 500 development states per environment, both methods receive the same frozen cohort. Full feature extraction, research training, deployment validation and paired Greedy/Sol comparisons still follow. Iterative DPO, extra seeds and official test evaluation remain deferred. The supervisor does not authorize or launch those stages.
 
-The [current horizon-transition receipt](diagnostics/v6i-webshop30-transition.json) records the latest reviewed jobs and checks; the [startup-recovery receipt](diagnostics/v6h-startup-recovery.json) is historical; the [earlier recovery receipt](diagnostics/v6g-collection-recovery.json) remains a historical snapshot. Cluster `STATUS.md`, `status.json`, and `supervisor/status.json` update during execution. GitHub is a reviewed snapshot, not an unattended live uploader.
+The [current progress receipt](diagnostics/v6i-collection-progress-2026-10-19.json) records the reviewed counts and jobs. The [horizon-transition receipt](diagnostics/v6i-webshop30-transition.json), [startup-recovery receipt](diagnostics/v6h-startup-recovery.json), and [earlier recovery receipt](diagnostics/v6g-collection-recovery.json) preserve historical snapshots. Cluster `STATUS.md`, `status.json`, and `supervisor/status.json` update during execution. GitHub is a reviewed snapshot, not an unattended live uploader.
