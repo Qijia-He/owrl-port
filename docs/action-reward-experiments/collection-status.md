@@ -12,7 +12,21 @@ Updated 2026-10-19 UTC. This page tracks collection for the one-round **generati
 
 There are **8,088 accepted states still to collect**, or 26.5% complete. One state contains five candidate responses and one teacher selection; it is not five independent labels or a complete episode. CPU recovery audit **369538** accepted 903 additional states, preserving the original 2,009. The stopped worker's progress snapshot understated the final saved yield. New states passed full prompt and native-pixel checks; none was excluded for selector-context overflow. The largest retained selector input remains 15,721 tokens. Full actor history is stored separately and is never shortened to that selector limit.
 
-CPU bootstrap **369540** previously passed 87 regression checks and revalidated all 2,912 states and 583 native image panels. Its GPU successor **369558 subsequently failed during startup and produced no new episodes**. Watcher **369559** ran and stopped for review because this failure was not yet recognized as retryable. The current recovery is **v6h-bounded-startup-text-web-1024-seed42**; its CPU bootstrap **369779 completed in 6m 12s**, revalidating all 2,912 states and 583 native image panels with zero selector-context exclusions. GPU continuation **369791 is now running**: it started at 21:34:49 Pacific on October 18, and model readiness took **105 seconds**. Worker logs contain **17 newly finished TextWorld tasks and 3 WebShop tasks** at the latest check. This confirms live collection has resumed; these task counts do not yet add audited states to the table above. Recent job-local GPU utilization samples were 91–100%. CPU audit successor **369796** waits for successful collection completion. Initial watcher **369781** handed monitoring to **369793**, which waits for collection to finish in any state. The [startup recovery receipt](diagnostics/v6h-startup-recovery.json) records the latest stage.
+CPU bootstrap **369540** previously passed 87 regression checks and revalidated all 2,912 states and 583 native image panels. Its GPU successor **369558 subsequently failed during startup and produced no new episodes**. Watcher **369559** ran and stopped for review because this failure was not yet recognized as retryable. The current recovery is **v6h-bounded-startup-text-web-1024-seed42**; its CPU bootstrap **369779 completed in 6m 12s**, revalidating all 2,912 states and 583 native image panels with zero selector-context exclusions. GPU continuation **369791 is now running**: it started at 21:34:49 Pacific on October 18, and model readiness took **105 seconds**. Worker logs contain **19 newly finished TextWorld tasks and 3 WebShop tasks** at the latest check. This confirms live collection has resumed; these task counts do not yet add audited states to the table above. Recent job-local GPU utilization samples were 91–100%. CPU audit successor **369796** waits for successful collection completion. Initial watcher **369781** handed monitoring to **369793**, which waits for collection to finish in any state. The [startup recovery receipt](diagnostics/v6h-startup-recovery.json) records the latest stage.
+
+## New data awaiting audit
+
+The latest check found **138 new provisionally eligible states** in completed task summaries from GPU job 369791, beyond the 2,912 audited states above:
+
+| Environment | New completed tasks | New states awaiting full audit |
+|---|---:|---:|
+| TextWorld | 19 | 122 |
+| WebShop | 3 | 16 |
+| Total | **22** | **138** |
+
+These counts come only from new summaries for this GPU job, excluding imported summaries. They do not subtract the worker's rolling counter from the previous audited total: the worker visits saved and new tasks in manifest order, so its rolling counter can temporarily omit previously accepted tasks that it has not reached yet. The previous audited states have not been lost.
+
+Reporting should distinguish **2,912 audited + 138 newly screened, pending audit**, rather than describing the unchanged audited table as zero new output. The pending states already have candidate responses and teacher labels. The later CPU audit verifies native images and complete prompt encoding, checks context capacity, removes duplicate states, and exports the accepted cohort. Its accepted increment can be smaller than 138. This full audit runs after the current GPU batch; it does not run after every episode. Both raw traces and pending labels remain saved meanwhile.
 
 ## October 19: startup timeout and its repair
 

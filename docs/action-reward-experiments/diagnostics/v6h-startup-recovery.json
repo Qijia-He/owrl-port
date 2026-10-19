@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "snapshot_at": "2026-10-19T05:13:46.350856+00:00",
+  "snapshot_at": "2026-10-19T05:17:06.860557+00:00",
   "study_id": "v6h-bounded-startup-text-web-1024-seed42",
   "source_study_id": "v6g-native-empty-image-text-web-1024-seed42",
   "counts": {
@@ -149,7 +149,7 @@
       "at": 1792384598.0054548
     },
     "new_finished_task_log_records": {
-      "alfworld_text": 17,
+      "alfworld_text": 19,
       "webshop": 3
     },
     "counts_are_pre_audit": true
@@ -202,9 +202,9 @@
     "GitHub is a reviewed snapshot; cluster status is authoritative."
   ],
   "live_collection_observation": {
-    "at": "2026-10-19T05:13:46.350856+00:00",
+    "at": "2026-10-19T05:17:06.860557+00:00",
     "new_finished_task_records": {
-      "alfworld_text": 17,
+      "alfworld_text": 19,
       "webshop": 3
     },
     "recent_job_local_gpu_utilization_percent": [
@@ -216,6 +216,12 @@
     "cpu_audit_job": "369796",
     "watcher_job": "369793",
     "accepted_states": 2912,
-    "note": "Worker cumulative eligible-state counters include imported summary counters and are not a new CPU audit. New task records are not benchmark success rates."
+    "note": "Worker cumulative eligible-state counters include imported summary counters and are not a new CPU audit. New task records are not benchmark success rates.",
+    "new_screened_states_pending_audit": {
+      "alfworld_text": 122,
+      "webshop": 16
+    },
+    "pending_total": 138,
+    "count_source": "New completed summary files for job 369791, excluding imported summaries; no raw trajectory reprocessing."
   }
 }
