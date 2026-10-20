@@ -15,6 +15,7 @@ The published location is [`Qijia-He/owrl-port/docs/action-reward-experiments/`]
 | `DECISIONS.md` | Execution scope, research decisions, limitations, and operational history |
 | `training-data-readiness.md` | Audited state/panel counts, reusable training formats, label diagnostics and remaining feature work |
 | `selection-arm-head-plan.md` | Current Table 1(c) experiment plan, method distinctions, adaptation requirements and blockers |
+| `project-layout.md` | Research-stage workspace, mappings to versioned run paths, live status locations and storage policy |
 | `literature-length-alignment.md` | Dated paper/code audit of output limits, model identities, reported scores, and protocol differences |
 | `tools/update_experiment_log.py` | Portable copy of the cluster project's canonical `scripts/update_experiment_log.py` |
 
@@ -86,3 +87,9 @@ Qijia's current scope and the passing 80-state validation are in [qijia-training
 ## Main-head alignment: v2 supersedes v1
 
 The active code is `training_framework_v2/`, with artifacts under `artifacts/selector-training/v2-listwise-sol-preaction/`. The latest reference headline uses the listwise 22.6M head. The v1 pointwise controller has a STOP marker and its watcher was cancelled before research training; do not restart it. V2 reuses verified unchanged SFT/feature checks and has fresh listwise validation in job 372614. Follow the v2 `workflow.json` and `framework-lock.json`. Collection remains v6i with unchanged labels and protocol. The v1 receipt is historical and must not be relabelled as listwise.
+
+## Research-stage workspace
+
+The cluster's root README now points to `experiments/README.md`. The workspace separates `selector-pilot`, `selector-training` and `actor-sft`; the latter is a planned workstream, not an active run. Seven relative symbolic links expose existing data, training artifacts, code, configurations and pilot result records. They create no duplicate data and change no submitted entry point. Markdown documents are linked at their original location to preserve their internal links.
+
+The [layout guide](project-layout.md) records all mappings. The old root overview is retained under `docs/archive/project-overview-before-2026-10-20.md` in the cluster runtime, explicitly marked as historical. The local workspace is not published as a standalone runnable GitHub package: GitHub continues to hold the reviewed research record. Update both the stage README and layout mapping when a future validated run becomes current. Keep immutable run paths and source snapshots intact.
