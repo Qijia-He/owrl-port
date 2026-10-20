@@ -2,6 +2,8 @@
 
 Updated October 20, 2026 UTC. This page maps the team's TODO list to Qijia's work on **ALFWorld TextWorld and WebShop**, explains what is being trained, and separates implemented checks from research results. The [main report](README.md) contains the completed inference pilot. The [collection record](collection-status.md) tracks the labels.
 
+**October 20 completion:** both environments have **5,000 training + 500 development states (11,000 total)** and have passed the final readiness audit. A reviewed audit repair preserved labels and dataset hashes. Storage recovery freed **3.09 GiB**. Resume job **374295** waits for a 16-minute quota refresh, then rechecks the original guards before data preparation and the four selector fits. Formal fitting has not started at this snapshot. See the [completion record](collection-complete.md).
+
 ## Scope and order
 
 There are two workstreams for Qijia in the shared team update:
@@ -71,7 +73,7 @@ Unchanged SFT and feature-extraction checks were reused only after source-functi
 
 ## Data-ready handoff
 
-The old v1 watcher **372577** was cancelled and its STOP marker set. The v2 CPU controller follows the successful listwise validation and waits for final collection readiness without holding a GPU. It requires both:
+The old v1 watcher **372577** was cancelled and its STOP marker set. The v2 CPU controller follows the successful listwise validation. Final data readiness is complete; reviewed recovery reconnects it after the quota-refresh check without holding a GPU. It requires both:
 
 1. A passing, source-matched 80-state validation receipt.
 2. The final immutable `round0-5000` cohort with 5,000/500 states per environment and a passing head-input readiness audit.

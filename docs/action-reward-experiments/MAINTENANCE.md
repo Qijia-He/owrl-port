@@ -93,3 +93,14 @@ The active code is `training_framework_v2/`, with artifacts under `artifacts/sel
 The cluster's root README now points to `experiments/README.md`. The workspace separates `selector-pilot`, `selector-training` and `actor-sft`; the latter is a planned workstream, not an active run. Seven relative symbolic links expose existing data, training artifacts, code, configurations and pilot result records. They create no duplicate data and change no submitted entry point. Markdown documents are linked at their original location to preserve their internal links.
 
 The [layout guide](project-layout.md) records all mappings. The old root overview is retained under `docs/archive/project-overview-before-2026-10-20.md` in the cluster runtime, explicitly marked as historical. The local workspace is not published as a standalone runnable GitHub package: GitHub continues to hold the reviewed research record. Update both the stage README and layout mapping when a future validated run becomes current. Keep immutable run paths and source snapshots intact.
+
+
+## Final audit and storage recovery, October 20
+
+The [completion record](collection-complete.md) and [audit receipt](diagnostics/final-cohort-2026-10-20.json) describe the full 11,000-state cohort. The repaired copy is `reports/audit_selection_readiness_recovery.py`; `reports/recover_final_readiness.py` verifies that only the image-kwargs variable and its use differ from the frozen original. Job 374276 passed both environments and unchanged dataset/panel checks. Future audit versions must incorporate the rename before reusing the historical entry point.
+
+Storage receipt `reports/storage/374286/receipt.json` records five verified mutable-export relocations and 74 verified persistent raw gzip archives, freeing 3.09 GiB. The manifest is `artifacts/storage-archives/raw-trajectories-374286.json`. Original raw paths link to uncompressed scratch working copies; the original bytes remain in project archives. Frozen cohorts, images, teacher caches and final weights retain persistent copies.
+
+Inside a CPU Slurm job from the project root, `python3 reports/restore_archived_trajectories.py artifacts/storage-archives/raw-trajectories-374286.json` restores missing working copies and verifies hashes/mtimes. It does not refresh existing files to evade scratch purging. Local archives are not independent backups; retain important results through Kopah S3 or Lolo Archive as appropriate.
+
+Job 374288 scheduled 374295 after a 16-minute quota-refresh delay. The resume wrapper checks repair/storage receipts, exercises the restoration program on a fixture, preserves old controller state and calls the unchanged v2 dispatcher. The 4 GiB guard and four-fit scope remain in force. Waiting jobs hold no GPU.

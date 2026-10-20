@@ -1,0 +1,188 @@
+{
+  "study_id": "v6i-webshop30-text50-1024-seed42",
+  "job_id": "374276",
+  "passed": true,
+  "source_audit_sha256": "6593e625c7e824acc8caafd143bc956e8bea5f8684612f660b62ce3e8cf49fdd",
+  "benchmarks": {
+    "alfworld_text": {
+      "counts": {
+        "actor_prompt_hash_verified": 5500,
+        "head_text_reconstructable": 5500,
+        "original_token_ids_missing": 1060,
+        "panels_with_truncated_candidate": 2741,
+        "selected_candidate_truncated": 3,
+        "selected_native_invalid": 878,
+        "train": 5000,
+        "development": 500,
+        "original_token_ids_present": 4440
+      },
+      "groups": {
+        "train": 749,
+        "development": 84
+      },
+      "tasks": {
+        "train": 750,
+        "development": 84
+      },
+      "task_type_counts": {
+        "train": {
+          "pick_two_obj_and_place": 1399,
+          "pick_clean_then_place_in_recep": 963,
+          "pick_and_place_simple": 558,
+          "pick_cool_then_place_in_recep": 1020,
+          "look_at_obj_in_light": 265,
+          "pick_heat_then_place_in_recep": 795
+        },
+        "development": {
+          "look_at_obj_in_light": 50,
+          "pick_cool_then_place_in_recep": 92,
+          "pick_clean_then_place_in_recep": 74,
+          "pick_two_obj_and_place": 149,
+          "pick_and_place_simple": 56,
+          "pick_heat_then_place_in_recep": 79
+        }
+      },
+      "teacher_positions": {
+        "1": 2376,
+        "2": 1161,
+        "3": 793,
+        "4": 642,
+        "5": 528
+      },
+      "candidate_finish_reasons": {
+        "length": 5432,
+        "stop": 22068
+      },
+      "distinct_actions_per_panel": {
+        "2": 2782,
+        "3": 1322,
+        "4": 745,
+        "5": 651
+      },
+      "teacher_equivalent_actions": {
+        "1": 1481,
+        "2": 1010,
+        "3": 1139,
+        "4": 1870
+      },
+      "actor_prompt_tokens": {
+        "50": 2698,
+        "90": 11037,
+        "95": 14643,
+        "99": 22196,
+        "100": 39992
+      },
+      "head_panels_sha256": "96611ed32dacd8e294148660c262a36f46a0a2568e89e867594c487ef850ab35",
+      "native_test_task_overlap": 0,
+      "pilot_group_overlap": 0,
+      "train_dev_group_overlap": 0,
+      "sft_ready": true,
+      "head_labels_ready": true,
+      "head_features_ready": false
+    },
+    "webshop": {
+      "counts": {
+        "actor_prompt_hash_verified": 5500,
+        "head_text_reconstructable": 5500,
+        "original_token_ids_missing": 949,
+        "panels_with_truncated_candidate": 3244,
+        "selected_candidate_truncated": 2,
+        "selected_native_invalid": 27,
+        "train": 5000,
+        "development": 500,
+        "original_token_ids_present": 4551
+      },
+      "groups": {
+        "train": 1190,
+        "development": 139
+      },
+      "tasks": {
+        "train": 1190,
+        "development": 139
+      },
+      "task_type_counts": {
+        "train": {
+          "shopping": 5000
+        },
+        "development": {
+          "shopping": 500
+        }
+      },
+      "teacher_positions": {
+        "1": 1988,
+        "2": 1159,
+        "3": 988,
+        "4": 715,
+        "5": 650
+      },
+      "candidate_finish_reasons": {
+        "stop": 20896,
+        "length": 6604
+      },
+      "distinct_actions_per_panel": {
+        "2": 1919,
+        "3": 1451,
+        "4": 1232,
+        "5": 898
+      },
+      "teacher_equivalent_actions": {
+        "1": 2294,
+        "2": 1040,
+        "3": 881,
+        "4": 1285
+      },
+      "actor_prompt_tokens": {
+        "50": 4870,
+        "90": 24917,
+        "95": 35345,
+        "99": 85608,
+        "100": 161591
+      },
+      "head_panels_sha256": "3c9dc3173234cdac97262093da558fa305cc5d4c01916136ca61e205bbf9d46a",
+      "native_test_task_overlap": 0,
+      "pilot_group_overlap": 0,
+      "train_dev_group_overlap": 0,
+      "sft_ready": true,
+      "head_labels_ready": true,
+      "head_features_ready": false
+    }
+  },
+  "dataset_sha256": {
+    "alfworld_text": {
+      "records.json": "e18b456d48d58bdb495c9493c5f08e29f064da456f5de2e635706000af5a407d",
+      "sft_train.json": "026cfb0fde8b289aa407aaebc3569c532ebbaf95807d722b732adeb7dedc1f7d",
+      "sft_development.json": "52872166f31e45d999437ad7f3dbbee49dcb13ee628f42f566bc36db394fa159",
+      "head-panels.jsonl": "96611ed32dacd8e294148660c262a36f46a0a2568e89e867594c487ef850ab35"
+    },
+    "webshop": {
+      "records.json": "348a5a595f937524da5a06500c45944d6f799aff874d5a3306b63c309a5c2efa",
+      "sft_train.json": "16fb67a924036b810d584f3d0bf7ab95fa9a4f8dc0d033309fe5cbdb03dffc40",
+      "sft_development.json": "a9328b862cd571a573b4deb49ecb7bdbd8ab9c1732771cc40f7704f6dbeb77f1",
+      "head-panels.jsonl": "3c9dc3173234cdac97262093da558fa305cc5d4c01916136ca61e205bbf9d46a"
+    }
+  },
+  "teacher_labels_changed": false,
+  "new_teacher_calls": 0,
+  "gpu_used": false,
+  "training_started": false,
+  "dataset": "round0-5000",
+  "head_feature_extraction_required": true,
+  "online_capture_parity_verified": false,
+  "test_isolation_scope": "Native held-out task IDs; pilot and train/development groups. Shared catalog products are not a claim of official product-disjoint evaluation.",
+  "audit_execution_provenance": {
+    "job_id": "374276",
+    "failed_job": "373475",
+    "started_at": 1792521796.075763,
+    "repair": "Rename only the image-render kwargs local variable; preserve parsed CLI arguments across both environments.",
+    "original_source_sha256": "317c51dd3a9dee6291b9a1a8d9edcc4c42d8a6e506cb3b86f2465c9fdd0568b5",
+    "repaired_source_sha256": "0c8fde0423a11e255af561e74757bd7ce44e1c8b714197d54415cce3f9c440cf",
+    "frozen_sources_unchanged": true,
+    "new_teacher_calls": 0,
+    "gpu_used": false,
+    "passed": true,
+    "finished_at": 1792522272.1855612,
+    "immutable_dataset_unchanged": true,
+    "two_environment_audit_passed": true,
+    "original_text_panels_unchanged": true
+  }
+}

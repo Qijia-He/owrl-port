@@ -61,7 +61,7 @@ Current scope is [SelectionARM versus listwise head](selection-arm-head-plan.md)
 
 ## Storage and retention
 
-Project storage holds original observations, paid Sol labels, authoritative dataset freezes, final weights and provenance. Rebuildable caches, compact head features, tokenized inputs, redundant preparation exports and intermediate optimizer checkpoints use Scrubbed storage. Some paths under the workspace therefore resolve through a second link to scratch.
+Project storage holds original observations, paid Sol labels, authoritative dataset freezes, final weights and provenance. After the October 20 recovery, 74 large raw JSONL files have verified gzip copies on project and uncompressed scratch working copies at their original paths. Five rebuildable `audited-current` views also use scratch; frozen `round0-*` cohorts stay on project. See the [completion record](collection-complete.md) and [restoration instructions](MAINTENANCE.md). Rebuildable caches, compact head features, tokenized inputs, redundant preparation exports and intermediate optimizer checkpoints use Scrubbed storage. Some paths under the workspace therefore resolve through a second link to scratch.
 
 Scrubbed is subject to a 60-day inactivity purge. Navigation links do not make scratch persistent or replace a backup. The paper is a separate sibling checkout named `arm-paper/`; the shared base-model path is recorded in the training configuration.
 

@@ -1,12 +1,12 @@
 # Data collection and automatic recovery
 
-Updated 2026-10-20 UTC (October 19 Pacific). This page tracks collection for the one-round **generative SelectionARM versus listwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
+Updated October 20, 2026. This page tracks collection for the one-round **generative SelectionARM versus listwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
 
 ## Current protocol and execution
 
-**Latest checkpoint:** five collection/audit batches have completed, with zero automatic recoveries. The audit after GPU job 371521 and CPU job 371558 raised the accepted total to **8,795 / 11,000 (80.0%)**: TextWorld **4,234 training + 500 development**, WebShop **3,561 + 500**. GPU job **372101** is running, with audit **372110** and watcher **372109** queued. The remaining audited shortfall is **2,205 training states** (766 TextWorld, 1,439 WebShop). The detailed 21:15 UTC snapshot below is retained as historical evidence; its pending count and ETA are not current counters.
+**October 20 completion:** both environments have **5,000 training + 500 development states (11,000 total)** and have passed the final readiness audit. A reviewed audit repair preserved labels and dataset hashes. Storage recovery freed **3.09 GiB**. Resume job **374295** waits for a 16-minute quota refresh, then rechecks the original guards before data preparation and the four selector fits. Formal fitting has not started at this snapshot. See the [completion record](collection-complete.md). All smaller counts, collection jobs and ETAs below are historical snapshots.
 
-A separate [selector-training framework](qijia-training-workstream.md) has passed its 80-state GPU training/resume validation. Its CPU controller now waits for the complete frozen cohort, then can start the four authorized selector fits. The collector's source and protocol remain unchanged. This newer authorization supersedes the earlier training deferral; iterative actor SFT, selector DPO and official tests are not launched by the handoff.
+A separate [selector-training framework](qijia-training-workstream.md) has passed its 80-state GPU training/resume validation. The complete cohort now satisfies its data gate; the four-fit controller resumes after the quota check. The collector's source and protocol remain unchanged. This newer authorization supersedes the earlier training deferral; iterative actor SFT, selector DPO and official tests are not launched by the handoff.
 
 ### Earlier snapshot: October 19, 21:15 UTC
 
@@ -45,7 +45,7 @@ The latest audit reports zero selector-context exclusions and a maximum retained
 
 ## Historical data, validation and evaluation
 
-Existing accepted data is preserved in order. Imported completed summaries record `collection_max_steps` and their source study; original traces are unchanged. Thus the eventual training cohort includes historical 100-step WebShop trajectories plus new 30-step trajectories. **Both SelectionARM and the pointwise head use exactly the same frozen cohort.** It must not be described as an entirely 30-step collection.
+Existing accepted data is preserved in order. Imported completed summaries record `collection_max_steps` and their source study; original traces are unchanged. Thus the eventual training cohort includes historical 100-step WebShop trajectories plus new 30-step trajectories. **Both SelectionARM and the current listwise head use exactly the same frozen cohort.** It must not be described as an entirely 30-step collection.
 
 Six checks cover the explicit horizon migration, rejection of undeclared changes, rejection of hidden sampling/other-environment changes, and a collector that stops at exactly 30 actions when the environment never terminates. That rollout check confirms history lengths 0 through 29, with no history shortening. The 27 startup/supervisor checks and 87 collection regressions also passed. These CPU checks do not constitute a new live 30-step benchmark result.
 
@@ -53,7 +53,7 @@ The original WebShop RL [baseline default](https://github.com/princeton-nlp/WebS
 
 New WebShop evaluations must use 30 steps consistently for Greedy, Sol, generative SelectionARM and the head. Historical 100-step Greedy/Sol scores stay unchanged and require new matched 30-step controls. Research fitting and evaluation are later stages and are not launched by this collection chain.
 
-**Updated completion estimate:** approximately **10–15 more GPU hours, plus queue and CPU-audit time**, provided throughput continues and storage does not pause submission. The four completed collection stages used 13.64 GPU hours and added 2,342 TextWorld states and 2,189 WebShop states: approximately 172 and 161 accepted states per GPU hour respectively. WebShop is the remaining bottleneck; its 1,961-state audited shortfall takes about 12.2 hours at that rate, or about 11.0 hours if all 191 pending WebShop states pass. This estimate accounts for the separate environment targets rather than dividing the combined shortage by aggregate throughput. It supersedes the earlier 4–6 day estimate based on 100-step collection, and excludes training and evaluation.
+**Historical collection estimate (now superseded):** approximately **10–15 more GPU hours, plus queue and CPU-audit time**, provided throughput continues and storage does not pause submission. The four completed collection stages used 13.64 GPU hours and added 2,342 TextWorld states and 2,189 WebShop states: approximately 172 and 161 accepted states per GPU hour respectively. WebShop is the remaining bottleneck; its 1,961-state audited shortfall takes about 12.2 hours at that rate, or about 11.0 hours if all 191 pending WebShop states pass. This estimate accounts for the separate environment targets rather than dividing the combined shortage by aggregate throughput. It supersedes the earlier 4–6 day estimate based on 100-step collection, and excludes training and evaluation.
 
 ## October 19: startup timeout and its repair
 
@@ -88,7 +88,7 @@ The original supervisor passed **21 tests**; the startup-recovery revision passe
 
 ## Storage and remaining work
 
-**Latest quota reading, October 19:** approximately **7.37 GiB free**, about 3.37 GiB above the unchanged 4 GiB submission guard. This is a shared, delayed quota reading and does not establish enough room for all remaining raw data, final exports and training outputs. Collection can pause at the guard even if its throughput-based ETA has not elapsed.
+**Historical quota reading, October 19:** approximately **7.37 GiB free**, about 3.37 GiB above the unchanged 4 GiB submission guard. This is a shared, delayed quota reading and does not establish enough room for all remaining raw data, final exports and training outputs. Collection can pause at the guard even if its throughput-based ETA has not elapsed.
 
 The project fileset was approximately **99% used**, with about 10 GiB reported free when recovery was prepared. Every future GPU submission now checks the fileset quota and stops if fewer than **4 GiB** remain. The check runs once per multi-hour batch, not in a polling loop. Quota reporting can lag and other users share the space; this guard cannot guarantee enough capacity for the entire remaining collection. Irreplaceable observations, labels and exports remain in project storage.
 
