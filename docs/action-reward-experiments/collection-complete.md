@@ -31,3 +31,8 @@ The pre-recovery project quota reading was **2.69 GiB free**, below the unchange
 CPU job **374288** scheduled resume job **374295** after a 16-minute quota-refresh delay. The resume wrapper checks the recovery receipts, exercises archive restoration on a fixture, checks real quota and invokes the unchanged v2 controller. It prepares the data, extracts full-history features, fits both listwise heads and fits both generative selectors. Queue availability and existing source/quota gates still apply. No GPU is held during the delay.
 
 The handoff does not start actor SFT, DPO, extra seeds or official evaluation. See [training scope](qijia-training-workstream.md) and [maintenance](MAINTENANCE.md).
+
+
+## Subsequent scheduling update
+
+CPU preparation subsequently passed in job 374309 (19m 54s). The user then requested four independent training jobs. The frozen v2 workers and cohort remain unchanged; the serial controller was replaced with independent branches. See the [current scheduling record](parallel-training.md). Earlier resume details above describe the recovery at that time.

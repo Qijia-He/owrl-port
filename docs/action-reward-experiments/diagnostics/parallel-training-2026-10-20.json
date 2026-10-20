@@ -1,0 +1,76 @@
+{
+  "recorded_at": "2026-10-20T21:21:45.847543+00:00",
+  "controller_revision": 2,
+  "controller_validation_job": "374541",
+  "controller_tests_passed": 10,
+  "workflow": {
+    "version": 1,
+    "installed_at": 1792531170.9312015,
+    "install_job": "374537",
+    "data_and_training_code_unchanged": true,
+    "nodes": {
+      "features": {
+        "stage": "features",
+        "environment": null,
+        "status": "pending",
+        "job_id": "374367",
+        "watcher": "374538",
+        "resumes": 0,
+        "events": []
+      },
+      "sft-text": {
+        "stage": "sft",
+        "environment": "alfworld_text",
+        "status": "pending",
+        "job_id": "374539",
+        "watcher": "374540",
+        "resumes": 0,
+        "events": []
+      },
+      "sft-web": {
+        "stage": "sft",
+        "environment": "webshop",
+        "status": "submitted",
+        "job_id": "374543",
+        "watcher": "374544",
+        "resumes": 0,
+        "events": [
+          {
+            "at": 1792531260.1374998,
+            "job_id": "374541",
+            "reason": "Command '['scontrol', 'show', 'config']' returned non-zero exit status 1.",
+            "change": "Reuse one fresh Slurm configuration snapshot within each CPU callback",
+            "training_framework_unchanged": true,
+            "test_count": 10
+          }
+        ]
+      },
+      "head-text": {
+        "stage": "head",
+        "environment": "alfworld_text",
+        "status": "waiting_for_features",
+        "job_id": null,
+        "watcher": null,
+        "resumes": 0,
+        "events": []
+      },
+      "head-web": {
+        "stage": "head",
+        "environment": "webshop",
+        "status": "waiting_for_features",
+        "job_id": null,
+        "watcher": null,
+        "resumes": 0,
+        "events": []
+      }
+    },
+    "status": "active",
+    "updated_at": 1792531261.2306097
+  },
+  "training_framework_unchanged": true,
+  "preparation_job": "374309",
+  "obsolete_serial_callback": "374368",
+  "old_callback_cancelled": true,
+  "sft_waits_for_features": false,
+  "heads_wait_for_complete_features": true
+}

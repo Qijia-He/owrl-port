@@ -15,7 +15,8 @@ arm-generalization/
 │   ├── selector-training/    current collection and four selector fits
 │   │   ├── data/            existing collection artifacts
 │   │   ├── models/          existing training artifacts and workflow state
-│   │   ├── code/            current training implementation
+│   │   ├── code/            frozen model-training implementation
+│   │   ├── orchestration/   independent Slurm training branches
 │   │   ├── collection.yaml  recorded data-collection configuration
 │   │   ├── benchmark.yaml   observation/action/horizon configuration
 │   │   └── README.md        links to methods, validation and evaluation scope
@@ -43,7 +44,7 @@ The root also retains the physical `training_framework/` and `training_framework
 | `experiments/selector-pilot/metrics.json` | `docs/experiment-log/data/v3-sol-nativecmd-seed42.json` | Frozen portable pilot results |
 | `experiments/selector-pilot/provenance.json` | `reports/pilot-seed42-artifacts.json` | Original pilot artifact hashes |
 
-These are relative symbolic links, not duplicate copies. Each stage README links directly to the relevant method and result documents at their original location, preserving their internal Markdown links. Submitted Slurm scripts continue using their recorded physical paths. No additional workflow or polling process was introduced.
+These are relative symbolic links, not duplicate copies. Each stage README links directly to the relevant method and result documents at their original location, preserving their internal Markdown links. Submitted Slurm scripts continue using their recorded physical paths. The navigation cleanup itself introduced no workflow. A subsequent user-requested [parallel scheduling change](parallel-training.md) added a CPU event-driven controller; no polling daemon is used.
 
 The `v6i` and `v2` names came from different development histories: one versions collection fixes, the other versions training/head architecture. They are not comparable experiment-round numbers. In particular, the directory name `iterative-arm` does not mean iterative actor training is running.
 
@@ -51,11 +52,11 @@ The `v6i` and `v2` names came from different development histories: one versions
 
 - `experiments/selector-training/data/STATUS.md`: human-readable collection status.
 - `experiments/selector-training/data/status.json`: audited counts and collection successor.
-- `experiments/selector-training/models/workflow.json`: training stage and dependency.
+- `experiments/selector-training/models/parallel/workflow.json`: independent training branches and dependencies; the old `models/workflow.json` points here.
 - `experiments/selector-training/models/validation/`: completed small-scale validation.
 - `experiments/selector-training/models/research/`: formal-training artifacts, populated as stages finish.
 
-The `models/` name identifies an output workspace; it is not a claim that formal models already exist. The final `data/datasets/round0-5000/` cohort likewise appears only after collection and auditing finish.
+The `models/` name identifies an output workspace; it is not a claim that formal models already exist. The final `data/datasets/round0-5000/` cohort and CPU preparation are now complete.
 
 Current scope is [SelectionARM versus listwise head](selection-arm-head-plan.md), followed later by [actor SFT](qijia-training-workstream.md). The older pointwise `v1-sol-preaction` framework remains stopped. Earlier selector-DPO and scalar-ARM recipes remain historical material, not automatic next stages.
 

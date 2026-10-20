@@ -104,3 +104,10 @@ Storage receipt `reports/storage/374286/receipt.json` records five verified muta
 Inside a CPU Slurm job from the project root, `python3 reports/restore_archived_trajectories.py artifacts/storage-archives/raw-trajectories-374286.json` restores missing working copies and verifies hashes/mtimes. It does not refresh existing files to evade scratch purging. Local archives are not independent backups; retain important results through Kopah S3 or Lolo Archive as appropriate.
 
 Job 374288 scheduled 374295 after a 16-minute quota-refresh delay. The resume wrapper checks repair/storage receipts, exercises the restoration program on a fixture, preserves old controller state and calls the unchanged v2 dispatcher. The 4 GiB guard and four-fit scope remain in force. Waiting jobs hold no GPU.
+
+
+## Independent training branches, October 20 Pacific
+
+The user requested four independent fits. The active controller is now `experiments/selector-training/orchestration/control.py`, with state under `artifacts/selector-training/v2-listwise-sol-preaction/parallel/workflow.json`. The frozen v2 workers and prepared data are unchanged. The legacy v2 root STOP marker deliberately prevents its sequential dispatcher restarting; the parallel controller uses a separate `parallel/STOP` marker. Do not remove either marker without checking which controller it governs.
+
+Each GPU worker has an after-any CPU callback. Explicit exit 75 resumes only that feature/SFT branch; other errors require review. The two heads wait for the completed shared feature manifest; neither SFT branch waits for features or another fit. Follow [parallel execution](parallel-training.md) for job roles and resource placement. A failed branch does not cancel healthy independent fits. Final weights and results retain the existing research paths.
