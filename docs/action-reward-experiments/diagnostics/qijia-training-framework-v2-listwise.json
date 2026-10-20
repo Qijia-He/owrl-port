@@ -1,0 +1,75 @@
+{
+  "snapshot_at": "2026-10-20T02:16:41.637529+00:00",
+  "framework": "v2-listwise-sol-preaction",
+  "reference_commit": "50e815f176a90223b473b2b23badfd9160792de6",
+  "head_architecture": "listwise",
+  "validation_passed": true,
+  "head_validation_job": "372614",
+  "head_gpu_type": "one H200 MIG instance",
+  "head_gpu_elapsed_seconds": 30,
+  "preparation_job": "372613",
+  "tests_passed": 17,
+  "inherited_sft_and_full_history_features": {
+    "passed": true,
+    "sft_and_features_functions_unchanged": true,
+    "data_files_unchanged": true,
+    "source_validation": "/gpfs/projects/krishna/heqj3/arm-generalization/artifacts/selector-training/v1-sol-preaction/validation/passed.json",
+    "source_validation_sha256": "742e7f3e4502815a78c93ad0038302699b88726b1275e29c138d5660bb493683",
+    "source_framework_sha256": "8e6c8513d66c76b8aca593e76cf9d29b4afad6359041c7ecf6fa9719499d2958",
+    "code_alignment_proof_sha256": "0b5d92a4ead8b2b2d1ec44757ebd28538340e6adc99373c24ded5f8ffdff692a",
+    "source_gpu_job": "372553",
+    "label_type": "Sol-pre-execution-choice",
+    "reused_only_unchanged_components": true,
+    "new_head_validation_required": true,
+    "job_id": "372613"
+  },
+  "framework_sha256": "c83ae8a608da14c2db3ca601d588de9c08218ab7d2c645348e08c48bee105f06",
+  "prepared_cohort_sha256": "f1bacd376a284fa9577be64d1251798eb65a0b5128572b97e2c59685c8e9d99a",
+  "generative_selector_changed": false,
+  "actor_changed": false,
+  "collection_changed": false,
+  "label_type": "Sol pre-execution choice; not K=1 lookahead",
+  "pointwise_v1_supervisor_stopped": true,
+  "research_training_started": false,
+  "head_results": {
+    "alfworld_text": {
+      "parameters": 22562818,
+      "selected_epoch": 4,
+      "development_metrics": {
+        "strict_agreement": 0.375,
+        "equivalent_agreement": 0.625,
+        "uniform_equivalent_agreement": 0.6000000238418579,
+        "loss": 1.7786545753479004
+      },
+      "optimizer_resume_from_epoch": 10,
+      "reload_exact": true,
+      "permutation_equivariant": true,
+      "standardizers_train_only": true,
+      "checkpoint_sha256": "f4f132d64546aaa47bd3f323710b910fd7b2235ac6e8354f45fa5bc81389bc0b"
+    },
+    "webshop": {
+      "parameters": 22562818,
+      "selected_epoch": 2,
+      "development_metrics": {
+        "strict_agreement": 0.625,
+        "equivalent_agreement": 0.875,
+        "uniform_equivalent_agreement": 0.3499999940395355,
+        "loss": 0.824863612651825
+      },
+      "optimizer_resume_from_epoch": 10,
+      "reload_exact": true,
+      "permutation_equivariant": true,
+      "standardizers_train_only": true,
+      "checkpoint_sha256": "d8fe4a134bd08035708ed11682732464d637d9b16700843789d512c0ca84022e"
+    }
+  },
+  "correction": "The previous 16.8M-versus-22.6M difference is caused by pointwise versus listwise architecture at the same hidden size, not by a hidden-width change.",
+  "controller": {
+    "stage_index": 0,
+    "resumes": {},
+    "events": [],
+    "status": "waiting_for_frozen_data",
+    "waiting_for_job": "372110",
+    "watcher": "372619"
+  }
+}

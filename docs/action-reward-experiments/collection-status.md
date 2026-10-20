@@ -1,6 +1,6 @@
 # Data collection and automatic recovery
 
-Updated 2026-10-20 UTC (October 19 Pacific). This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
+Updated 2026-10-20 UTC (October 19 Pacific). This page tracks collection for the one-round **generative SelectionARM versus listwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
 
 ## Current protocol and execution
 

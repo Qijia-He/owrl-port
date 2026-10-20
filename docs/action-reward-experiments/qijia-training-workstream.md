@@ -6,7 +6,7 @@ Updated October 20, 2026 UTC. This page maps the team's TODO list to Qijia's wor
 
 There are two workstreams for Qijia in the shared team update:
 
-1. **Actor versus actor plus ARM in simulated environments.** Compare the base actor with stronger selection. The current experiment uses Qwen3.5-4B and compares Greedy, Sol-of-five, a trained generative SelectionARM, and a trained selection head. Report success and the cost of the entire system.
+1. **Actor versus actor plus ARM in simulated environments.** Compare the base actor with stronger selection. The current experiment uses Qwen3.5-4B and compares Greedy, Sol-of-five, a trained generative SelectionARM, and a trained **listwise** selection head. Report success and the cost of the entire system.
 2. **Actor SFT with ARM in simulated environments.** Compare the base actor, an actor fine-tuned on ARM-selected examples, and an actor fine-tuned on direct teacher-generated actions. Then iterate collection, filtering and actor SFT in versioned rounds.
 
 The first workstream supplies the learned selector needed by the second. Real-web infrastructure, CUA and actor RL belong to other workstreams in the pasted assignment. They are not launched here. The broader API-actor/API-selector matrix can be added as a later simulated-environment baseline; the current training pipeline does not silently add more API collection, checkpoints or execution seeds.
@@ -17,12 +17,12 @@ The first workstream supplies the learned selector needed by the second. Real-we
 
 Piotr's [SelectionARM recipe](https://github.com/piotr-teterwak/action-reward-models) trains a separate multimodal model to return the teacher's chosen candidate index. Our adaptation uses Qwen3.5-4B, native benchmark observations and the same public selection-prompt convention. It trains LoRA weights using the pinned LLaMA-Factory implementation; the actor is frozen.
 
-Zixian's [selection head](https://github.com/zixianma/OpenWebRL/blob/50e815f176a90223b473b2b23badfd9160792de6/openwebrl/docs/ARM_SELECTION_HEAD.md) scores candidate features from a frozen actor with a small network. The [model definition](https://github.com/zixianma/OpenWebRL/blob/50e815f176a90223b473b2b23badfd9160792de6/openwebrl/selection_head.py) and [trainer](https://github.com/zixianma/OpenWebRL/blob/50e815f176a90223b473b2b23badfd9160792de6/scripts/train_selection_head.py) at the reviewed latest revision are byte-identical to our previously pinned `da20e8e` copies. We retain that pin and explicitly choose the pointwise architecture; the upstream default is listwise.
+Zixian's [selection head](https://github.com/zixianma/OpenWebRL/blob/50e815f176a90223b473b2b23badfd9160792de6/openwebrl/docs/ARM_SELECTION_HEAD.md) scores candidate features from a frozen actor with a small network. The [model definition](https://github.com/zixianma/OpenWebRL/blob/50e815f176a90223b473b2b23badfd9160792de6/openwebrl/selection_head.py) and [trainer](https://github.com/zixianma/OpenWebRL/blob/50e815f176a90223b473b2b23badfd9160792de6/scripts/train_selection_head.py) at the reviewed latest revision are byte-identical to our previously pinned `da20e8e` copies. We retain that code pin and now choose the **listwise architecture used by the latest headline table**. Version v1 validated the documented pointwise variant; it was not the headline architecture. Its automatic training controller has been stopped before any research fit. Version v2 changes only the head architecture and output namespace, reusing the same data, generative-SFT implementation and full-history feature extractor.
 
-| Setting | Generative SelectionARM | Pointwise selection head |
+| Setting | Generative SelectionARM | Listwise selection head |
 |---|---|---|
 | Inputs | Native observation/images, selector history and all five candidate responses | Full actor prompt and candidate hidden states; native images retained |
-| Trainable weights | Separate Qwen3.5 LoRA, rank 32, alpha 64, dropout 0.05 | Pointwise MLP, 512-dimensional projections, dropout 0.1 |
+| Trainable weights | Separate Qwen3.5 LoRA, rank 32, alpha 64, dropout 0.05 | 512-dimensional projections and a two-layer candidate-set Transformer, eight attention heads, dropout 0.1 |
 | Target | Actual Sol-selected index as JSON | Soft target over candidates with the same native action as Sol's choice |
 | Optimizer | AdamW through LLaMA-Factory; learning rate 1e-4 | AdamW; learning rate 3e-4, weight decay 0.05 |
 | Full-data schedule | Two epochs; batch 1, accumulation 16; cosine, 5% warmup | 20 epochs; batch 256; OneCycle, 5% warmup; clipping at 1 |
@@ -41,7 +41,7 @@ Likewise, current Sol selects a Qwen-generated response; Sol does not generate t
 
 ## Implemented training framework
 
-Cluster code lives in `arm-generalization/training_framework/`, isolated from the running collector's frozen source. The framework and vendor revisions are hashed and copied into `artifacts/selector-training/v1-sol-preaction/source-snapshot/`. No collection sampling or source file was modified.
+Active cluster code lives in `arm-generalization/training_framework_v2/`, isolated from the running collector's frozen source. The framework and vendor revisions are hashed and copied into `artifacts/selector-training/v2-listwise-sol-preaction/source-snapshot/`. No collection sampling or source file was modified.
 
 The preparation stage freezes the shared cohort, verifies content-based state identity and task-group isolation, preserves original images and full actor history, and audits/tokenizes SFT inputs on a CPU job. GPU jobs consume the immutable manifest. Tokenized data, compact features, optimizer checkpoints and redundant research-preparation exports use rebuildable scratch; the authoritative frozen collection cohort, manifests and final trained artifacts remain on project storage. Scratch is temporary and subject to the cluster's inactivity purge; it is not the sole copy of raw paid labels or final weights.
 
@@ -56,20 +56,22 @@ Validation runs the actual research code paths:
 
 CPU preparation **372550 passed**, including seven identity/split tests. The first preparation attempt, **372546**, stopped because its validation compared legacy path-based state IDs against the collector's content-based image IDs. The comparison now uses the collector's actual identity convention; no source labels or IDs were changed. A regression test covers image relocation. A further **10 controller tests passed in job 372555**, covering missing validation, incomplete data, dependency waiting, duplicate suppression, stop markers, hard failures and bounded checkpoint continuation.
 
-**GPU validation job 372553 completed successfully in 7m 16s on one H200.** All 80 panels / 400 candidate responses passed full-history feature extraction (203.1 seconds; peak allocated feature memory 14.51 GiB on this subset). Both heads resumed from epoch 10 to 20, passed permutation/normalizer checks and reloaded exactly. Both generative selectors resumed from step 4 to step 8, reloaded with finite logits and returned a valid candidate index on all eight development probes per environment. Our Qwen3.5 pointwise head has **16,784,898 parameters**, reflecting its different hidden width; it is not the upstream 22.6M backbone configuration. Earlier validation of the longest historical prompts exceeded 18 GiB, so this combined feature/SFT check used a full GPU. Head-only research fits use one MIG instance. No teacher API calls were made.
+**GPU validation job 372553 completed successfully in 7m 16s on one H200.** All 80 panels / 400 candidate responses passed full-history feature extraction (203.1 seconds; peak allocated feature memory 14.51 GiB on this subset). Both heads resumed from epoch 10 to 20, passed permutation/normalizer checks and reloaded exactly. Both generative selectors resumed from step 4 to step 8, reloaded with finite logits and returned a valid candidate index on all eight development probes per environment. The v1 pointwise head has **16,784,898 parameters**. **Correction:** the earlier explanation attributing its difference from 22.6M to hidden width was incorrect; changing only pointwise to listwise at the same width produces **22,562,818 parameters**, matching the headline architecture's stated scale. Earlier validation of the longest historical prompts exceeded 18 GiB, so this combined feature/SFT check used a full GPU. Head-only research fits use one MIG instance. No teacher API calls were made.
 
 These are functionality checks, not task success results. The following development agreement numbers each use only eight states and a checkpoint selected on development data; they cannot establish a reliable gain or teacher-level behavior.
 
-| Environment | Generative SFT: strict / equivalent agreement | Head: strict / equivalent agreement |
+| Environment | Generative SFT: strict / equivalent agreement | Historical v1 pointwise head: strict / equivalent agreement |
 |---|---:|---:|
 | TextWorld | 4/8 / 5/8 | 4/8 / 6/8 |
 | WebShop | 6/8 / 8/8 | 5/8 / 7/8 |
 
-The [portable validation receipt](diagnostics/qijia-training-framework-v1.json) records the checks, cohort hashes, artifact hashes and limitations.
+The [v1 validation receipt](diagnostics/qijia-training-framework-v1.json) preserves these historical checks. **The new listwise heads have also passed** on the same 80-state cohort in MIG job **372614** (30 seconds). Both trained for 20 epochs with an actual epoch-10 resume, passed candidate-permutation and train-only-normalizer checks, and reloaded exactly. Development strict/equivalent agreement was 3/8 and 5/8 for TextWorld, and 5/8 and 7/8 for WebShop. These selected-checkpoint results on eight examples are functionality diagnostics, not task scores or evidence for choosing an architecture. The headline architecture was chosen from the reference, not from these numbers. See the [v2 alignment receipt](diagnostics/qijia-training-framework-v2-listwise.json).
+
+Unchanged SFT and feature-extraction checks were reused only after source-function comparison (normalizing versioned entry-point/output paths), cohort checksums, feature-chunk checksums and adapter hashes passed. The first v2 CPU preparation stopped on a missing alignment-proof receipt; the proof was supplied, rerun checks passed, and no GPU model job was started by that failed preparation.
 
 ## Data-ready handoff
 
-CPU controller **372556** has verified the passing validation and installed watcher **372577**, which waits on collection audit **372110** without holding a GPU. The controller requires both:
+The old v1 watcher **372577** was cancelled and its STOP marker set. The v2 CPU controller follows the successful listwise validation and waits for final collection readiness without holding a GPU. It requires both:
 
 1. A passing, source-matched 80-state validation receipt.
 2. The final immutable `round0-5000` cohort with 5,000/500 states per environment and a passing head-input readiness audit.
@@ -86,4 +88,4 @@ Compute accounting must include the entire actor-plus-selector system. Report ca
 
 Actor SFT then gets its own frozen data and versioned recipes. Compare equal training-example budgets and matched task-group splits for ARM-filtered and direct teacher-generated targets. Preserve native images and full causal history; exclude reserved pilot and official test tasks from updates. The iterative loop is: freeze the actor/selector versions, collect fresh training rollouts, filter candidates with the ARM, freeze the actor-SFT cohort, update the actor, and evaluate the new version. Updating the actor invalidates the head's old hidden-feature representation, so features and head compatibility must be revalidated for every actor version. The current selector controller does not silently perform this actor update.
 
-This scope is also recorded in the machine-readable cluster file `training_framework/qijia_scope.json`. No Slack message or Overleaf change is sent by this work.
+This scope is also recorded in the machine-readable cluster file `training_framework_v2/qijia_scope.json`. No Slack message or Overleaf change is sent by this work.

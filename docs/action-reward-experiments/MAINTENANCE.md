@@ -81,3 +81,8 @@ The v6i base configuration is `configs/experiment-webshop30.yaml`: WebShop 30 ac
 ## Selector-training handoff, October 20 UTC
 
 Qijia's current scope and the passing 80-state validation are in [qijia-training-workstream.md](qijia-training-workstream.md). The active separate framework is `training_framework/`, frozen by `artifacts/selector-training/v1-sol-preaction/framework-lock.json`; its controller state is `workflow.json` in that artifact directory. Do not edit frozen collection or training code while their dependency chains are installed. The training controller waits for the final `round0-5000` readiness audit, then runs only the four selector fits. Its `STOP` marker prevents new submissions; cancel active work separately. Research dataset preparation exports are redundant scratch copies; the authoritative frozen cohort and final weights remain persistent. Actor SFT and its iterative rounds are a subsequent workstream, not the historical selector DPO plan.
+
+
+## Main-head alignment: v2 supersedes v1
+
+The active code is `training_framework_v2/`, with artifacts under `artifacts/selector-training/v2-listwise-sol-preaction/`. The latest reference headline uses the listwise 22.6M head. The v1 pointwise controller has a STOP marker and its watcher was cancelled before research training; do not restart it. V2 reuses verified unchanged SFT/feature checks and has fresh listwise validation in job 372614. Follow the v2 `workflow.json` and `framework-lock.json`. Collection remains v6i with unchanged labels and protocol. The v1 receipt is historical and must not be relabelled as listwise.
