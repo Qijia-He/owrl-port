@@ -1,8 +1,14 @@
 # Data collection and automatic recovery
 
-Updated 2026-10-19 at 21:15 UTC (14:15 Pacific). This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
+Updated 2026-10-20 UTC (October 19 Pacific). This page tracks collection for the one-round **generative SelectionARM versus pointwise selection-head** comparison. There are no trained-selector benchmark results. The [main report](README.md) explains the experiment.
 
 ## Current protocol and execution
+
+**Latest checkpoint:** five collection/audit batches have completed, with zero automatic recoveries. The audit after GPU job 371521 and CPU job 371558 raised the accepted total to **8,795 / 11,000 (80.0%)**: TextWorld **4,234 training + 500 development**, WebShop **3,561 + 500**. GPU job **372101** is running, with audit **372110** and watcher **372109** queued. The remaining audited shortfall is **2,205 training states** (766 TextWorld, 1,439 WebShop). The detailed 21:15 UTC snapshot below is retained as historical evidence; its pending count and ETA are not current counters.
+
+A separate [selector-training framework](qijia-training-workstream.md) has passed its 80-state GPU training/resume validation. Its CPU controller now waits for the complete frozen cohort, then can start the four authorized selector fits. The collector's source and protocol remain unchanged. This newer authorization supersedes the earlier training deferral; iterative actor SFT, selector DPO and official tests are not launched by the handoff.
+
+### Earlier snapshot: October 19, 21:15 UTC
 
 The user requested **a maximum of 30 WebShop environment actions per episode**. Active study `v6i-webshop30-text50-1024-seed42` uses `configs/experiment-webshop30.yaml`; TextWorld stays at 50 actions. Five independently sampled candidates, Sol selection, temperature 0.7, top-p 0.9, 1,024 output tokens, thinking mode, seed 42, native images and full actor history are unchanged. A 30-step cap ends the rollout; it does not remove earlier history from the prompt.
 
@@ -19,7 +25,7 @@ CPU bootstrap **370003** completed the fresh import/audit. Since then, **four GP
 
 Completed summaries from the new version, excluding historical imports, cover **603 WebShop tasks with a maximum of 30 actions** and **371 TextWorld tasks with a maximum of 50**. None exceeds its configured cap. These are live collection checks, not learned-selector evaluation scores.
 
-## Accepted data
+## Accepted data at the earlier 21:15 UTC snapshot
 
 | Environment | Accepted training | Accepted development | Total | Target |
 |---|---:|---:|---:|---:|
@@ -90,6 +96,6 @@ The project fileset was approximately **99% used**, with about 10 GiB reported f
 
 Before the horizon change, using the previous 903-state increment as a rough basis, 8,088 remaining states were estimated to require about **8.37 GiB for raw collection/images/teacher cache plus 0.61 GiB for incremental exports**. Final duplicate cohort exports and training outputs are additional; other users can consume the shared headroom. Full-history head features and disposable training intermediates should use scratch, while the final dataset/model and paid raw data keep persistent copies. A further **20–30 GiB of project headroom or an approved persistent storage destination** is a planning recommendation for completing collection and training comfortably, not a measured training-space requirement. The 4 GiB guard remains.
 
-After collection reaches 5,000 training and 500 development states per environment, both methods receive the same frozen cohort. Full feature extraction, research training, deployment validation and paired Greedy/Sol comparisons still follow. Iterative DPO, extra seeds and official test evaluation remain deferred. The supervisor does not authorize or launch those stages.
+After collection reaches 5,000 training and 500 development states per environment, both methods receive the same frozen cohort. The new separately gated training controller can launch feature extraction and the four research fits after validation; deployment and paired Greedy/Sol evaluations still follow. Iterative DPO, extra seeds and official test evaluation remain deferred. The collection supervisor itself still launches no training.
 
 The [current progress receipt](diagnostics/v6i-collection-progress-2026-10-19.json) records the reviewed counts and jobs. The [horizon-transition receipt](diagnostics/v6i-webshop30-transition.json), [startup-recovery receipt](diagnostics/v6h-startup-recovery.json), and [earlier recovery receipt](diagnostics/v6g-collection-recovery.json) preserve historical snapshots. Cluster `STATUS.md`, `status.json`, and `supervisor/status.json` update during execution. GitHub is a reviewed snapshot, not an unattended live uploader.

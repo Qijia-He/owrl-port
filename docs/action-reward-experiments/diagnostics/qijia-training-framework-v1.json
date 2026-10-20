@@ -1,0 +1,131 @@
+{
+  "snapshot_at": "2026-10-20T01:59:32.023900+00:00",
+  "framework": "v1-sol-preaction",
+  "owner": "Qijia",
+  "environments": [
+    "alfworld_text",
+    "webshop"
+  ],
+  "scope": "simulated-environment selector comparisons, followed later by actor SFT comparisons and iterative actor SFT",
+  "collection_counts": {
+    "alfworld_text": {
+      "train": 4234,
+      "development": 500
+    },
+    "webshop": {
+      "train": 3561,
+      "development": 500
+    }
+  },
+  "accepted_total": 8795,
+  "target_total": 11000,
+  "validation_passed": true,
+  "validation_job": "372553",
+  "validation_gpu_elapsed_seconds": 436,
+  "cpu_preparation_job": "372550",
+  "controller_tests_job": "372555",
+  "distinct_tests_passed": 17,
+  "research_training_started": false,
+  "trained_selector_benchmark_results_available": false,
+  "controller": {
+    "stage_index": 0,
+    "resumes": {},
+    "events": [],
+    "status": "waiting_for_frozen_data",
+    "waiting_for_job": "372110",
+    "watcher": "372577"
+  },
+  "validation_environments": {
+    "alfworld_text": {
+      "train": 32,
+      "development": 8,
+      "maximum_actor_tokens": 33817,
+      "native_image_counts": [
+        0
+      ],
+      "exact_token_panels": 25,
+      "head": {
+        "parameters": 16784898,
+        "selected_epoch": 1,
+        "development_metrics": {
+          "strict_agreement": 0.5,
+          "equivalent_agreement": 0.75,
+          "uniform_equivalent_agreement": 0.6000000238418579,
+          "loss": 1.746476411819458
+        },
+        "optimizer_resume_from_epoch": 10,
+        "reload_exact": true,
+        "permutation_equivariant": true,
+        "standardizers_train_only": true,
+        "checkpoint_sha256": "5d55d2a05d79e3916c5ca990a700a98797afc7dec47ebffe3b59b406f019c57b"
+      },
+      "sft": {
+        "global_step": 8,
+        "resumed_from_step": 4,
+        "valid_index_fraction": 1.0,
+        "strict_agreement": 0.5,
+        "equivalent_agreement": 0.625,
+        "adapter_sha256": "233bd7f69d84e7bae1517f3ddb6d504a9cb897d6c422fbdb0dba0af5918c7ae9",
+        "finite_reloaded_logits": true
+      }
+    },
+    "webshop": {
+      "train": 32,
+      "development": 8,
+      "maximum_actor_tokens": 46051,
+      "native_image_counts": [
+        0,
+        1,
+        10
+      ],
+      "exact_token_panels": 26,
+      "head": {
+        "parameters": 16784898,
+        "selected_epoch": 1,
+        "development_metrics": {
+          "strict_agreement": 0.625,
+          "equivalent_agreement": 0.875,
+          "uniform_equivalent_agreement": 0.3499999940395355,
+          "loss": 0.962560772895813
+        },
+        "optimizer_resume_from_epoch": 10,
+        "reload_exact": true,
+        "permutation_equivariant": true,
+        "standardizers_train_only": true,
+        "checkpoint_sha256": "ff759ed0139ebed92600041aff921690f1fc93fc6d5e97dede7a864953105de6"
+      },
+      "sft": {
+        "global_step": 8,
+        "resumed_from_step": 4,
+        "valid_index_fraction": 1.0,
+        "strict_agreement": 0.75,
+        "equivalent_agreement": 1.0,
+        "adapter_sha256": "a6ec47449ad929dd836a0ab6df9aae85cd175f4fbd62c7304bd31c0d61381f0c",
+        "finite_reloaded_logits": true
+      }
+    }
+  },
+  "features": {
+    "panels": 80,
+    "candidate_responses": 400,
+    "full_history": true,
+    "seconds": 203.14250484877266,
+    "peak_gpu_gib": 14.513940811157227,
+    "online_generation_feature_reuse": false
+  },
+  "label_type": "Sol pre-execution choice; not K=1 lookahead",
+  "framework_sha256": "8e6c8513d66c76b8aca593e76cf9d29b4afad6359041c7ecf6fa9719499d2958",
+  "prepared_cohort_sha256": "f1bacd376a284fa9577be64d1251798eb65a0b5128572b97e2c59685c8e9d99a",
+  "references": {
+    "head_pinned_commit": "da20e8e45123682627c732bc5f9828f441d9ea33",
+    "reviewed_latest_commit": "50e815f176a90223b473b2b23badfd9160792de6",
+    "head_definition_and_trainer_unchanged": true,
+    "llamafactory": "ce9dc9e072f80fa3abe0989d4ab90da25f083438"
+  },
+  "limitations": [
+    "Tiny validation checks functionality, not task success or stable teacher agreement.",
+    "Head inference still needs generation-time feature capture/parity before an efficiency claim.",
+    "Full training requires final cohort readiness and sufficient persistent storage.",
+    "Direct-teacher actor SFT requires teacher-generated action targets; existing Sol indices are not those targets."
+  ]
+}
