@@ -1,0 +1,1024 @@
+{
+  "passed": true,
+  "recorded_at": "2026-10-21T18:35:46.159482+00:00",
+  "audit_job": "377045",
+  "phase": "selector_training_complete",
+  "closed_loop_evaluation_complete": false,
+  "actor_updated": false,
+  "teacher_labels": "Sol pre-execution choices",
+  "frozen_framework_sha256": "c83ae8a608da14c2db3ca601d588de9c08218ab7d2c645348e08c48bee105f06",
+  "prepared_sha256": "c20ee532bc26bb2507582ff4db541df1e1156950ba03a9ccc654b344fd3f5e6d",
+  "features": {
+    "prepared_sha256": "c20ee532bc26bb2507582ff4db541df1e1156950ba03a9ccc654b344fd3f5e6d",
+    "passed": true,
+    "completed": 11000,
+    "target": 11000,
+    "updated_at": 1792574458.8627617,
+    "full_history": true,
+    "online_feature_reuse": false
+  },
+  "features_manifest_sha256": "62ad4b539c09bd0d58879ad7791a275c4e00ceff55f51a3b44838146d5e9f88d",
+  "workflow": {
+    "version": 1,
+    "installed_at": 1792531170.9312015,
+    "install_job": "374537",
+    "data_and_training_code_unchanged": true,
+    "nodes": {
+      "features": {
+        "stage": "features",
+        "environment": null,
+        "status": "complete",
+        "job_id": "374367",
+        "watcher": null,
+        "resumes": 0,
+        "events": [
+          {
+            "job_id": "374367",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "at": 1792574498.63061
+          }
+        ]
+      },
+      "sft-text": {
+        "stage": "sft",
+        "environment": "alfworld_text",
+        "status": "complete",
+        "job_id": "376607",
+        "watcher": null,
+        "resumes": 1,
+        "events": [
+          {
+            "job_id": "374539",
+            "state": "FAILED",
+            "exit_code": "75:0",
+            "at": 1792581377.9647553,
+            "action": "checkpoint_continue"
+          },
+          {
+            "job_id": "376607",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "at": 1792589906.9310675
+          }
+        ]
+      },
+      "sft-web": {
+        "stage": "sft",
+        "environment": "webshop",
+        "status": "complete",
+        "job_id": "376613",
+        "watcher": null,
+        "resumes": 1,
+        "events": [
+          {
+            "at": 1792531260.1374998,
+            "job_id": "374541",
+            "reason": "Command '['scontrol', 'show', 'config']' returned non-zero exit status 1.",
+            "change": "Reuse one fresh Slurm configuration snapshot within each CPU callback",
+            "training_framework_unchanged": true,
+            "test_count": 10
+          },
+          {
+            "job_id": "374543",
+            "state": "FAILED",
+            "exit_code": "75:0",
+            "at": 1792582008.5123837,
+            "action": "checkpoint_continue"
+          },
+          {
+            "job_id": "376613",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "at": 1792588706.0282063
+          }
+        ]
+      },
+      "head-text": {
+        "stage": "head",
+        "environment": "alfworld_text",
+        "status": "complete",
+        "job_id": "376496",
+        "watcher": null,
+        "resumes": 0,
+        "events": [
+          {
+            "job_id": "376496",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "at": 1792579305.7359667
+          }
+        ]
+      },
+      "head-web": {
+        "stage": "head",
+        "environment": "webshop",
+        "status": "complete",
+        "job_id": "376498",
+        "watcher": null,
+        "resumes": 0,
+        "events": [
+          {
+            "job_id": "376498",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "at": 1792579305.7534294
+          }
+        ]
+      }
+    },
+    "status": "complete",
+    "updated_at": 1792589906.9343398
+  },
+  "environments": {
+    "alfworld_text": {
+      "train": 5000,
+      "development": 500,
+      "head": {
+        "passed": true,
+        "validation_only": false,
+        "train": 5000,
+        "development": 500,
+        "parameters": 22562818,
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 1.2483709775924683,
+            "development": {
+              "strict_agreement": 0.4740000069141388,
+              "equivalent_agreement": 0.8600000143051147,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.1705282926559448
+            }
+          },
+          {
+            "epoch": 2,
+            "train_loss": 1.1099539455413818,
+            "development": {
+              "strict_agreement": 0.4440000057220459,
+              "equivalent_agreement": 0.878000020980835,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.129887342453003
+            }
+          },
+          {
+            "epoch": 3,
+            "train_loss": 1.048211427116394,
+            "development": {
+              "strict_agreement": 0.42399999499320984,
+              "equivalent_agreement": 0.8960000276565552,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.1413211822509766
+            }
+          },
+          {
+            "epoch": 4,
+            "train_loss": 1.0076763612747193,
+            "development": {
+              "strict_agreement": 0.44200000166893005,
+              "equivalent_agreement": 0.8820000290870667,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.1395987272262573
+            }
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.9711439409255982,
+            "development": {
+              "strict_agreement": 0.4399999976158142,
+              "equivalent_agreement": 0.8899999856948853,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.148218035697937
+            }
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.9433187005996704,
+            "development": {
+              "strict_agreement": 0.4320000112056732,
+              "equivalent_agreement": 0.8759999871253967,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.187374234199524
+            }
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.9262676833152771,
+            "development": {
+              "strict_agreement": 0.42399999499320984,
+              "equivalent_agreement": 0.8899999856948853,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.190445065498352
+            }
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.9026338243484497,
+            "development": {
+              "strict_agreement": 0.4399999976158142,
+              "equivalent_agreement": 0.8859999775886536,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.2587285041809082
+            }
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.8920869755744935,
+            "development": {
+              "strict_agreement": 0.4440000057220459,
+              "equivalent_agreement": 0.8920000195503235,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.2996028661727905
+            }
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.8708724949836731,
+            "development": {
+              "strict_agreement": 0.4359999895095825,
+              "equivalent_agreement": 0.8859999775886536,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.2933932542800903
+            }
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.8581808439254761,
+            "development": {
+              "strict_agreement": 0.44999998807907104,
+              "equivalent_agreement": 0.8939999938011169,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.4019204378128052
+            }
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.8511509272575378,
+            "development": {
+              "strict_agreement": 0.44200000166893005,
+              "equivalent_agreement": 0.8899999856948853,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.4605023860931396
+            }
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.8465594922065734,
+            "development": {
+              "strict_agreement": 0.4779999852180481,
+              "equivalent_agreement": 0.8999999761581421,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.4468700885772705
+            }
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.8403411805152893,
+            "development": {
+              "strict_agreement": 0.4339999854564667,
+              "equivalent_agreement": 0.9020000100135803,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.526090383529663
+            }
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.8375681740760803,
+            "development": {
+              "strict_agreement": 0.4519999921321869,
+              "equivalent_agreement": 0.8939999938011169,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.4677953720092773
+            }
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.8364443012237549,
+            "development": {
+              "strict_agreement": 0.4620000123977661,
+              "equivalent_agreement": 0.8999999761581421,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.511149525642395
+            }
+          },
+          {
+            "epoch": 17,
+            "train_loss": 0.8340000172615051,
+            "development": {
+              "strict_agreement": 0.46000000834465027,
+              "equivalent_agreement": 0.8960000276565552,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.5442440509796143
+            }
+          },
+          {
+            "epoch": 18,
+            "train_loss": 0.8329167143821716,
+            "development": {
+              "strict_agreement": 0.4440000057220459,
+              "equivalent_agreement": 0.8960000276565552,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.5481953620910645
+            }
+          },
+          {
+            "epoch": 19,
+            "train_loss": 0.8329685398101807,
+            "development": {
+              "strict_agreement": 0.4399999976158142,
+              "equivalent_agreement": 0.8960000276565552,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.5454617738723755
+            }
+          },
+          {
+            "epoch": 20,
+            "train_loss": 0.8330890413284302,
+            "development": {
+              "strict_agreement": 0.4399999976158142,
+              "equivalent_agreement": 0.8960000276565552,
+              "uniform_equivalent_agreement": 0.5260000228881836,
+              "loss": 1.545465111732483
+            }
+          }
+        ],
+        "selected_epoch": 14,
+        "development_metrics": {
+          "strict_agreement": 0.4339999854564667,
+          "equivalent_agreement": 0.9020000100135803,
+          "uniform_equivalent_agreement": 0.5260000228881836,
+          "loss": 1.526090383529663
+        },
+        "optimizer_resume_from_epoch": 0,
+        "checkpoint_sha256": "6bb554fde0ec06bdb9aa4c2bbe6013e0799b3bb04d27efe2a035d7ff5c3d400e",
+        "reload_exact": true,
+        "permutation_equivariant": true,
+        "standardizers_train_only": true,
+        "value_loss": false,
+        "checkpoint_selection": "development action-equivalent teacher agreement; not untouched test",
+        "feature_reuse_at_serving": false
+      },
+      "sft": {
+        "passed": true,
+        "validation_only": false,
+        "global_step": 626,
+        "resumed_from_step": 461,
+        "losses": [
+          0.2310662031173706,
+          0.18582907915115357,
+          0.1514706254005432,
+          0.133337664604187,
+          0.14002434015274048,
+          0.11833466291427612,
+          0.15329030752182007,
+          0.12265771627426147,
+          0.1254168391227722,
+          0.07782256007194518,
+          0.11569042205810547,
+          0.1218706488609314,
+          0.11193712949752807,
+          0.08838788866996765,
+          0.0831989049911499,
+          0.08670312762260438,
+          0.07544952630996704,
+          0.13664571046829224,
+          0.12540203332901,
+          0.09682229161262512,
+          0.07657820582389832,
+          0.10852694511413574,
+          0.09992464184761048,
+          0.09177449941635132,
+          0.07967442274093628,
+          0.09115899801254272,
+          0.08982481360435486,
+          0.07314872741699219,
+          0.04306473731994629,
+          0.12129470109939575,
+          0.07290800213813782,
+          0.10212216377258301,
+          0.07980857491493225,
+          0.08549618124961852,
+          0.0772581696510315,
+          0.0675232470035553,
+          0.07634599208831787,
+          0.07396793365478516,
+          0.095963054895401,
+          0.0847577154636383,
+          0.05668294429779053,
+          0.08596258759498596,
+          0.0944535493850708,
+          0.07434738278388978,
+          0.09388198852539062,
+          0.08806993961334228,
+          0.08940640687942505,
+          0.07248506546020508,
+          0.08284271955490112,
+          0.0809270679950714,
+          0.07794055938720704,
+          0.10896600484848022,
+          0.10006227493286132,
+          0.06423145532608032,
+          0.06516400575637818,
+          0.07151260375976562,
+          0.07254734635353088,
+          0.06990137100219726,
+          0.07088891863822937,
+          0.08416269421577453,
+          0.07984302639961242,
+          0.06764994263648987,
+          0.04516486525535583,
+          0.04834392368793487,
+          0.0834888219833374,
+          0.06965847611427307,
+          0.05596031546592713,
+          0.026398083567619322,
+          0.06751998662948608,
+          0.061655056476593015,
+          0.051879286766052246,
+          0.04393853545188904,
+          0.07210370898246765,
+          0.040536579489707944,
+          0.0596308708190918,
+          0.040149858593940733,
+          0.040917623043060306,
+          0.04195047616958618,
+          0.05215716958045959,
+          0.055265629291534425,
+          0.028165894746780395,
+          0.035586568713188174,
+          0.037412068247795104,
+          0.04877446293830871,
+          0.04223710000514984,
+          0.023758724331855774,
+          0.061030393838882445,
+          0.03161965012550354,
+          0.0633150041103363,
+          0.037590551376342776,
+          0.04153009057044983,
+          0.03592466413974762,
+          0.046317361295223236,
+          0.03186069428920746,
+          0.05667742490768433,
+          0.022542616724967955,
+          0.043028372526168826,
+          0.029402559995651244,
+          0.030025890469551085,
+          0.031701508164405826,
+          0.06527367234230042,
+          0.05218190550804138,
+          0.04848727583885193,
+          0.03963515460491181,
+          0.03274532854557037,
+          0.04528867900371551,
+          0.04061792492866516,
+          0.02527444064617157,
+          0.02320617437362671,
+          0.03591091632843017,
+          0.05407518744468689,
+          0.03782400786876679,
+          0.03656696081161499,
+          0.055492496490478514,
+          0.035483986139297485,
+          0.03482729196548462,
+          0.04877111315727234,
+          0.03914306163787842,
+          0.051843303442001346,
+          0.04546080529689789,
+          0.03249703645706177,
+          0.03215477466583252,
+          0.03658103346824646,
+          0.04141813218593597,
+          0.03259097635746002
+        ],
+        "train_seconds_this_attempt": 8427.444980829023,
+        "finite_reloaded_logits": true,
+        "checkpoint_selection": "development loss; not untouched test",
+        "adapter_sha256": "dc1f22170959c3c43af5ddb28907d4543d1abf110915d5c8f5d0d02190555c64",
+        "predictions": [
+          {
+            "id": "9b3e25304187e43e655cb4633c2cbf9253d5ab97b787cb23b4267a18aabc170d",
+            "text": "{\"selection\": 3}\n",
+            "picked_index": 2,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "81ae34e860e9d49f22b4af30d74c1bdd4578de7233f1b2939d4772554c62ec94",
+            "text": "{\"selection\": 5}\n",
+            "picked_index": 4,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "8af5cfed4e05dc92ca6cd0a8558ee8574cdd8c67c380ce9f3d03866c064cc2ae",
+            "text": "{\"selection\": 2}\n",
+            "picked_index": 1,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "22e02731fd684b39dfa90e7368a70469088b755ef56236f109b9fe322e096212",
+            "text": "{\"selection\": 3}\n",
+            "picked_index": 2,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "243258235eb7adf511d6695994eb487f28350690c623bcfdfe07446dfba92c15",
+            "text": "{\"selection\": 1}\n",
+            "picked_index": 0,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "4ce9989a37762c8da5348ef1463a7781575b534791f3f76576ff9d1cdba6697a",
+            "text": "{\"selection\": 3}\n",
+            "picked_index": 2,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "44900a740c323e154835844975f3fea935ae2a4110150c620baf93e186dd932d",
+            "text": "{\"selection\": 1}\n",
+            "picked_index": 0,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "dfa19ac4cbd68c8d71365633fc1b901d793303e7114af5a8f733e3424c93fcb8",
+            "text": "{\"selection\": 1}\n",
+            "picked_index": 0,
+            "strict_hit": true,
+            "equivalent_hit": true
+          }
+        ],
+        "strict_agreement": 1.0,
+        "equivalent_agreement": 1.0,
+        "valid_index_fraction": 1.0,
+        "task_success_measured": false
+      },
+      "sft_selected_development_loss": 0.06952317804098129,
+      "sft_final_step_development_loss": 0.06952317804098129,
+      "sft_selected_checkpoint": "/gpfs/scrubbed/heqj3/arm-generalization/selector-training/v2-listwise-sol-preaction/research/alfworld_text/sft-checkpoints/checkpoint-626",
+      "sft_epochs": 2.0,
+      "artifacts": {
+        "head/head.pt": {
+          "path": "/gpfs/projects/krishna/heqj3/arm-generalization/artifacts/selector-training/v2-listwise-sol-preaction/research/alfworld_text/head/head.pt",
+          "bytes": 90512546,
+          "sha256": "6bb554fde0ec06bdb9aa4c2bbe6013e0799b3bb04d27efe2a035d7ff5c3d400e"
+        },
+        "sft-adapter/adapter_model.safetensors": {
+          "path": "/gpfs/projects/krishna/heqj3/arm-generalization/artifacts/selector-training/v2-listwise-sol-preaction/research/alfworld_text/sft-adapter/adapter_model.safetensors",
+          "bytes": 259794448,
+          "sha256": "dc1f22170959c3c43af5ddb28907d4543d1abf110915d5c8f5d0d02190555c64"
+        }
+      },
+      "agreement_caveat": "Head: 500 development states used for checkpoint selection. SFT: 8 reload probes only. Neither is task success."
+    },
+    "webshop": {
+      "train": 5000,
+      "development": 500,
+      "head": {
+        "passed": true,
+        "validation_only": false,
+        "train": 5000,
+        "development": 500,
+        "parameters": 22562818,
+        "history": [
+          {
+            "epoch": 1,
+            "train_loss": 1.0940883949279785,
+            "development": {
+              "strict_agreement": 0.5120000243186951,
+              "equivalent_agreement": 0.8080000281333923,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9700605869293213
+            }
+          },
+          {
+            "epoch": 2,
+            "train_loss": 0.9801716042518616,
+            "development": {
+              "strict_agreement": 0.5199999809265137,
+              "equivalent_agreement": 0.8379999995231628,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9298823475837708
+            }
+          },
+          {
+            "epoch": 3,
+            "train_loss": 0.9407865970611572,
+            "development": {
+              "strict_agreement": 0.5220000147819519,
+              "equivalent_agreement": 0.8519999980926514,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9139699339866638
+            }
+          },
+          {
+            "epoch": 4,
+            "train_loss": 0.9165099758148193,
+            "development": {
+              "strict_agreement": 0.5239999890327454,
+              "equivalent_agreement": 0.8339999914169312,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9469068050384521
+            }
+          },
+          {
+            "epoch": 5,
+            "train_loss": 0.8953253442764282,
+            "development": {
+              "strict_agreement": 0.5460000038146973,
+              "equivalent_agreement": 0.8399999737739563,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9247677326202393
+            }
+          },
+          {
+            "epoch": 6,
+            "train_loss": 0.8661447243690491,
+            "development": {
+              "strict_agreement": 0.515999972820282,
+              "equivalent_agreement": 0.8619999885559082,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.920927882194519
+            }
+          },
+          {
+            "epoch": 7,
+            "train_loss": 0.8500706328392029,
+            "development": {
+              "strict_agreement": 0.5299999713897705,
+              "equivalent_agreement": 0.8539999723434448,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9312240481376648
+            }
+          },
+          {
+            "epoch": 8,
+            "train_loss": 0.829508623123169,
+            "development": {
+              "strict_agreement": 0.5460000038146973,
+              "equivalent_agreement": 0.871999979019165,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9211606383323669
+            }
+          },
+          {
+            "epoch": 9,
+            "train_loss": 0.8021267380714416,
+            "development": {
+              "strict_agreement": 0.5080000162124634,
+              "equivalent_agreement": 0.8600000143051147,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9676762223243713
+            }
+          },
+          {
+            "epoch": 10,
+            "train_loss": 0.7859508408546447,
+            "development": {
+              "strict_agreement": 0.5339999794960022,
+              "equivalent_agreement": 0.8479999899864197,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0015809535980225
+            }
+          },
+          {
+            "epoch": 11,
+            "train_loss": 0.7688317420959473,
+            "development": {
+              "strict_agreement": 0.5460000038146973,
+              "equivalent_agreement": 0.8640000224113464,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 0.9724912047386169
+            }
+          },
+          {
+            "epoch": 12,
+            "train_loss": 0.7477709658622742,
+            "development": {
+              "strict_agreement": 0.5320000052452087,
+              "equivalent_agreement": 0.8519999980926514,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.009161353111267
+            }
+          },
+          {
+            "epoch": 13,
+            "train_loss": 0.7253616221427918,
+            "development": {
+              "strict_agreement": 0.5479999780654907,
+              "equivalent_agreement": 0.8560000061988831,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0358433723449707
+            }
+          },
+          {
+            "epoch": 14,
+            "train_loss": 0.7134618602752686,
+            "development": {
+              "strict_agreement": 0.5519999861717224,
+              "equivalent_agreement": 0.8659999966621399,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0070891380310059
+            }
+          },
+          {
+            "epoch": 15,
+            "train_loss": 0.7013471716880798,
+            "development": {
+              "strict_agreement": 0.5479999780654907,
+              "equivalent_agreement": 0.8600000143051147,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0343965291976929
+            }
+          },
+          {
+            "epoch": 16,
+            "train_loss": 0.6932531667709351,
+            "development": {
+              "strict_agreement": 0.5360000133514404,
+              "equivalent_agreement": 0.8600000143051147,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0392290353775024
+            }
+          },
+          {
+            "epoch": 17,
+            "train_loss": 0.6834492615699768,
+            "development": {
+              "strict_agreement": 0.5400000214576721,
+              "equivalent_agreement": 0.8600000143051147,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0426838397979736
+            }
+          },
+          {
+            "epoch": 18,
+            "train_loss": 0.6776857887268066,
+            "development": {
+              "strict_agreement": 0.5419999957084656,
+              "equivalent_agreement": 0.8600000143051147,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.053619146347046
+            }
+          },
+          {
+            "epoch": 19,
+            "train_loss": 0.6757819984436035,
+            "development": {
+              "strict_agreement": 0.5460000038146973,
+              "equivalent_agreement": 0.8619999885559082,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0588641166687012
+            }
+          },
+          {
+            "epoch": 20,
+            "train_loss": 0.6753228053092957,
+            "development": {
+              "strict_agreement": 0.5440000295639038,
+              "equivalent_agreement": 0.8619999885559082,
+              "uniform_equivalent_agreement": 0.42559999227523804,
+              "loss": 1.0594383478164673
+            }
+          }
+        ],
+        "selected_epoch": 8,
+        "development_metrics": {
+          "strict_agreement": 0.5460000038146973,
+          "equivalent_agreement": 0.871999979019165,
+          "uniform_equivalent_agreement": 0.42559999227523804,
+          "loss": 0.9211606383323669
+        },
+        "optimizer_resume_from_epoch": 0,
+        "checkpoint_sha256": "845b451767feea61111851e9573bbf98c3242e1bf56b5c5c27f23ff9171f6b38",
+        "reload_exact": true,
+        "permutation_equivariant": true,
+        "standardizers_train_only": true,
+        "value_loss": false,
+        "checkpoint_selection": "development action-equivalent teacher agreement; not untouched test",
+        "feature_reuse_at_serving": false
+      },
+      "sft": {
+        "passed": true,
+        "validation_only": false,
+        "global_step": 626,
+        "resumed_from_step": 283,
+        "losses": [
+          0.18541213274002075,
+          0.1541629433631897,
+          0.1333185076713562,
+          0.10970326662063598,
+          0.11502116918563843,
+          0.10300123691558838,
+          0.10277223587036133,
+          0.10098400115966796,
+          0.11980316638946534,
+          0.12058761119842529,
+          0.09353096485137939,
+          0.1078754186630249,
+          0.09732387661933899,
+          0.08738009333610534,
+          0.09504029750823975,
+          0.0909475862979889,
+          0.1158837080001831,
+          0.09189902544021607,
+          0.08748014569282532,
+          0.11788631677627563,
+          0.08814394474029541,
+          0.07884485721588134,
+          0.07399355173110962,
+          0.08113113045692444,
+          0.08940090537071228,
+          0.08039763569831848,
+          0.07331595420837403,
+          0.09033615589141845,
+          0.10372375249862671,
+          0.07694891095161438,
+          0.08546516299247742,
+          0.10342499017715454,
+          0.0887429416179657,
+          0.09115381836891175,
+          0.08995118737220764,
+          0.07744981050491333,
+          0.08268164396286011,
+          0.1065704345703125,
+          0.07391384840011597,
+          0.09043360352516175,
+          0.07335012555122375,
+          0.09573591947555542,
+          0.08210474252700806,
+          0.10338339805603028,
+          0.09046246409416199,
+          0.07319573760032654,
+          0.08201096653938293,
+          0.0628937840461731,
+          0.08957744836807251,
+          0.06912632584571839,
+          0.0577701210975647,
+          0.09873421788215637,
+          0.10375664234161378,
+          0.08496895432472229,
+          0.0600239634513855,
+          0.07724319696426392,
+          0.045293569564819336,
+          0.07651295661926269,
+          0.0785397469997406,
+          0.07592851519584656,
+          0.07293460369110108,
+          0.0806685745716095,
+          0.054282361268997194,
+          0.0463556706905365,
+          0.06135261058807373,
+          0.06623989939689637,
+          0.04886884391307831,
+          0.043841186165809634,
+          0.07136504054069519,
+          0.049200248718261716,
+          0.03323554992675781,
+          0.03233690857887268,
+          0.049877825379371646,
+          0.044736653566360474,
+          0.04344622492790222,
+          0.05352874994277954,
+          0.040260720252990725,
+          0.03295866847038269,
+          0.048373088240623474,
+          0.03622332215309143,
+          0.0505576491355896,
+          0.05667911171913147,
+          0.04020473659038544,
+          0.046606254577636716,
+          0.042576995491981504,
+          0.04936120510101318,
+          0.05640349984169006,
+          0.04829351603984833,
+          0.03416112661361694,
+          0.037040674686431886,
+          0.04472127556800842,
+          0.034772610664367674,
+          0.054149734973907473,
+          0.06231908798217774,
+          0.05046872496604919,
+          0.03124060034751892,
+          0.047896894812583926,
+          0.030134984850883485,
+          0.04224865138530731,
+          0.022522975504398347,
+          0.03833255469799042,
+          0.04857750833034515,
+          0.06068465709686279,
+          0.038986170291900636,
+          0.04105052649974823,
+          0.037498316168785094,
+          0.05598353147506714,
+          0.04446500241756439,
+          0.052798837423324585,
+          0.0419964998960495,
+          0.04623742401599884,
+          0.04056812524795532,
+          0.045300984382629396,
+          0.030372163653373717,
+          0.04008323550224304,
+          0.060297250747680664,
+          0.03583003878593445,
+          0.041929176449775694,
+          0.031461939215660095,
+          0.03223794400691986,
+          0.0326924592256546,
+          0.04241872429847717,
+          0.049005126953125,
+          0.041711917519569396,
+          0.05084274411201477
+        ],
+        "train_seconds_this_attempt": 6619.8788556770305,
+        "finite_reloaded_logits": true,
+        "checkpoint_selection": "development loss; not untouched test",
+        "adapter_sha256": "37c0fe5789b0c39c30dd91622f75be9118a0db7b5598da99dea583ea1d8ebc76",
+        "predictions": [
+          {
+            "id": "ea852589d789313fc7c4475a3d3968ac072053ff3a424f76f1968a79383e03e9",
+            "text": "{\"selection\": 1}\n",
+            "picked_index": 0,
+            "strict_hit": false,
+            "equivalent_hit": true
+          },
+          {
+            "id": "64c722593f1e962c2d4187f68ae19da8304fca846d38256751b4c65c69ee0c58",
+            "text": "{\"selection\": 1}\n",
+            "picked_index": 0,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "9148ce63d4f1fa810e43ed9f9661952665213a2eaa7b850b59c80ff7da2c5654",
+            "text": "{\"selection\": 3}\n",
+            "picked_index": 2,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "fdd42e351959d05662b8e652a07e3e0792f7456f0b0e72f822483e21a676e39d",
+            "text": "{\"selection\": 2}\n",
+            "picked_index": 1,
+            "strict_hit": false,
+            "equivalent_hit": false
+          },
+          {
+            "id": "5a86c8986bb8a5cb4984b98cdbbc33019e3d7ccbb9f0109a0351c16ef0b577f9",
+            "text": "{\"selection\": 4}\n",
+            "picked_index": 3,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "865245b7b06c274717adcc120a324cfae06d10950b37bbef087b5b607782f48b",
+            "text": "{\"selection\": 4}\n",
+            "picked_index": 3,
+            "strict_hit": true,
+            "equivalent_hit": true
+          },
+          {
+            "id": "c9c342a2ac32de6dad4e936efc1d35a9b9952c2dc062fbb07d15b0a1399ba428",
+            "text": "{\"selection\": 1}\n",
+            "picked_index": 0,
+            "strict_hit": false,
+            "equivalent_hit": true
+          },
+          {
+            "id": "42ad7dfd6512347195b31d0d2eae96dee133a8dc36308321f49ee8c48fbb8319",
+            "text": "{\"selection\": 2}\n",
+            "picked_index": 1,
+            "strict_hit": true,
+            "equivalent_hit": true
+          }
+        ],
+        "strict_agreement": 0.625,
+        "equivalent_agreement": 0.875,
+        "valid_index_fraction": 1.0,
+        "task_success_measured": false
+      },
+      "sft_selected_development_loss": 0.07011084258556366,
+      "sft_final_step_development_loss": 0.07031741738319397,
+      "sft_selected_checkpoint": "/gpfs/scrubbed/heqj3/arm-generalization/selector-training/v2-listwise-sol-preaction/research/webshop/sft-checkpoints/checkpoint-600",
+      "sft_epochs": 2.0,
+      "artifacts": {
+        "head/head.pt": {
+          "path": "/gpfs/projects/krishna/heqj3/arm-generalization/artifacts/selector-training/v2-listwise-sol-preaction/research/webshop/head/head.pt",
+          "bytes": 90512546,
+          "sha256": "845b451767feea61111851e9573bbf98c3242e1bf56b5c5c27f23ff9171f6b38"
+        },
+        "sft-adapter/adapter_model.safetensors": {
+          "path": "/gpfs/projects/krishna/heqj3/arm-generalization/artifacts/selector-training/v2-listwise-sol-preaction/research/webshop/sft-adapter/adapter_model.safetensors",
+          "bytes": 259794448,
+          "sha256": "37c0fe5789b0c39c30dd91622f75be9118a0db7b5598da99dea583ea1d8ebc76"
+        }
+      },
+      "agreement_caveat": "Head: 500 development states used for checkpoint selection. SFT: 8 reload probes only. Neither is task success."
+    }
+  },
+  "slurm_accounting": "374367|arm-fit-features|COMPLETED|0:0|15932|2026-10-20T21:55:30|2026-10-21T02:21:02|gpu-h200|billing=8,cpu=4,gres/gpu:h200=1,gres/gpu=1,mem=120G,node=1\n374539|arm-fit-sft-text|FAILED|75:0|21802|2026-10-20T22:12:37|2026-10-21T04:15:59|gpu-h200|billing=8,cpu=4,gres/gpu:h200=1,gres/gpu=1,mem=120G,node=1\n374543|arm-fit-sft-web|FAILED|75:0|22413|2026-10-20T22:12:37|2026-10-21T04:26:10|gpu-h200|billing=8,cpu=4,gres/gpu:h200=1,gres/gpu=1,mem=120G,node=1\n376496|arm-fit-head-text|COMPLETED|0:0|97|2026-10-21T03:39:31|2026-10-21T03:41:08|gpu-h200-mig|billing=1,cpu=1,gres/gpu:h200_1g.18gb=1,gres/gpu=1,mem=30G,node=1\n376498|arm-fit-head-web|COMPLETED|0:0|97|2026-10-21T03:39:31|2026-10-21T03:41:08|gpu-h200-mig|billing=1,cpu=1,gres/gpu:h200_1g.18gb=1,gres/gpu=1,mem=30G,node=1\n376607|arm-fit-sft-text|COMPLETED|0:0|8462|2026-10-21T04:16:43|2026-10-21T06:37:45|gpu-h200|billing=8,cpu=4,gres/gpu:h200=1,gres/gpu=1,mem=120G,node=1\n376613|arm-fit-sft-web|COMPLETED|0:0|6631|2026-10-21T04:27:14|2026-10-21T06:17:45|gpu-h200|billing=8,cpu=4,gres/gpu:h200=1,gres/gpu=1,mem=120G,node=1\n"
+}

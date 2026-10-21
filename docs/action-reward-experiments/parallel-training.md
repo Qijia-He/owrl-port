@@ -2,6 +2,8 @@
 
 Updated October 20, 2026. This is a scheduling change requested after the final cohort was collected. It does not change the research protocol, data, training algorithms or random seeds.
 
+**Completion update, October 21:** the shared feature extraction and all four fits completed. Both SFT branches resumed successfully once; the final worker ended at 06:37:45 PDT. No GPU allocations remain. See [verified training results](selector-training-results.md). The queue snapshot at the bottom of this page is historical.
+
 ## What is trained
 
 The frozen Qwen3.5-4B actor generated five candidates at each recorded decision state. Sol selected a candidate before execution. Each environment has 5,000 training and 500 development states. We train two alternatives to Sol, separately for TextWorld and WebShop:

@@ -111,3 +111,8 @@ Job 374288 scheduled 374295 after a 16-minute quota-refresh delay. The resume wr
 The user requested four independent fits. The active controller is now `experiments/selector-training/orchestration/control.py`, with state under `artifacts/selector-training/v2-listwise-sol-preaction/parallel/workflow.json`. The frozen v2 workers and prepared data are unchanged. The legacy v2 root STOP marker deliberately prevents its sequential dispatcher restarting; the parallel controller uses a separate `parallel/STOP` marker. Do not remove either marker without checking which controller it governs.
 
 Each GPU worker has an after-any CPU callback. Explicit exit 75 resumes only that feature/SFT branch; other errors require review. The two heads wait for the completed shared feature manifest; neither SFT branch waits for features or another fit. Follow [parallel execution](parallel-training.md) for job roles and resource placement. A failed branch does not cancel healthy independent fits. Final weights and results retain the existing research paths.
+
+
+## Training complete, October 21 Pacific
+
+The parallel workflow is now `complete`; all four final artifacts exist on project storage. CPU audit job 377045 reverified the frozen source/prepared-data identity, the final weight hashes, full feature completion and result/provenance contracts. See [training results](selector-training-results.md) and `models/completion-audit.json`. Do not restart the training controller or treat the two earlier code-75 Slurm FAILED attempts as unhandled failures: both SFT branches resumed and completed. Development teacher agreement and the eight-prompt SFT reload probes are not benchmark success. Deployment and matched closed-loop evaluation remain separate stages.

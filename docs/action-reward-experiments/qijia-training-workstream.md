@@ -2,7 +2,7 @@
 
 Updated October 20, 2026 UTC. This page maps the team's TODO list to Qijia's work on **ALFWorld TextWorld and WebShop**, explains what is being trained, and separates implemented checks from research results. The [main report](README.md) contains the completed inference pilot. The [collection record](collection-status.md) tracks the labels.
 
-**October 20 training update:** the full 11,000-state cohort is audited and CPU preparation has completed. At the user's request, the four selector fits now have independent scheduling: TextWorld and WebShop generative SelectionARM can start immediately; the two listwise heads each wait only for shared full-history feature extraction. Training code, data and hyperparameters are unchanged. See [independent jobs and current execution](parallel-training.md) and the [collection completion record](collection-complete.md). Formal task-success results are still pending.
+**October 21 training complete:** all four selectors have finished: TextWorld and WebShop generative SelectionARM, and one listwise head for each environment. Both SFT jobs automatically resumed once and finished two epochs. The heads' development action agreement with Sol is 90.2% and 87.2%, respectively, measured on 500 states per environment used for checkpoint selection; these are not task-success rates. Generative-selector agreement has only an eight-prompt reload probe so far. Final artifact hashes passed the CPU completion audit. See [training results, limits and next evaluation](selector-training-results.md). Closed-loop success remains unmeasured for these checkpoints.
 
 ## Scope and order
 
