@@ -16,6 +16,7 @@ The published location is [`Qijia-He/owrl-port/docs/action-reward-experiments/`]
 | `training-data-readiness.md` | Audited state/panel counts, reusable training formats, label diagnostics and remaining feature work |
 | `selection-arm-head-plan.md` | Current Table 1(c) experiment plan, method distinctions, adaptation requirements and blockers |
 | `project-layout.md` | Research-stage workspace, mappings to versioned run paths, live status locations and storage policy |
+| `official-selector-evaluation.md` | Submitted 134/500-task official-split evaluation, deployment checks, denominators and Slurm continuation |
 | `literature-length-alignment.md` | Dated paper/code audit of output limits, model identities, reported scores, and protocol differences |
 | `tools/update_experiment_log.py` | Portable copy of the cluster project's canonical `scripts/update_experiment_log.py` |
 
