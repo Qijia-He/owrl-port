@@ -1,10 +1,35 @@
 # Official-split success evaluation of the trained selectors
 
-## Status: submitted to Slurm, October 21, 2026
+## Latest status: partial evaluation and reviewed recovery, October 21, 2026
 
-All four trained selectors are complete. Their task-success rates are **not available yet**. CPU preparation job **377085** passed, including 11 evaluation contract tests, checkpoint checksums, task separation and official task enumeration. Slurm controller job **377090** has been submitted. It becomes eligible at **12:04:49 Pacific on October 21**; this is an eligibility time, not a guaranteed GPU start time.
+At the **14:30 Pacific** audited snapshot, **316 of 2,536** evaluation episodes were complete. The three TextWorld lanes were still running: Greedy 87/134, Sol 63/134 and SelectionARM 70/134. WebShop Greedy, Sol and SelectionARM had each completed 32/500, then stopped at task `webshop/32` because the same native product image URL returned HTTP 404. Both head lanes had not started because project quota fell below the unchanged 4 GiB submission guard. The earlier deployment check **377104 passed** all four frozen-checkpoint parity checks and complete reserved-training episodes.
 
-The controller first checks project quota, then submits a one-GPU deployment check. If that succeeds, it submits the eight environment/method evaluation lanes, with at most four active GPU jobs. Closing a laptop or terminal does not stop the workflow. No new evaluation GPU job was running at the time of this update.
+For a fair *interim* comparison, restrict each environment to task IDs completed by all three available methods:
+
+| Environment | Common completed tasks | Greedy | Sol of 5 | SelectionARM of 5 |
+| --- | ---: | ---: | ---: | ---: |
+| TextWorld unseen | 63 | 24/63 = 38.1% | 43/63 = 68.3% | 45/63 = 71.4% |
+| WebShop test | 32 | 7/32 = 21.9% | 13/32 = 40.6% | 13/32 = 40.6% |
+
+These are **partial-prefix results**, not final success rates on 134 or 500 tasks. They do not establish that SelectionARM outperforms Sol. There are no closed-loop head results yet. Full task lists, final denominators and seed 42 remain fixed. The [dated progress receipt](diagnostics/official-selector-progress-2026-10-21.json) preserves the snapshot separately from the final result schema.
+
+### Approved missing-image amendment: `native404-v1`
+
+The user approved representing a confirmed unavailable native image as a loading failure while keeping the remaining images, visible text, native actions and original task. We do not replace the image, generate a placeholder bitmap or remove the task. Only HTTP 404 enters this rule; permission errors, rate limits and server errors retain their previous failure/retry behavior. Confirmed missing sources are recorded once and shared across methods and replays to keep observations consistent.
+
+The amendment is separately hash-locked under `amendments/native404-v1/`; the original study, model weights, sampling configuration and frozen base code remain unchanged. New run receipts and summaries identify the amendment. The 96 completed WebShop episodes are retained after an integrity audit because none encountered this condition.
+
+CPU validation job **377370 passed nine regression tests**, including unchanged ordinary 0-, 1- and 10-image observations, native option-image mapping and handling of other HTTP errors. Replaying each of the three actual interrupted steps preserved all **nine remaining native images** and **12 available actions**, with matching observation hashes across methods. Original summaries and trajectories remained unchanged during this check.
+
+CPU storage job **377362** losslessly archived 17 immutable JSON working files, freeing **2.025 GiB** while retaining verified gzip originals on project storage. Uncompressed working paths point to scratch; final weights and dataset contents are unchanged and their frozen hashes passed again.
+
+Recovery controller **377373** is submitted with eligibility at **14:47 Pacific**, after validation and quota-refresh time. It checks actual headroom before allocating a GPU, replaces the CPU continuation callbacks, preserves the three running TextWorld jobs and resumes the reviewed branches under the same four-GPU concurrency cap. Eligibility is not a guarantee of immediate GPU availability. As of this update, the recovery controller is pending; the stopped WebShop jobs have not yet restarted.
+
+## Initial submission
+
+All four trained selectors are complete; their **final** task-success rates remain pending. CPU preparation job **377085** passed, including 11 evaluation contract tests, checkpoint checksums, task separation and official task enumeration. Original Slurm controller **377090** became eligible at **12:04:49 Pacific on October 21** and successfully started the workflow.
+
+The controller first checks project quota, then submits a one-GPU deployment check. If that succeeds, it submits the eight environment/method evaluation lanes, with at most four active GPU jobs. Closing a laptop or terminal does not stop the workflow. See the dated latest status above for actual progress and recovery.
 
 The short delayed eligibility allows GPFS quota accounting to refresh after a verified lossless archive freed **1.922 GiB**. The existing **4 GiB free-space guard** remains in force. A failed quota check stops GPU submissions; it does not hold GPUs while waiting for storage.
 
@@ -78,4 +103,4 @@ The runner durably records each selected action before execution. After a planne
 - Separate deployment probes: `deployment-episodes/`
 - Aggregated results: `results.json` and `results.md` (created by controller callbacks)
 
-This page records a submitted experiment, not completed success rates. The historical pilot table is unchanged.
+This page records an ongoing experiment, including a dated interim snapshot and an explicitly approved observation amendment. Final success rates remain pending. The historical pilot table is unchanged.

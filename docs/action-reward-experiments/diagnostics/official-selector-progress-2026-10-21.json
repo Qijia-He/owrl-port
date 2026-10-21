@@ -1,0 +1,380 @@
+{
+  "kind": "interim_official_evaluation_snapshot",
+  "snapshot_at": 1792618253.9472048,
+  "seed": 42,
+  "final": false,
+  "planned_episodes": 2536,
+  "results": [
+    {
+      "environment": "alfworld_text",
+      "method": "greedy",
+      "expected_episodes": 134,
+      "finished_episodes": 87,
+      "successes": 32,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": 0.367816091954023,
+      "possible_final_success_rate_bounds": [
+        0.23880597014925373,
+        0.5895522388059702
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 0,
+      "mean_native_reward": null,
+      "mean_steps": 36.02298850574713,
+      "steps": 3134,
+      "candidate_count": 3134,
+      "invalid_action_rate": 0.6174218251435865,
+      "candidate_truncation_rate": 0.5303126994256541,
+      "selected_truncation_rate": 0.5303126994256541,
+      "selector_fallbacks": 0,
+      "image_steps": 0,
+      "actor_seconds": 7539.309923134919,
+      "selector_seconds": 0.0040386400069110096,
+      "known_attributed_api_usd": 0,
+      "reached_step_limit": 55,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "alfworld_text",
+      "method": "gpt5",
+      "expected_episodes": 134,
+      "finished_episodes": 63,
+      "successes": 43,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": 0.6825396825396826,
+      "possible_final_success_rate_bounds": [
+        0.3208955223880597,
+        0.8507462686567164
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 0,
+      "mean_native_reward": null,
+      "mean_steps": 24.523809523809526,
+      "steps": 1545,
+      "candidate_count": 7725,
+      "invalid_action_rate": 0.24336569579288025,
+      "candidate_truncation_rate": 0.23055016181229773,
+      "selected_truncation_rate": 0.09579288025889968,
+      "selector_fallbacks": 0,
+      "image_steps": 0,
+      "actor_seconds": 5210.854223100119,
+      "selector_seconds": 2548.2663009684184,
+      "known_attributed_api_usd": 12.6332255,
+      "reached_step_limit": 20,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "alfworld_text",
+      "method": "arm5",
+      "expected_episodes": 134,
+      "finished_episodes": 70,
+      "successes": 48,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": 0.6857142857142857,
+      "possible_final_success_rate_bounds": [
+        0.3582089552238806,
+        0.835820895522388
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 0,
+      "mean_native_reward": null,
+      "mean_steps": 24.385714285714286,
+      "steps": 1707,
+      "candidate_count": 8535,
+      "invalid_action_rate": 0.2677211482132396,
+      "candidate_truncation_rate": 0.18898652606912714,
+      "selected_truncation_rate": 0.05506736965436438,
+      "selector_fallbacks": 1,
+      "image_steps": 0,
+      "actor_seconds": 5036.542269759695,
+      "selector_seconds": 998.1915838140412,
+      "known_attributed_api_usd": 0,
+      "reached_step_limit": 22,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "alfworld_text",
+      "method": "head5",
+      "expected_episodes": 134,
+      "finished_episodes": 0,
+      "successes": 0,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": null,
+      "possible_final_success_rate_bounds": [
+        0.0,
+        1.0
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 0,
+      "mean_native_reward": null,
+      "mean_steps": null,
+      "steps": 0,
+      "candidate_count": 0,
+      "invalid_action_rate": null,
+      "candidate_truncation_rate": null,
+      "selected_truncation_rate": null,
+      "selector_fallbacks": 0,
+      "image_steps": 0,
+      "actor_seconds": 0,
+      "selector_seconds": 0,
+      "known_attributed_api_usd": 0,
+      "reached_step_limit": 0,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "webshop",
+      "method": "greedy",
+      "expected_episodes": 500,
+      "finished_episodes": 32,
+      "successes": 7,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": 0.21875,
+      "possible_final_success_rate_bounds": [
+        0.014,
+        0.95
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 1,
+      "mean_native_reward": null,
+      "mean_steps": 17.1875,
+      "steps": 550,
+      "candidate_count": 550,
+      "invalid_action_rate": 0.4381818181818182,
+      "candidate_truncation_rate": 0.4381818181818182,
+      "selected_truncation_rate": 0.4381818181818182,
+      "selector_fallbacks": 0,
+      "image_steps": 365,
+      "actor_seconds": 1275.2897987737088,
+      "selector_seconds": 0.0009876529802568257,
+      "known_attributed_api_usd": 0,
+      "reached_step_limit": 16,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "webshop",
+      "method": "gpt5",
+      "expected_episodes": 500,
+      "finished_episodes": 32,
+      "successes": 13,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": 0.40625,
+      "possible_final_success_rate_bounds": [
+        0.026,
+        0.962
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 1,
+      "mean_native_reward": null,
+      "mean_steps": 10.71875,
+      "steps": 343,
+      "candidate_count": 1715,
+      "invalid_action_rate": 0.11078717201166181,
+      "candidate_truncation_rate": 0.2536443148688047,
+      "selected_truncation_rate": 0.09037900874635568,
+      "selector_fallbacks": 0,
+      "image_steps": 207,
+      "actor_seconds": 1538.3239192533074,
+      "selector_seconds": 738.0911088205175,
+      "known_attributed_api_usd": 4.217563500000001,
+      "reached_step_limit": 6,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "webshop",
+      "method": "arm5",
+      "expected_episodes": 500,
+      "finished_episodes": 32,
+      "successes": 13,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": 0.40625,
+      "possible_final_success_rate_bounds": [
+        0.026,
+        0.962
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 1,
+      "mean_native_reward": null,
+      "mean_steps": 10.53125,
+      "steps": 337,
+      "candidate_count": 1685,
+      "invalid_action_rate": 0.0771513353115727,
+      "candidate_truncation_rate": 0.20949554896142433,
+      "selected_truncation_rate": 0.06528189910979229,
+      "selector_fallbacks": 0,
+      "image_steps": 191,
+      "actor_seconds": 1340.7530665182858,
+      "selector_seconds": 287.3116623876267,
+      "known_attributed_api_usd": 0,
+      "reached_step_limit": 7,
+      "success_vs_greedy": null
+    },
+    {
+      "environment": "webshop",
+      "method": "head5",
+      "expected_episodes": 500,
+      "finished_episodes": 0,
+      "successes": 0,
+      "complete": false,
+      "success_rate": null,
+      "interim_successes_over_finished": null,
+      "possible_final_success_rate_bounds": [
+        0.0,
+        1.0
+      ],
+      "context_budget_failures": 0,
+      "unresolved_infrastructure_errors": 0,
+      "mean_native_reward": null,
+      "mean_steps": null,
+      "steps": 0,
+      "candidate_count": 0,
+      "invalid_action_rate": null,
+      "candidate_truncation_rate": null,
+      "selected_truncation_rate": null,
+      "selector_fallbacks": 0,
+      "image_steps": 0,
+      "actor_seconds": 0,
+      "selector_seconds": 0,
+      "known_attributed_api_usd": 0,
+      "reached_step_limit": 0,
+      "success_vs_greedy": null
+    }
+  ],
+  "paired_prefix": [
+    {
+      "environment": "alfworld_text",
+      "paired_tasks": 63,
+      "counts": {
+        "greedy": 24,
+        "gpt5": 43,
+        "arm5": 45
+      },
+      "rates": {
+        "greedy": 0.38095238095238093,
+        "gpt5": 0.6825396825396826,
+        "arm5": 0.7142857142857143
+      },
+      "vs_greedy": {
+        "gpt5": {
+          "paired_tasks": 63,
+          "delta": 0.30158730158730157,
+          "ci95": [
+            0.1746031746031746,
+            0.42857142857142855
+          ]
+        },
+        "arm5": {
+          "paired_tasks": 63,
+          "delta": 0.3333333333333333,
+          "ci95": [
+            0.20634920634920634,
+            0.4603174603174603
+          ]
+        }
+      },
+      "provisional": true,
+      "head_not_yet_evaluated": true
+    },
+    {
+      "environment": "webshop",
+      "paired_tasks": 32,
+      "counts": {
+        "greedy": 7,
+        "gpt5": 13,
+        "arm5": 13
+      },
+      "rates": {
+        "greedy": 0.21875,
+        "gpt5": 0.40625,
+        "arm5": 0.40625
+      },
+      "vs_greedy": {
+        "gpt5": {
+          "paired_tasks": 32,
+          "delta": 0.1875,
+          "ci95": [
+            0.0625,
+            0.34375
+          ]
+        },
+        "arm5": {
+          "paired_tasks": 32,
+          "delta": 0.1875,
+          "ci95": [
+            0.0625,
+            0.34375
+          ]
+        }
+      },
+      "provisional": true,
+      "head_not_yet_evaluated": true
+    }
+  ],
+  "known_api_ledger_usd": 16.850789000000013,
+  "native404_validation": {
+    "passed": true,
+    "at": 1792618571.8136919,
+    "job_id": "377370",
+    "reviewed_failed_jobs": [
+      "377126",
+      "377130",
+      "377208"
+    ],
+    "actual_native_step_checks": [
+      {
+        "method": "greedy",
+        "task_id": "webshop/32",
+        "replay_steps": 0,
+        "remaining_native_images": 9,
+        "remaining_native_actions": 12,
+        "reward": 0.0,
+        "done": false,
+        "next_observation_signature": "3043f4604dbff5d3406cdda8f74fd1cecb2f4fdd4693e407b8572c10f7974269",
+        "source_summary_unchanged": true,
+        "source_trajectory_unchanged": true
+      },
+      {
+        "method": "gpt5",
+        "task_id": "webshop/32",
+        "replay_steps": 0,
+        "remaining_native_images": 9,
+        "remaining_native_actions": 12,
+        "reward": 0.0,
+        "done": false,
+        "next_observation_signature": "3043f4604dbff5d3406cdda8f74fd1cecb2f4fdd4693e407b8572c10f7974269",
+        "source_summary_unchanged": true,
+        "source_trajectory_unchanged": true
+      },
+      {
+        "method": "arm5",
+        "task_id": "webshop/32",
+        "replay_steps": 0,
+        "remaining_native_images": 9,
+        "remaining_native_actions": 12,
+        "reward": 0.0,
+        "done": false,
+        "next_observation_signature": "3043f4604dbff5d3406cdda8f74fd1cecb2f4fdd4693e407b8572c10f7974269",
+        "source_summary_unchanged": true,
+        "source_trajectory_unchanged": true
+      }
+    ],
+    "retained_completed_episodes": 96,
+    "final_weights_and_sampling_unchanged": true,
+    "source_lock_sha256": "455968f6f8498a6c10ca37b30cd013a1d1df1f286dd62498035d1815c6a1f0f9"
+  },
+  "recovery_controller_job": "377373",
+  "recovery_eligible_after": "2026-10-21T14:47:00-07:00",
+  "storage": {
+    "job": "377362",
+    "files_archived": 17,
+    "verified_net_GiB_freed": 2.0250244140625,
+    "persistent_gzip_retained": true,
+    "final_weights_unchanged": true
+  }
+}
